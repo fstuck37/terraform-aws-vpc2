@@ -59,11 +59,12 @@ output "peerlink_ids" {
     ))
 }
 
+/*
 output "aws_ec2_transit_gateway_vpc_attachment" {
   description = "ID of the transit gateway attachment"
   value = (join("",aws_ec2_transit_gateway_vpc_attachment.txgw_attachment.*.id))
 }
-
+*/
 output "vpn_connections" {
   value = zipmap(
     [for v in aws_vpn_connection.aws_vpn_connections : v.tags.Name],	#Key
