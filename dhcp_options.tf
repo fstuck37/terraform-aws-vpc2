@@ -16,7 +16,7 @@ resource "aws_vpc_dhcp_options" "dhcp-opt" {
   ntp_servers          = var.ntp_servers
   tags = merge(
     var.tags,
-    map("Name",format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-dhcp-options")),
+    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-dhcp-options") }),
     local.resource-tags["aws_vpc_dhcp_options"]
   )
 }

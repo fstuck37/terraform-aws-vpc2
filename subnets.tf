@@ -17,7 +17,7 @@ resource "aws_subnet" "subnets" {
   availability_zone = element(var.zones[var.region],local.azs-list[count.index])
   tags              = merge(
     var.tags, 
-    map("Name", contains(keys(var.fixed-name), element(local.subnet-order,local.subnets-list[count.index])) ? var.fixed-name[element(local.subnet-order,local.subnets-list[count.index])][local.azs-list[count.index]] : format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${element(local.subnet-order,local.subnets-list[count.index])}-az-${element(split("-", element(var.zones[var.region],local.azs-list[count.index])), length(split("-", element(var.zones[var.region],local.azs-list[count.index]))) - 1)}")),
+    tomap({ "Name" = contains(keys(var.fixed-name), element(local.subnet-order,local.subnets-list[count.index])) ? var.fixed-name[element(local.subnet-order,local.subnets-list[count.index])][local.azs-list[count.index]] : format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${element(local.subnet-order,local.subnets-list[count.index])}-az-${element(split("-", element(var.zones[var.region],local.azs-list[count.index])), length(split("-", element(var.zones[var.region],local.azs-list[count.index]))) - 1)}") }),
     local.subnet-tags["${element(local.subnet-order,local.subnets-list[count.index])}"],
     local.resource-tags["aws_subnet"]
   )
@@ -40,7 +40,7 @@ resource "aws_subnet" "gwep" {
   availability_zone = element(var.zones[var.region],count.index)
   tags              = merge(
     var.tags, 
-    map("Name", format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-gwep-az-${element(split("-", element(var.zones[var.region],local.azs-list[count.index])), length(split("-", element(var.zones[var.region],local.azs-list[count.index]))) - 1)}")),
+    tomap({ "Name" = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-gwep-az-${element(split("-", element(var.zones[var.region],local.azs-list[count.index])), length(split("-", element(var.zones[var.region],local.azs-list[count.index]))) - 1)}") }),
     local.subnet-tags["${element(local.subnet-order,local.subnets-list[count.index])}"],
     local.resource-tags["aws_subnet"]
   )

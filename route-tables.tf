@@ -18,7 +18,7 @@ resource "aws_route_table" "pubrt" {
   vpc_id = aws_vpc.main_vpc.id
   tags   = merge(
     var.tags,
-    map("Name", ( var.deploy_gwep && !(var.egress_only_internet_gateway) ? format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-pub-az-${element(split("-", element(var.zones[var.region],count.index)), length(split("-", element(var.zones[var.region],count.index))) - 1)}") : format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-pub") ) ),
+    tomap({ "Name" = ( var.deploy_gwep && !(var.egress_only_internet_gateway) ? format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-pub-az-${element(split("-", element(var.zones[var.region],count.index)), length(split("-", element(var.zones[var.region],count.index))) - 1)}") : format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-pub") ) }),
     local.resource-tags["aws_route_table"]
   )
 }
@@ -35,7 +35,7 @@ resource "aws_route_table" "privrt" {
   propagating_vgws = [aws_vpn_gateway.vgw.id]
   tags             = merge(
     var.tags,
-    map("Name",format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-prod-az-${element(split("-", element(var.zones[var.region],count.index)), length(split("-", element(var.zones[var.region],count.index))) - 1)}")),
+    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-prod-az-${element(split("-", element(var.zones[var.region],count.index)), length(split("-", element(var.zones[var.region],count.index))) - 1)}")}),
     local.resource-tags["aws_route_table"]
   )
   depends_on       = [aws_vpn_gateway.vgw]
@@ -87,7 +87,7 @@ resource "aws_route_table" "gweprt" {
   vpc_id = aws_vpc.main_vpc.id
   tags   = merge(
     var.tags,
-    map("Name",format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-gwep")),
+    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-gwep")}),
     local.resource-tags["aws_route_table"]
   )
 }
@@ -110,7 +110,7 @@ resource "aws_route_table" "igwrt" {
   vpc_id = aws_vpc.main_vpc.id
   tags   = merge(
     var.tags,
-    map("Name",format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-igw")),
+    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-igw") }),
     local.resource-tags["aws_route_table"]
   )
 }

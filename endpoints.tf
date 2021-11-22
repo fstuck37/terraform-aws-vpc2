@@ -36,7 +36,7 @@ resource "aws_vpc_endpoint" "private-interface-endpoints" {
  
   tags                      = merge(
     var.tags,
-    map("Name", "${each.value.name}"),
+    tomap({ "Name" = each.value.name }),
     local.resource-tags[each.value.name]
   )
 

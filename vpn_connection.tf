@@ -5,7 +5,7 @@ resource "aws_customer_gateway" "aws_customer_gateways" {
     ip_address = merge(var.default_vpn_connections, each.value).peer_ip_address
     tags = merge(
       var.tags,
-      map("Name",each.key)
+      tomap({ "Name" = each.key})
     )
 }
 
@@ -22,7 +22,7 @@ resource "aws_vpn_connection" "aws_vpn_connections" {
 
     tags = merge(
       var.tags,
-      map("Name",each.key)
+      tomap({ "Name" = each.key})
     )
 }
 

@@ -23,7 +23,9 @@ resource "aws_vpc_peering_connection" "peer" {
     allow_vpc_to_remote_classic_link = false
   }
 
-  tags = merge(var.tags, map("Name", "${each.key}-peerlink"))
+  tags = merge(var.tags, 
+    tomap({ "Name" = "${each.key}-peerlink"})
+  )
 }
 
 resource "aws_vpc_peering_connection_accepter" "peer" {
@@ -32,14 +34,16 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
   auto_accept               = true
 
 
- accepter {
-   allow_classic_link_to_remote_vpc = false
-   allow_remote_vpc_dns_resolution  = element(split("|", each.value),2)
-   allow_vpc_to_remote_classic_link = false
- }
+  accepter {
+    allow_classic_link_to_remote_vpc = false
+    allow_remote_vpc_dns_resolution  = element(split("|", each.value),2)
+    allow_vpc_to_remote_classic_link = false
+  }
 
-
-  tags                      = merge(var.tags, map("Name", "${each.key}-peerlink"))
+  tags = merge(
+    var.tags, 
+    tomap({ "Name" = "${each.key}-peerlink"})
+  )
 }
 
 

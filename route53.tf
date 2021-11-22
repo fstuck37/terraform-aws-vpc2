@@ -63,7 +63,7 @@ resource "aws_security_group" "sg-r53ept-inbound" {
   
   tags = merge(
     var.tags,
-    map("Name",format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )),
+    tomap({ "Name" = format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" ) }),
     local.resource-tags["aws_route53_resolver_endpoint"]
   )
 }
@@ -83,7 +83,7 @@ resource "aws_route53_resolver_endpoint" "resolver_endpoint" {
 
   tags = merge(
     var.tags,
-    map("Name",format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )),
+    tomap({ "Name" = format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )}),
     local.resource-tags["aws_route53_resolver_endpoint"]
   )
 }
@@ -103,7 +103,7 @@ resource "aws_route53_resolver_endpoint" "outbound_endpoint" {
 
   tags = merge(
     var.tags,
-    map("Name",format("%s", "sg-r53ept-outbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )),
+    tomap({ "Name" = format("%s", "sg-r53ept-outbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )}),
     local.resource-tags["aws_route53_resolver_endpoint"]
   )
 }

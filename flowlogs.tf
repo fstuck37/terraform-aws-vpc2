@@ -25,7 +25,7 @@ resource "aws_cloudwatch_log_group" "flowlog_group" {
   retention_in_days = var.cloudwatch_retention_in_days
   tags = merge(
     var.tags,
-    map("Name","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-log"),
+    tomap({ "Name" = "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-log"}),
     local.resource-tags["aws_cloudwatch_log_group"]
     )
 }
