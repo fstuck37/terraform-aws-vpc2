@@ -191,8 +191,9 @@ variable "dx_gateway_id" {
 }
 
 variable "transit_gateway_id" {
+  type = string
   description = "Optional : specify the Transit Gateway ID within the same account to associate the VPC with."
-  default     = false
+  default     = null
 }
 
 variable "appliance_mode_support" {
