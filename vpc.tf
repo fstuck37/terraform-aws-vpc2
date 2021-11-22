@@ -24,16 +24,8 @@ resource "aws_vpc" "main_vpc" {
 
 resource "aws_vpc_ipv4_cidr_block_association" "secondary_cidrs" {
   for_each   = {for cidr in var.vpc-cidrs : cidr => cidr 
-   cidr != var.vpc-cidrs[0]
+   if cidr != var.vpc-cidrs[0]
   }
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = each.value
 }
-
-
-
-
-
-
-
-  
