@@ -1,6 +1,6 @@
 resource "aws_ec2_transit_gateway_vpc_attachment" "txgw_attachment" {
-  for_each   = {for vpc in [aws_vpc.main_vpc.id]: vpc => vpc
-   if var.transit_gateway_id != null
+  for_each   = {for txgw in [var.transit_gateway_id]: txgw => txgw
+   if var.transit_gateway_id != ""
   }
   subnet_ids              = local.map_subnet_id_list[element(var.subnet-order,1)]
   transit_gateway_id      = var.transit_gateway_id
