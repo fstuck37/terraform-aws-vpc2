@@ -30,6 +30,10 @@ variable "subnet-tags" {
   default = { }
 }
 
+variable "subnets_ignore_changes" {
+  default = [tags]
+}
+
 variable "resource-tags" {
   type = map(map(string))
   description = "Optional : A map of maps of tags to assign to specifc resources.  The key must be one of the following: aws_vpc, aws_vpn_gateway, aws_subnet, aws_network_acl, aws_internet_gateway, aws_cloudwatch_log_group, aws_vpc_dhcp_options, aws_route_table."
