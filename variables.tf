@@ -31,7 +31,7 @@ variable "subnet-tags" {
 }
 
 variable "subnets_ignore_changes" {
-  default = [tags]
+  default = ["tags"]
 }
 
 variable "resource-tags" {
