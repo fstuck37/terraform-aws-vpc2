@@ -122,6 +122,17 @@ variable "reserve_azs" {
    default     = 0
 }
 
+variable "subnets" {
+  type = map(string)
+  description = "Optional : Keys are used for subnet names and values are the subnets for the various layers. These will be divided by the number of AZs based on ceil(log(length(var.zones[var.region]),2)). 'pub' is the only special name used for the public subnet and must be specified first."
+  default = {
+    pub = "10.0.0.0/24"
+    web = "10.0.1.0/24"
+    app = "10.0.2.0/24"
+    db  = "10.0.3.0/24"
+    mgt = "10.0.4.0/24"
+  }
+}
 
 
 
@@ -194,18 +205,6 @@ variable "forward_rules" {
 }
 
 /* Subnet Variables */
-variable "subnets" {
-  type = map(string)
-  description = "Optional : Keys are used for subnet names and values are the subnets for the various layers. These will be divided by the number of AZs based on ceil(log(length(var.zones[var.region]),2)). 'pub' is the only special name used for the public subnet and must be specified first."
-  default = {
-    pub = "10.0.0.0/24"
-    web = "10.0.1.0/24"
-    app = "10.0.2.0/24"
-    db  = "10.0.3.0/24"
-    mgt = "10.0.4.0/24"
-  }
-}
-
 variable "fixed-subnets" {
   type = map(list(string))
   description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."

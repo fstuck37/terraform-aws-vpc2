@@ -11,7 +11,7 @@ locals {
   resource-tags = merge(local.empty-resource-tags, var.resource-tags)
 
   subnet_data = flatten([
-    for i, sn in var.subnets : [
+    for i, sn in keys(var.subnets) : [
       for ii, az in var.zones[var.region] : {
         az              = az
         layer           = sn
