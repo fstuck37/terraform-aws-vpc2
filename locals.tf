@@ -13,8 +13,28 @@ locals {
     }
     if var.transit_gateway_id != "null"]
   ])
+
+  subnet_data = flatten([
+    for i, sn in var.subnets : [
+      for ii, az in var.zones[var.region] : {
+        az           = az
+        layer        = sn
+        name         = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
+        index        = "${(i*length(var.zones[var.region]))+ii}"
+        layer_index  = i
+        subnet_index = ii
+        layer_cidr = cidrsubnet(var.vpc-cidrs[0] , ceil( log(max(length(var.subnets), var.max_layers),2)) , i )
+        subnet_cidr = cidrsubnet(   cidrsubnet(var.vpc-cidrs[0] , ceil( log(max(length(var.subnets), var.max_layers),2)) , i )   , (var.subnet_size - (element(split("/", var.vpc-cidrs[0]),1) + ceil(log(max(length(var.zones[var.region]), var.max_azs),2)))) , ii )
+       }]
+    ])
+
  
-  
+
+
+
+
+
+
 
   num-availbility-zones = "${length(var.zones[var.region])}"
 
@@ -59,21 +79,6 @@ locals {
 /* ------------------------------------------------------------------ */
 
 
-
-  subnet_data = flatten([
-    for i, sn in var.subnets : [
-      for ii, az in var.zones[var.region] : {
-        az           = az
-        layer        = sn
-        name         = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
-        index        = "${(i*length(var.zones[var.region]))+ii}"
-        layer_index  = i
-        subnet_index = ii
-        layer_cidr = cidrsubnet(var.vpc-cidrs[0] , ceil( log(max(length(var.subnets), var.max_layers),2)) , i )
-        subnet_cidr = cidrsubnet(   cidrsubnet(var.vpc-cidrs[0] , ceil( log(max(length(var.subnets), var.max_layers),2)) , i )   , (var.subnet_size - (element(split("/", var.vpc-cidrs[0]),1) + ceil(log(max(length(var.zones[var.region]), var.max_azs),2)))) , ii )
-       }]
-    ])
-
   subnet_ids = {
     for layer in var.subnets:
     layer => [
@@ -115,10 +120,6 @@ locals {
      }
     if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
   ])
-
-
-
-
 
  peerlink_accepter_routes = flatten([
   for rt in aws_route_table.privrt : [
