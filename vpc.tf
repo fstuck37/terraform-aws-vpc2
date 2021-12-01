@@ -1,15 +1,3 @@
-##################################################
-# File: vpc.tf                                   #
-# Created Date: 03192019                         #
-# Author: Fred Stuck                             #
-# Version: 0.1                                   #
-# Description: Creates VPC within AWS            #
-#                                                #
-# Change History:                                #
-# 03192019: Initial File                         #
-#                                                #
-##################################################
-
 resource "aws_vpc" "main_vpc" {
   cidr_block           = var.vpc-cidrs[0]
   enable_dns_hostnames = var.enable_dns_hostnames
