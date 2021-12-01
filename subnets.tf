@@ -9,9 +9,6 @@ resource "aws_subnet" "subnets" {
     local.subnet-tags[each.value.layer],
     local.resource-tags["aws_subnet"]
   )
-  lifecycle {
-    ignore_changes = var.subnets_ignore_changes
-  }
 }
 
 
