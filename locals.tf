@@ -4,7 +4,61 @@ locals {
   empty-resource-tags = zipmap( distinct(concat(local.private_endpoints_names,local.resource_list)), slice(local.emptymaps, 0 ,length(distinct(concat(local.private_endpoints_names,local.resource_list)))) )
   resource-tags = merge(local.empty-resource-tags, var.resource-tags)
 
-/* ------------------------------- */
+  txgw_routes = flatten([
+  for rt in var.transit_gateway_routes : [
+    for rtid in aws_route_table.privrt : {
+      name        = "${rtid.id}-${rt}"
+      route       = rt
+      route_table = rtid.id
+    }
+    if var.transit_gateway_id != "null"]
+  ])
+ 
+  
+
+  num-availbility-zones = "${length(var.zones[var.region])}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------ */
+
+
 
   subnet_data = flatten([
     for i, sn in var.subnets : [
@@ -62,21 +116,10 @@ locals {
     if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
   ])
 
-/* ------------------------------- */
 
 
 
 
-  txgw_routes = flatten([
-  for rt in var.transit_gateway_routes : [
-    for rtid in aws_route_table.privrt : {
-      name        = "${rtid.id}-${rt}"
-      route       = rt
-      route_table = rtid.id
-      }
-    if var.transit_gateway_id != false]
-  ])
- 
  peerlink_accepter_routes = flatten([
   for rt in aws_route_table.privrt : [
     for key, value in var.peer_accepter : {
@@ -108,7 +151,7 @@ locals {
     if merge(var.default_vpn_connections, var.vpn_connections[vpn]).destination_cidr_blocks != ""]
   ])
 
-  num-availbility-zones = "${length(var.zones[var.region])}"
+
   subnet-order = coalescelist( var.subnet-order, keys(var.subnets))
 
   /* NOTE: Requires that pub is first */

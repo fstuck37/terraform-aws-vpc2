@@ -17,7 +17,7 @@ resource "aws_vpc" "main_vpc" {
   instance_tenancy     = var.instance_tenancy
   tags                 = merge(
     var.tags,
-    tomap({ "Name" = format("%s", var.vpc-name == true ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)}),
+    tomap({ "Name" = format("%s", var.vpc-name == "null" ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)}),
     local.resource-tags["aws_vpc"]
   )
 }

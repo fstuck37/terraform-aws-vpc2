@@ -1,15 +1,3 @@
-##################################################
-# File: dhcp_options.tf                          #
-# Created Date: 03192019                         #
-# Author: Fred Stuck                             #
-# Version: 0.1                                   #
-# Description: Set default DHCP options          #
-#                                                #
-# Change History:                                #
-# 03192019: Initial File                         #
-#                                                #
-##################################################
-
 resource "aws_vpc_dhcp_options" "dhcp-opt" {
   domain_name          = var.domain_name
   domain_name_servers  = var.domain_name_servers

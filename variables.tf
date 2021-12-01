@@ -5,24 +5,137 @@ variable "region" {
 
 variable "vpc-cidrs" {
   description = "Required : List of CIDRs to apply to the VPC."
-  type = list(string)
-  default = ["10.0.0.0/21"]
+  type        = list(string)
+  default     = ["10.0.0.0/21"]
+
+  validation {
+    condition = (
+      length(var.vpc-cidrs)>=1
+    )
+    error_message = "The instance_tenancy is not valid."
+  }
 }
+
+variable "enable_dns_hostnames" {
+  description = "Optional : A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false."
+  type        = bool
+  default     = true
+}
+
+variable "enable_dns_support" {
+  description = "Optional : A boolean flag to enable/disable DNS support in the VPC. Defaults true."
+  type        = bool
+  default     = true
+}
+
+variable "instance_tenancy" {
+  description = "Optional : A tenancy option for instances launched into the VPC. Default is default, which makes your instances shared on the host. Using either of the other options (dedicated or host) costs at least $2/hr."
+  type        = string
+  default     = "default"
+
+  validation {
+    condition = (
+      contains(["default", "dedicated", "host",], var.instance_tenancy)
+    )
+    error_message = "The instance_tenancy is not valid."
+  }
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Optional : A map of tags to assign to the resource."
+  default     = {}
+}
+
+variable "vpc-name" {
+  description = "Optional : Override the calculated VPC name"
+  type        = string
+  default     = "null"
+}
+
+variable "name-vars" {
+  description = "Required : Map with two keys account and name. Names of elements are created based on these values."
+  type        = map(string)
+
+  validation {
+    condition = (
+      contains(keys(var.name-vars), "account") && 
+      contains(keys(var.name-vars), "name")
+    )
+    error_message = "The input name-vars must contain two elements account and name."
+  }
+}
+
+variable "resource-tags" {
+  description = "Optional : A map of maps of tags to assign to specifc resources. This can be used to override globally specified or calculated tags such as the name. The key must be one of the following: aws_vpc, aws_vpn_gateway, aws_subnet, aws_network_acl, aws_internet_gateway, aws_cloudwatch_log_group, aws_vpc_dhcp_options, aws_route_table, aws_route53_resolver_endpoint, aws_lb."
+  type        = map(map(string))
+  default     = { }
+}
+
+variable "domain_name" {
+  description = "Optional : the suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file."
+  type        = string
+  default     = "ec2.internal"
+}
+
+
+variable "domain_name_servers" {
+  description = "Optional : List of name servers to configure in /etc/resolv.conf. The default is the AWS nameservers AmazonProvidedDNS."
+  type        = list(string)
+  default     = ["AmazonProvidedDNS"]
+}
+
+variable "ntp_servers" {
+  description = "Optional : List of NTP servers to configure. The default is an emppty list."
+  type        = list(string)
+  default     = []
+}
+
+variable "dx_gateway_id" {
+  description = "Optional : specify the Direct Connect Gateway ID to associate the VGW with."
+  type        = string
+  default     = "null"
+}
+
+variable "transit_gateway_id" {
+  description = "Optional : specify the Transit Gateway ID within the same account to associate the VPC with."
+  type = string
+  default     = "null"
+}
+
+variable "transit_gateway_routes" {
+  type = list(string)
+  description = "Optional : specify the list of CIDR blocks to route to the Transit Gateway."
+  default     = []
+}
+
+variable "pub_layer" {
+  type        = string
+  description = "Optional : Specifies the name of the public layer. Defaults to pub."
+  default     = "pub"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------------------------------- */
+
+
 
 variable "acctnum" {
   description = "Required : AWS Account Number"
 }
 
-variable "name-vars" {
-  description = "Required : Map with two keys account and name. Names of elements are created based on these values."
-  type = map(string)
-}
 
-variable "tags" {
-  type = map(string)
-  description = "Optional : A map of tags to assign to the resource."
-  default = {}
-}
 
 variable "subnet-tags" {
   type = map(map(string))
@@ -34,28 +147,8 @@ variable "subnets_ignore_changes" {
   default = ["tags"]
 }
 
-variable "resource-tags" {
-  type = map(map(string))
-  description = "Optional : A map of maps of tags to assign to specifc resources.  The key must be one of the following: aws_vpc, aws_vpn_gateway, aws_subnet, aws_network_acl, aws_internet_gateway, aws_cloudwatch_log_group, aws_vpc_dhcp_options, aws_route_table."
-  default = { }
-}
 
 
-/* VPC Variables */
-variable "vpc-name" {
-  description = "Optional : Override the calculated VPC name"
-  default     = true
-}
-
-variable "enable_dns_support" {
-  description = "Optional : A boolean flag to enable/disable DNS support in the VPC. Defaults true."
-  default     = true
-}
-
-variable "enable_dns_hostnames" {
-  description = "Optional : A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false."
-  default     = true
-}
 
 variable "default_reverse_zones" {
   description = "Optional : Deploy Route53 Reverse Lookup Zones as /24s. Defaults to false"
@@ -95,12 +188,6 @@ variable "forward_rules" {
   default = []
 }
 
-variable "instance_tenancy" {
-  type        = string
-  description = "Optional : A tenancy option for instances launched into the VPC."
-  default     = "default"
-}
-
 /* Subnet Variables */
 variable "subnets" {
   type = map(string)
@@ -131,21 +218,6 @@ variable "subnet-order" {
   description = "Required : Order in which subnets are created. Changes can cause recreation issues when subnets are added when something precedes other subnets. Must include all key names."
 }
 
-/* DHCP options */
-variable "domain_name" {
-  description = "Optional : DNS search domains for DHCP Options"
-  default = "ec2.internal"
-}
-
-variable "domain_name_servers" {
-  description = "Optional : DNS Servers for DHCP Options"
-  default = ["AmazonProvidedDNS"]
-}
-
-variable "ntp_servers" {
-  description = "Optional : NTP Servers for DHCP Options"
-  default = []
-}
 
 /* Start Network ACL Variables */
 variable "bypass_ingress_rules" {
@@ -189,27 +261,11 @@ variable "enable_pub_route_propagation" {
   default     = false
 }
 
-variable "dx_gateway_id" {
-  description = "Optional : specify the Direct Connect Gateway ID to associate the VGW with."
-  default     = false
-}
-
-variable "transit_gateway_id" {
-  type = string
-  description = "Optional : specify the Transit Gateway ID within the same account to associate the VPC with."
-  default     = "false"
-}
-
 variable "appliance_mode_support" {
   description = "(Optional) Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
   default     = "disable"
 }
 
-variable "transit_gateway_routes" {
-  type = list(string)
-  description = "Optional : specify the networks to route to the Transit Gateway"
-  default     = []
-}
 
 /* Endpoint Configuration */
 
