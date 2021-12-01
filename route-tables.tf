@@ -5,7 +5,7 @@ resource "aws_route_table" "pubrt" {
   vpc_id = aws_vpc.main_vpc.id
   tags   = merge(
     var.tags,
-    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-pub-az-${element(split("-", element(var.zones[var.region],count.index)), length(split("-", element(var.zones[var.region],count.index))) - 1)}") }),
+    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-pub-az-${element(split("-", each.value), length(split("-", each.value)) - 1)}") }),
     local.resource-tags["aws_route_table"]
   )
 }
@@ -24,7 +24,7 @@ resource "aws_route_table" "privrt" {
   propagating_vgws = [aws_vpn_gateway.vgw.id]
   tags             = merge(
     var.tags,
-    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-prod-az-${element(split("-", element(var.zones[var.region],count.index)), length(split("-", element(var.zones[var.region],count.index))) - 1)}")}),
+    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-prod-az-${element(split("-", each.value), length(split("-", each.value)) - 1)}")}),
     local.resource-tags["aws_route_table"]
   )
 }
