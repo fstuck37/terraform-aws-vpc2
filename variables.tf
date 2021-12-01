@@ -115,7 +115,10 @@ variable "pub_layer" {
   default     = "pub"
 }
 
-
+variable "max_layers" {
+   description = "Optional : The number of subnet layers to compute the IP allocations for. This must be greater than the existing numnber of layers in subnets. The default is 8"
+   default = 8
+}
 
 
 
