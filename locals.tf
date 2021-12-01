@@ -19,10 +19,10 @@ locals {
         index           = "${(i*length(var.zones[var.region]))+ii}"
         layer_index     = i
         subnet_index    = ii
-        layer_cidr      = var.subnets[layer]
-        layer_cidr_size = element(split("/", var.subnets[layer]),1)
+        layer_cidr      = var.subnets[sn]
+        layer_cidr_size = element(split("/", var.subnets[sn]),1)
         azs_allocate    = max(var.reserve_azs, length(var.zones[var.region]))
-        subnet_cidr     = cidrsubnet(   var.subnets[layer] , element(split("/", var.subnets[layer]),1) - ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )) , ii )
+        subnet_cidr     = cidrsubnet(   var.subnets[sn] , element(split("/", var.subnets[sn]),1) - ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )) , ii )
        }]
     ])
 
