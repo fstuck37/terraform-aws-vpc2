@@ -15,13 +15,13 @@ locals {
       for ii, az in var.zones[var.region] : {
         az              = az
         layer           = sn
-        name            = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
+        name            = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-${element(split("-", az), length(split("-", az )) - 1)}")
         index           = (i*length(var.zones[var.region]))+ii
         layer_index     = i
         subnet_index    = ii
         layer_cidr      = var.subnets[sn]
         layer_cidr_size = element(split("/", var.subnets[sn]),1)
-        azs_allocate    = pow(2,ceil(log(max(var.reserve_azs, length(var.zones[var.region])),2)))
+        azs_allocated   = pow(2,ceil(log(max(var.reserve_azs, length(var.zones[var.region])),2)))
         subnet_cidr     = cidrsubnet(   var.subnets[sn] , ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )) , ii )
        }]
     ])
