@@ -28,7 +28,7 @@ locals {
        }]
     ])
 
- 
+  num-availbility-zones = "${length(var.zones[var.region])}" 
 
 
 
@@ -72,7 +72,7 @@ locals {
 /* ------------------------------------------------------------------ */
 
 /*
-  num-availbility-zones = "${length(var.zones[var.region])}"
+  
 
   subnet_ids = {
     for layer in var.subnets:
