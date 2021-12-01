@@ -4,16 +4,6 @@ locals {
   empty-resource-tags = zipmap( distinct(concat(local.private_endpoints_names,local.resource_list)), slice(local.emptymaps, 0 ,length(distinct(concat(local.private_endpoints_names,local.resource_list)))) )
   resource-tags = merge(local.empty-resource-tags, var.resource-tags)
 
-  txgw_routes = flatten([
-  for rt in var.transit_gateway_routes : [
-    for rtid in aws_route_table.privrt : {
-      name        = "${rtid.id}-${rt}"
-      route       = rt
-      route_table = rtid.id
-    }
-    if var.transit_gateway_id != "null"]
-  ])
-
   subnet_data = flatten([
     for i, sn in var.subnets : [
       for ii, az in var.zones[var.region] : {
@@ -29,30 +19,8 @@ locals {
     ])
 
   num-availbility-zones = "${length(var.zones[var.region])}" 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+  private_endpoints_names = [ for endpoint in var.private_endpoints : endpoint.name ]
 
 
 
@@ -72,6 +40,18 @@ locals {
 /* ------------------------------------------------------------------ */
 
 /*
+
+
+  txgw_routes = flatten([
+  for rt in var.transit_gateway_routes : [
+    for rtid in aws_route_table.privrt : {
+      name        = "${rtid.id}-${rt}"
+      route       = rt
+      route_table = rtid.id
+    }
+    if var.transit_gateway_id != "null"]
+  ])
+
   
 
   subnet_ids = {
@@ -159,7 +139,6 @@ locals {
   subnet-tags = merge(local.empty-subnet-tags,var.subnet-tags)
   
 
-  private_endpoints_names = [ for endpoint in var.private_endpoints : endpoint.name ]
   
   
 
