@@ -21,7 +21,7 @@ locals {
         subnet_index    = ii
         layer_cidr      = var.subnets[sn]
         layer_cidr_size = element(split("/", var.subnets[sn]),1)
-        azs_allocate    = ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 ))
+        azs_allocate    = pow(ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )),2)
         subnet_cidr     = cidrsubnet(   var.subnets[sn] , ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )) , ii )
        }]
     ])
