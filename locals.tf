@@ -36,13 +36,6 @@ locals {
 
 
 
-  num-availbility-zones = "${length(var.zones[var.region])}"
-
-
-
-
-
-
 
 
 
@@ -78,6 +71,8 @@ locals {
 
 /* ------------------------------------------------------------------ */
 
+/*
+  num-availbility-zones = "${length(var.zones[var.region])}"
 
   subnet_ids = {
     for layer in var.subnets:
@@ -154,8 +149,10 @@ locals {
 
 
   subnet-order = coalescelist( var.subnet-order, keys(var.subnets))
+*/
 
   /* NOTE: Requires that pub is first */
+/*
   pub-subnet-ids = slice(aws_subnet.subnets.*.id, 0, local.num-availbility-zones)
 
   empty-subnet-tags = zipmap(local.subnet-order, slice(local.emptymaps, 0 ,length(local.subnet-order)))
@@ -178,87 +175,15 @@ locals {
 
   peerlink-size = length(var.peer_requester)
   routetable-size = length(var.zones[var.region])
-/*
+
  peerlink-list = split(",", join(",", data.template_file.peerlink-two.*.rendered))
   routetable-list = (split(",", join(",", data.template_file.routetable-two.*.rendered)))
   
   peerlink-accepter-size = length(var.peer_accepter)
   peerlink-accepter-list = split(",", join(",", data.template_file.peerlink-accepter-two.*.rendered))
   routetable-accepter-list = (split(",", join(",", data.template_file.routetable-accepter-two.*.rendered)))
-*/
 
   map_subnet_id_list = length(aws_subnet.subnets.*.id) == 0 ? {} : zipmap(var.subnet-order, chunklist(aws_subnet.subnets.*.id, local.num-availbility-zones))
   map_subnet_arn_list = length(aws_subnet.subnets.*.arn) == 0 ? {} : zipmap(var.subnet-order, chunklist(aws_subnet.subnets.*.arn, local.num-availbility-zones))
-}
-
-
-data "template_file" "subnet-name" {
-  count    = length(var.subnets)*local.num-availbility-zones
-  template = lookup(aws_subnet.subnets.*.tags[count.index],"Name")
-}
-
-data "template_file" "azs-one" {
-  count    = local.azs-size
-  template = count.index
-}
- 
-data "template_file" "azs-two" {
-  count    = local.subnets-size
-  template = join(",", data.template_file.azs-one.*.rendered)
-}
-
-data "template_file" "subnets-one" {
-  count    = local.subnets-size
-  template = count.index
-}
-
-data "template_file" "subnets-two" {
-  count    = length(data.template_file.subnets-one.*.rendered)
-  template = join(",",slice(split(",", replace(join(",", local.baselist), "A", data.template_file.subnets-one.*.rendered[count.index])), 0, local.azs-size))
-}
-
-/* Peer Link */
-/*
-data "template_file" "routetable-one" {
-  count    = local.routetable-size
-  template = count.index
-}
-
-data "template_file" "routetable-two" {
-  count    = local.peerlink-size
-  template = join(",", data.template_file.routetable-one.*.rendered)
-}
-
-data "template_file" "peerlink-one" {
-  count    = local.peerlink-size
-  template = count.index
-}
-
-data "template_file" "peerlink-two" {
-  count    = length(data.template_file.peerlink-one.*.rendered)
-  template = join(",",slice(split(",", replace(join(",", local.baselist), "A", data.template_file.peerlink-one.*.rendered[count.index])), 0, local.routetable-size))
-}
 */
-
-/* Peer Link Accepter */
-/*
-data "template_file" "peerlink-accepter-one" {
-  count    = local.peerlink-accepter-size
-  template = count.index
 }
- 
-data "template_file" "peerlink-accepter-two" {
-  count    = local.routetable-size
-  template = join(",", data.template_file.peerlink-accepter-one.*.rendered)
-}
-
-data "template_file" "routetable-accepter-one" {
-  count    = local.routetable-size
-  template = count.index
-}
-
-data "template_file" "routetable-accepter-two" {
-  count    = length(data.template_file.routetable-accepter-one.*.rendered)
-  template = join(",",slice(split(",", replace(join(",", local.baselist), "A", data.template_file.routetable-accepter-one.*.rendered[count.index])), 0, local.peerlink-accepter-size))
-}
-*/
