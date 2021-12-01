@@ -1,6 +1,7 @@
 variable "region" {
-  type = string
-  description = "Required : The AWS Region to deploy the VPC to"
+  type        = string
+  description = "Required : The AWS Region to deploy the VPC to. Defaults to us-"
+  default     = "us-east-1"
 }
 
 variable "vpc-cidrs" {
@@ -115,9 +116,10 @@ variable "pub_layer" {
   default     = "pub"
 }
 
-variable "max_layers" {
-   description = "Optional : The number of subnet layers to compute the IP allocations for. This must be greater than the existing numnber of layers in subnets. The default is 8"
-   default = 8
+variable "reserve_azs" {
+   description = "Optional : The number of subnets to compute the IP allocations for. If greater than the existing numnber of availbility zones in the zones list it will reserve space for additional subnets if less then it will only allocate for the existing AZs. The default is 0."
+   type        = number
+   default     = 0
 }
 
 
