@@ -15,6 +15,6 @@ output "subnet_ids" {
 
 output "map_subnet_id_list" {
   description = "Map with keys the same as subnet-order and values a list of subnet IDs"
-  value = {}
+  value = local.subnet_data
 }
 
