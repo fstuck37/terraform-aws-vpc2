@@ -16,7 +16,7 @@ locals {
         az              = az
         layer           = sn
         name            = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-az-${element(split("-", az), length(split("-", az )) - 1)}")
-        index           = "${(i*length(var.zones[var.region]))+ii}"
+        index           = (i*length(var.zones[var.region]))+ii
         layer_index     = i
         subnet_index    = ii
         layer_cidr      = var.subnets[sn]
