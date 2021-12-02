@@ -3,5 +3,5 @@ resource "aws_subnet" "subnets" {
   vpc_id            = aws_vpc.main_vpc.id
   cidr_block        = each.value.subnet_cidr
   availability_zone = each.value.az
-  tags              = each.value.tags
+  tags              = each.value.subnet-tags
 }

@@ -23,10 +23,9 @@ locals {
         layer_cidr_size = element(split("/", var.subnets[sn]),1)
         azs_allocated   = pow(2,ceil(log(max(var.reserve_azs, length(var.zones[var.region])),2)))
         subnet_cidr     = cidrsubnet(   var.subnets[sn] , ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )) , ii )
-        tags            = merge(var.tags , tomap({"Name" = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-${element(split("-", az), length(split("-", az )) - 1)}") }) , local.subnet-tags[sn] , local.resource-tags["aws_subnet"] )
-       }]
+        subnet-tags     = merge(var.tags , tomap({"Name" = format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-${element(split("-", az), length(split("-", az )) - 1)}") }) , local.subnet-tags[sn] , local.resource-tags["aws_subnet"] )
+      }]
     ])
-
 
   subnet-order = coalescelist( var.subnet-order, keys(var.subnets))
   empty-subnet-tags = zipmap(local.subnet-order, slice(local.emptymaps, 0 ,length(local.subnet-order)))
