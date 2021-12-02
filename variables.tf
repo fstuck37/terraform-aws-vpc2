@@ -116,6 +116,11 @@ variable "transit_gateway_routes" {
   default     = []
 }
 
+variable "appliance_mode_support" {
+  description = "(Optional) Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
+  default     = "disable"
+}
+
 variable "pub_layer" {
   type        = string
   description = "Optional : Specifies the name of the public layer. Defaults to pub."
@@ -272,10 +277,6 @@ variable "dx_bgp_default_route" {
   default     = false
 }
 
-variable "appliance_mode_support" {
-  description = "(Optional) Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
-  default     = "disable"
-}
 
 
 
