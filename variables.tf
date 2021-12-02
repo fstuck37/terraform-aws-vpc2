@@ -172,6 +172,11 @@ variable "network_acl_rules" {
   default = {}
 }
 
+variable "deploy_natgateways" {
+  description = "Optional : Set to true to deploy NAT gateways if pub subnet is created"
+  default = false
+}
+
 
 
 
@@ -295,10 +300,6 @@ variable "peer_accepter" {
   default = {}
 }
 
-variable "deploy_natgateways" {
-  description = "Optional : Set to true to deploy NAT gateways if pub subnet is created"
-  default = false
-}
 
 variable "enable_flowlog" {
   description = "Optional : A boolean flag to enable/disable VPC flowlogs."
