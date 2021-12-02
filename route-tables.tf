@@ -32,7 +32,7 @@ resource "aws_route_table" "privrt" {
 resource "aws_route_table_association" "associations" {
   for_each = {for i in local.subnet_data:i.name=>i}
   subnet_id      = aws_subnet.subnets[each.key].id
-  route_table_id = each.value.layer == var.pub_layer ? aws_route_table.pubrt[each.value.az] : aws_route_table.privrt[each.value.az]
+  route_table_id = each.value.layer == var.pub_layer ? aws_route_table.pubrt[each.value.az].id : aws_route_table.privrt[each.value.az].id
 }
 
   
