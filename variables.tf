@@ -73,6 +73,12 @@ variable "resource-tags" {
   default     = { }
 }
 
+variable "subnet-tags" {
+  type = map(map(string))
+  description = "Optional : A map of maps of tags to assign to specifc subnet resource.  The key but be the same as the key in variable subnets."
+  default = { }
+}
+
 variable "domain_name" {
   description = "Optional : the suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file."
   type        = string
@@ -148,6 +154,11 @@ variable "subnet-order" {
 
 
 
+variable "private_endpoints" {
+description = "List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], subnet[Name of the subnet group for the Endpoint IE: web], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], security_group[sg id to apply, if more than one is needed they should be | delimited]"
+  default = []
+}
+
 
 /* --------------------------------------------------------------------------- */
 
@@ -157,13 +168,6 @@ variable "acctnum" {
   description = "Required : AWS Account Number"
 }
 
-
-
-variable "subnet-tags" {
-  type = map(map(string))
-  description = "Optional : A map of maps of tags to assign to specifc subnet resource.  The key but be the same as the key in variable subnets."
-  default = { }
-}
 
 variable "subnets_ignore_changes" {
   default = ["tags"]
@@ -277,11 +281,6 @@ variable "enable-s3-endpoint" {
 variable "enable-dynamodb-endpoint" {
   description = "Optional : Enable the DynamoDB Endpoint"
   default     = false
-}
-
-variable "private_endpoints" {
-description = "List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], subnet[Name of the subnet group for the Endpoint IE: web], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], security_group[sg id to apply, if more than one is needed they should be | delimited]"
-  default = []
 }
 
 variable "peer_requester" {
