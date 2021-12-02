@@ -12,8 +12,9 @@ resource "aws_network_acl" "net_acl" {
 }
 
 resource "aws_network_acl_rule" "acle-ingress-bypass" {
-  for_each = local.nacl_rules
-    network_acl_id = join("",aws_network_acl.net_acl.*.id)
+  for_each = { for k,v in local.nacl_rules : k => v
+                if contains( keys(var.subnets), var.pub_layer) }
+    network_acl_id = aws_network_acl.net_acl[format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-nacl")].id
     rule_number    = each.value.rule_number
     egress         = each.value.egress
     protocol       = each.value.protocol
