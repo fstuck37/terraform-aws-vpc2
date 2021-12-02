@@ -78,7 +78,7 @@ locals {
   txgw_routes = flatten([
   for rt in var.transit_gateway_routes : [
     for az in var.zones[var.region] : {
-      name        = "${route_table.id}-${rt}"
+      name        = "${az}-${rt}"
       route       = rt
       az          = az
     }
