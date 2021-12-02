@@ -6,7 +6,7 @@ data "aws_availability_zones" "azs" {
 
 locals {
   emptymaps = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
-  resource_list = ["aws_vpc", "aws_vpn_gateway", "aws_subnet", "aws_network_acl", "aws_internet_gateway", "aws_cloudwatch_log_group", "aws_vpc_dhcp_options", "aws_route_table", "aws_route53_resolver_endpoint", "aws_lb"]
+  resource_list = ["aws_vpc", "aws_vpn_gateway", "aws_subnet", "aws_network_acl", "aws_internet_gateway", "aws_cloudwatch_log_group", "aws_vpc_dhcp_options", "aws_route_table", "aws_route53_resolver_endpoint", "aws_lb", "aws_flow_log"]
   empty-resource-tags = zipmap( distinct(concat(local.private_endpoints_names,local.resource_list)), slice(local.emptymaps, 0 ,length(distinct(concat(local.private_endpoints_names,local.resource_list)))) )
   resource-tags = merge(local.empty-resource-tags, var.resource-tags)
 
