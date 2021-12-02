@@ -77,10 +77,10 @@ locals {
 
   txgw_routes = flatten([
   for rt in var.transit_gateway_routes : [
-    for route_table in aws_route_table.privrt : {
+    for az in var.zones[var.region] : {
       name        = "${route_table.id}-${rt}"
       route       = rt
-      route_table = route_table.id
+      az          = az
     }
     if var.transit_gateway_id != "null"]
   ])
