@@ -35,4 +35,17 @@ resource "aws_route_table_association" "associations" {
   route_table_id = each.value.layer == var.pub_layer ? aws_route_table.pubrt[each.value.az].id : aws_route_table.privrt[each.value.az].id
 }
 
-  
+resource "aws_route" "pub-default" {
+  for_each = aws_route_table.pubrt
+    route_table_id         = each.value.id
+    destination_cidr_block = "0.0.0.0/0"
+    gateway_id             = aws_internet_gateway.inet-gw[format("%s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${replace(var.region,"-", "")}-igw" )].id
+}
+/*
+resource "aws_route" "privrt-gateway" {
+  count                  = !contains(keys(var.subnets), var.pub_layer)  || !var.deploy_natgateways || var.dx_bgp_default_route ? 0 : local.num-availbility-zones
+  route_table_id         = aws_route_table.privrt.*.id[count.index]
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.natgw.*.id[count.index]
+}
+*/
