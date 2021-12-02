@@ -195,6 +195,36 @@ variable "enable_pub_route_propagation" {
   default     = false
 }
 
+variable "enable_flowlog" {
+  description = "Optional : A boolean flag to enable/disable VPC flowlogs."
+  type        = bool
+  default     = false
+}
+
+variable "aws_lambda_function_name" {
+  description = "Optional : Lambda function name to call when sending to logs to an external SEIM."
+  type        = string
+  default     = "null"
+}
+
+variable "flow_log_filter" {
+  description = "Optional : CloudWatch subscription filter to match flow logs."
+  default     = ""
+}
+
+variable "flow_log_format" {
+  description = "Optional : VPC flow log format."
+  type        = string
+  default = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
+}
+
+variable "cloudwatch_retention_in_days" {
+  description = "Optional : Number of days to keep logs within the cloudwatch log_group. The default is 7 days."
+  type        = number
+  default     = 7
+}
+
+
 
 
 
@@ -308,31 +338,6 @@ variable "peer_accepter" {
   default = {}
 }
 
-
-variable "enable_flowlog" {
-  description = "Optional : A boolean flag to enable/disable VPC flowlogs."
-  default     = false
-}
-
-variable "aws_lambda_function_name" {
-  description = "Optional : Lambda function name to call when sending to logs to an external SEIM."
-  default = "none"
-}
-
-variable "flow_log_filter" {
-  description = "CloudWatch subscription filter to match flow logs."
-  default     = ""
-}
-
-variable "flow_log_format" {
-  description = "VPC flow log format."
-  default = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
-}
-
-variable "cloudwatch_retention_in_days" {
-  description = "Optional : Number of days to keep logs within the cloudwatch log_group. The default is 7 days."
-  default = "7"
-}
 
 variable "amazonaws-com" {
   description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
