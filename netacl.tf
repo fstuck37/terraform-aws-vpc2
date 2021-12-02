@@ -5,7 +5,7 @@ resource "aws_network_acl" "net_acl" {
   subnet_ids = local.pub-subnet-ids
   tags       = merge(
     var.tags,
-    tomap({ "Name" = each.value),
+    tomap({ "Name" = each.value}),
     local.resource-tags["aws_network_acl"]
   )
 }
