@@ -257,9 +257,19 @@ variable "enable-dynamodb-endpoint" {
 
 
 variable "private_endpoints" {
-description = "List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], subnet[Name of the subnet group for the Endpoint IE: web], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], security_group[sg id to apply, if more than one is needed they should be | delimited]"
-  default = []
+  description = "List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], subnet[Name of the subnet group for the Endpoint IE: web], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], List of security_group IDs"
+  type = list(object({
+    name                = string
+    subnet              = string
+    service             = string
+    security_groups     = list(string)
+    private_dns_enabled = bool
+  }))
+  default = {}
 }
+
+
+
 
 
 /* --------------------------------------------------------------------------- */
