@@ -11,7 +11,7 @@ resource "aws_network_acl" "net_acl" {
   )
 }
 
-resource "aws_network_acl_rule" "acle" {
+resource "aws_network_acl_rule" "nacle" {
   for_each = { for k,v in local.nacl_rules : k => v
                 if contains( keys(var.subnets), var.pub_layer) }
     network_acl_id = aws_network_acl.net_acl[format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-nacl")].id

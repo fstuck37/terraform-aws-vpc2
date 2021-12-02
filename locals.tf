@@ -32,7 +32,7 @@ locals {
   subnet-tags = merge(local.empty-subnet-tags,var.subnet-tags)
   
   nacl_rules = merge(
-    {for i, rule in var.block_tcp_ports : "tcp-${rule}" => {
+    {for i, rule in var.block_tcp_ports : "tcp-e-${rule}" => {
         rule_number         = 32700-(i*100)
         egress              = true
         protocol            = "tcp"
@@ -42,7 +42,7 @@ locals {
         to_port             = length(split("-", rule)) < 2 ? rule : element(split("-", rule), 1)
       }
     },
-    {for i, rule in var.block_udp_ports : "udp-${rule}" => {
+    {for i, rule in var.block_udp_ports : "udp-e-${rule}" => {
         rule_number         = 32700-(i*100)-(length(var.block_tcp_ports)*100)
         egress              = true
         protocol            = "udp"
@@ -52,7 +52,7 @@ locals {
         to_port             = length(split("-", rule)) < 2 ? rule : element(split("-", rule), 1)
       }
     },
-    {for i, rule in var.block_tcp_ports : "tcp-${rule}" => {
+    {for i, rule in var.block_tcp_ports : "tcp-i-${rule}" => {
         rule_number         = 32700-(i*100)
         egress              = false
         protocol            = "tcp"
@@ -62,7 +62,7 @@ locals {
         to_port             = length(split("-", rule)) < 2 ? rule : element(split("-", rule), 1)
       }
     },
-    {for i, rule in var.block_udp_ports : "udp-${rule}" => {
+    {for i, rule in var.block_udp_ports : "udp-i-${rule}" => {
         rule_number         = 32700-(i*100)-(length(var.block_tcp_ports)*100)
         egress              = false
         protocol            = "udp"
