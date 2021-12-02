@@ -148,7 +148,7 @@ variable "subnet-order" {
 variable "block_tcp_ports" {
   description = "Optional : Ports to block both inbound and outbound in the Public Subnet NACL."
   type = list(string)
-  default = ["20-21", "22", "23", "53" "137-139", "445", "1433", "1521", "3306", "3389", "5439", "5432"]
+  default = ["20-21", "22", "23", "53", "137-139", "445", "1433", "1521", "3306", "3389", "5439", "5432"]
 }
 
 variable "block_udp_ports" {
