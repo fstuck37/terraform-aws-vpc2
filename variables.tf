@@ -160,6 +160,7 @@ variable "block_udp_ports" {
 variable "network_acl_rules" {
   type = map(object({
     rule_number         = number
+    egress              = bool
     protocol            = string
     rule_action         = string
     cidr_block          = string
