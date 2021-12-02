@@ -74,7 +74,19 @@ locals {
     },
     var.network_acl_rules
   )
+
+  txgw_routes = flatten([
+  for rt in var.transit_gateway_routes : [
+    for route_table in aws_route_table.privrt : {
+      name        = "${route_table.id}-${rt}"
+      route       = rt
+      route_table = route_table.id
+    }
+    if var.transit_gateway_id != "null"]
+  ])
+
   
+
   
   
 
@@ -95,18 +107,6 @@ locals {
 
   num-availbility-zones = "${length(var.zones[var.region])}" 
 
-
-  txgw_routes = flatten([
-  for rt in var.transit_gateway_routes : [
-    for rtid in aws_route_table.privrt : {
-      name        = "${rtid.id}-${rt}"
-      route       = rt
-      route_table = rtid.id
-    }
-    if var.transit_gateway_id != "null"]
-  ])
-
-  
 
   subnet_ids = {
     for layer in var.subnets:
