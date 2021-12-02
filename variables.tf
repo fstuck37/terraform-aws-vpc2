@@ -178,6 +178,11 @@ variable "deploy_natgateways" {
   default     = false
 }
 
+variable "enable_pub_route_propagation" {
+  description = "Optional : A boolean flag that indicates that the routes should be propagated to the pub routing table. Defaults to False."
+  type        = bool
+  default     = false
+}
 
 
 
@@ -264,11 +269,6 @@ variable "fixed-name" {
 
 variable "dx_bgp_default_route" {
   description = "Optional : A boolean flag that indicates that the default gateway will be advertised via bgp over Direct Connect and causes the script to not deploy NAT Gateways."
-  default     = false
-}
-
-variable "enable_pub_route_propagation" {
-  description = "Optional : A boolean flag that indicates that the routes should be propagated to the pub routing table. Defaults to False."
   default     = false
 }
 
