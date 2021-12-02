@@ -173,8 +173,9 @@ variable "network_acl_rules" {
 }
 
 variable "deploy_natgateways" {
-  description = "Optional : Set to true to deploy NAT gateways if pub subnet is created"
-  default = false
+  description = "Optional : Set to true to deploy NAT gateways if pub subnet is created. Defaults to false."
+  type        = bool
+  default     = false
 }
 
 
