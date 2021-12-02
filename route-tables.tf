@@ -44,7 +44,7 @@ resource "aws_route" "pub-default" {
 
 resource "aws_route" "privrt-gateway" {
   for_each = {for az in var.zones[var.region] : az => az
-              if contains(keys(var.subnets), var.pub_layer }
+              if contains(keys(var.subnets), var.pub_layer) }
     route_table_id         = aws_route_table.privrt[each.key].id
     destination_cidr_block = "0.0.0.0/0"
     nat_gateway_id         = aws_nat_gateway.natgw[each.key].id
