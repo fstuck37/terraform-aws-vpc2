@@ -41,11 +41,10 @@ resource "aws_route" "pub-default" {
     destination_cidr_block = "0.0.0.0/0"
     gateway_id             = aws_internet_gateway.inet-gw[format("%s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${replace(var.region,"-", "")}-igw" )].id
 }
-/*
+
 resource "aws_route" "privrt-gateway" {
-  count                  = !contains(keys(var.subnets), var.pub_layer)  || !var.deploy_natgateways || var.dx_bgp_default_route ? 0 : local.num-availbility-zones
-  route_table_id         = aws_route_table.privrt.*.id[count.index]
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.natgw.*.id[count.index]
+  for_each = {for az in var.zones[var.region] : az => az}
+    route_table_id         = aws_route_table.privrt[each.key].id
+    destination_cidr_block = "0.0.0.0/0"
+    nat_gateway_id         = aws_nat_gateway.natgw[each.key].id
 }
-*/
