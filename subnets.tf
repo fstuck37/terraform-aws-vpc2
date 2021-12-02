@@ -5,3 +5,4 @@ resource "aws_subnet" "subnets" {
   availability_zone = each.value.az
   tags              = each.value.subnet-tags
 }
+
