@@ -9,7 +9,7 @@ resource "aws_flow_log" "vpc_flowlog" {
     log_format = var.flow_log_format
     tags   = merge(
       var.tags,
-      tomap({ "Name" = each.key),
+      tomap({ "Name" = each.key}),
       local.resource-tags["aws_flow_log"]
     )
 }
@@ -22,7 +22,7 @@ resource "aws_cloudwatch_log_group" "flowlog_group" {
     retention_in_days = var.cloudwatch_retention_in_days
     tags = merge(
       var.tags,
-      tomap({ "Name" = each.key),
+      tomap({ "Name" = each.key}),
       local.resource-tags["aws_cloudwatch_log_group"]
       )
 }
