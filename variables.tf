@@ -116,6 +116,12 @@ variable "transit_gateway_routes" {
   default     = []
 }
 
+variable "txgw_layer" {
+  type        = string
+  description = "Optional : Specifies the name of the layer to connect the TXGW to. Defaults to mgt."
+  default     = "mgt"
+}
+
 variable "appliance_mode_support" {
   description = "(Optional) Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
   default     = "disable"
