@@ -234,6 +234,15 @@ variable "acctnum" {
   default = ""
 }
 
+variable "enable-s3-endpoint" {
+  description = "Optional : Enable the S3 Endpoint"
+  default     = false
+}
+
+variable "enable-dynamodb-endpoint" {
+  description = "Optional : Enable the DynamoDB Endpoint"
+  default     = false
+}
 
 
 
@@ -323,16 +332,6 @@ variable "dx_bgp_default_route" {
 
 
 
-
-variable "enable-s3-endpoint" {
-  description = "Optional : Enable the S3 Endpoint"
-  default     = false
-}
-
-variable "enable-dynamodb-endpoint" {
-  description = "Optional : Enable the DynamoDB Endpoint"
-  default     = false
-}
 
 variable "peer_requester" {
   description = "Optional : Map of Peer Link Name with a value of [Peer AWS Account Number]|[Peer VPC_ID]|[Peer VPC CIDR]|[allow_remote_vpc_dns_resolution]. This only creates the requester half of the connection. Since maps our lexically prepend the VPC name with a alpha character so they flow alphabetically, for example a-peerlink1, b-peerlink2, etc."
