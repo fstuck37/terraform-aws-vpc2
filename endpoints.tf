@@ -4,7 +4,7 @@ resource "aws_vpc_endpoint" "private-s3" {
   }
     vpc_id          = aws_vpc.main_vpc.id
     service_name    = "com.amazonaws.${var.region}.s3"
-    route_table_ids = aws_route_table.privrt.*.id
+    route_table_ids = [for rt in aws_route_table.privrt : rt.id]
 }
 
 resource "aws_vpc_endpoint" "private-dynamodb" {
@@ -13,8 +13,12 @@ resource "aws_vpc_endpoint" "private-dynamodb" {
   }
     vpc_id          = aws_vpc.main_vpc.id
     service_name    = "com.amazonaws.${var.region}.dynamodb"
-    route_table_ids = aws_route_table.privrt.*.id
+    route_table_ids = [for rt in aws_route_table.privrt : rt.id]
 }
+
+
+
+
 
 /*
 
