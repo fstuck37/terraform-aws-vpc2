@@ -4,7 +4,7 @@ resource "aws_flow_log" "vpc_flowlog" {
   }
     vpc_id = aws_vpc.main_vpc.id
     log_destination = aws_cloudwatch_log_group.flowlog_group[format("%s", var.vpc-name == "null" ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)].arn
-    iam_role_arn = aws_iam_role.flowlog_role[format("%s", var.vpc-name == "null" ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)].arn
+    iam_role_arn = aws_iam_role.flowlog_role["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"].arn
     traffic_type = "ALL"
     log_format = var.flow_log_format
     tags   = merge(
