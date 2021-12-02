@@ -224,6 +224,17 @@ variable "cloudwatch_retention_in_days" {
   default     = 7
 }
 
+variable "amazonaws-com" {
+  description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
+  default = "amazonaws.com"
+}
+
+variable "acctnum" {
+  description = "Required : AWS Account Number"
+  default = ""
+}
+
+
 
 
 
@@ -246,9 +257,6 @@ description = "List of Maps for private AWS Endpoints Keys: name[Name of Resourc
 
 
 /*
-variable "acctnum" {
-  description = "Required : AWS Account Number"
-}
 
 
 variable "subnets_ignore_changes" {
@@ -338,11 +346,6 @@ variable "peer_accepter" {
   default = {}
 }
 
-
-variable "amazonaws-com" {
-  description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
-  default = "amazonaws.com"
-}
 
 variable "vpn_connections" {
   type = map(map(string))
