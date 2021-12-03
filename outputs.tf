@@ -18,3 +18,12 @@ output "map_subnet_id_list" {
   value = local.subnet_data
 }
 
+
+output "peerlink_accepter_routes" {
+  value = local.peerlink_accepter_routes
+}
+
+output "peerlink_requester_routes" {
+  value = local.peerlink_requester_routes
+}
+
