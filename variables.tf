@@ -286,21 +286,16 @@ variable "vpn_connections" {
   description = "Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN"
   /*
     type = map(object({
-      # aws_customer_gateway
-      peer_ip_address         = string		# Required so not in default_vpn_connections
-      device_name             = string
-      bgp_asn                 = number
+      peer_ip_address                      = string		# Required so not in default_vpn_connections
+      device_name                          = string
+      bgp_asn                              = number
       
-      # aws_vpn_connection
       static_routes_only                   = bool
       local_ipv4_network_cidr              = string
-#      local_ipv6_network_cidr              = string
       remote_ipv4_network_cidr             = string
-#      remote_ipv6_network_cidr             = string
       tunnel_inside_ip_version             = string		# ipv4* | ipv6
 
       tunnel1_inside_cidr                  = string
-#      tunnel1_inside_ipv6_cidr             = string
       tunnel1_preshared_key                = string
       tunnel1_dpd_timeout_action           = string		# clear* | none | restart
       tunnel1_dpd_timeout_seconds          = number		# >30 =30*
@@ -319,7 +314,6 @@ variable "vpn_connections" {
       tunnel1_startup_action               = string		# add* | start
 
       tunnel2_inside_cidr                  = string
-#      tunnel2_inside_ipv6_cidr             = string
       tunnel2_preshared_key                = string
       tunnel2_dpd_timeout_action           = string
       tunnel2_dpd_timeout_seconds          = string
@@ -339,7 +333,6 @@ variable "vpn_connections" {
 
       tags                    = map(string)
 
-      # Static Routes
       destination_cidr_blocks = list(string)
 
     }))
@@ -396,7 +389,6 @@ variable "default_vpn_connections" {
       tunnel2_replay_window_size           = 1024
       tunnel2_startup_action               = "add"
 
-      # Both
       tags                                 = {}
 
       # Static Routes
