@@ -244,18 +244,6 @@ variable "enable-dynamodb-endpoint" {
   default     = false
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 variable "private_endpoints" {
   description = "List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], List of security_group IDs, List of subnet layers to deploy interfaces to."
   type = list(object({
@@ -268,6 +256,12 @@ variable "private_endpoints" {
   default = []
 }
 
+variable "enable_vpn_gateway" {
+  description = "Optional : Create a new VPN Gateway. Defaults to true."
+  default     = true
+}
+
+ 
 
 
 

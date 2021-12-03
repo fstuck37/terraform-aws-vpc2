@@ -3,5 +3,5 @@ resource "aws_dx_gateway_association" "aws_dx_gateway_association" {
    if var.dx_gateway_id != "null"
   }
   dx_gateway_id = each.value
-  associated_gateway_id = aws_vpn_gateway.vgw.id
+  associated_gateway_id = aws_vpn_gateway.vgw[var.region]
 }

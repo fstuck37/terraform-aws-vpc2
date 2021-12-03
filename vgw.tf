@@ -1,5 +1,6 @@
 resource "aws_vpn_gateway" "vgw" {
-  vpc_id = aws_vpc.main_vpc.id
+  for_each = { for vgw in [var.region]: vgw => vgw
+               if var.enable_vpn_gateway }
   tags   = merge(
     var.tags,
     tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-vgw") }),
