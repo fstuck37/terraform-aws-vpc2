@@ -24,7 +24,7 @@ variable "enable_dns_hostnames" {
 }
 
 variable "enable_route53_reverse_zones" {
-  description = "Optional : A boolean flag to enable/disable creation of reverse DNS zones for all /24 networks in the VPC. Anything smaller than a /24 will be ignored."
+  description = "Optional : A boolean flag to enable/disable creation of reverse DNS zones for all /24 networks in the VPC. Anything smaller than a /24 will be ignored. Default is false"
   type        = bool
   default     = false
 }
