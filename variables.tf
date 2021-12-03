@@ -294,13 +294,13 @@ variable "vpn_connections" {
       # aws_vpn_connection
       static_routes_only                   = bool
       local_ipv4_network_cidr              = string
-      local_ipv6_network_cidr              = string
+#      local_ipv6_network_cidr              = string
       remote_ipv4_network_cidr             = string
-      remote_ipv6_network_cidr             = string
+#      remote_ipv6_network_cidr             = string
       tunnel_inside_ip_version             = string		# ipv4* | ipv6
 
       tunnel1_inside_cidr                  = string
-      tunnel1_inside_ipv6_cidr             = string
+#      tunnel1_inside_ipv6_cidr             = string
       tunnel1_preshared_key                = string
       tunnel1_dpd_timeout_action           = string		# clear* | none | restart
       tunnel1_dpd_timeout_seconds          = number		# >30 =30*
@@ -319,7 +319,7 @@ variable "vpn_connections" {
       tunnel1_startup_action               = string		# add* | start
 
       tunnel2_inside_cidr                  = string
-      tunnel2_inside_ipv6_cidr             = string
+#      tunnel2_inside_ipv6_cidr             = string
       tunnel2_preshared_key                = string
       tunnel2_dpd_timeout_action           = string
       tunnel2_dpd_timeout_seconds          = string
@@ -357,11 +357,13 @@ variable "default_vpn_connections" {
       # aws_vpn_connection
       static_routes_only                   = true
       local_ipv4_network_cidr              = null
+#      local_ipv6_network_cidr              = null
       remote_ipv4_network_cidr             = null
+#      remote_ipv6_network_cidr             = null
       tunnel_inside_ip_version             = "ipv4"
 
       tunnel1_inside_cidr                  = null
-      tunnel1_inside_ipv6_cidr             = null
+#      tunnel1_inside_ipv6_cidr             = null
       tunnel1_preshared_key                = null
       tunnel1_dpd_timeout_action           = "clear"
       tunnel1_dpd_timeout_seconds          = 30
@@ -380,7 +382,7 @@ variable "default_vpn_connections" {
       tunnel1_startup_action               = "add"
 
       tunnel2_inside_cidr                  = null
-      tunnel2_inside_ipv6_cidr             = null
+#      tunnel2_inside_ipv6_cidr             = null
       tunnel2_preshared_key                = null
       tunnel2_dpd_timeout_action           = "clear"
       tunnel2_dpd_timeout_seconds          = 30
