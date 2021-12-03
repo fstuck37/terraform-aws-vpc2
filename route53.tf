@@ -1,26 +1,26 @@
 resource "aws_route53_zone" "reverse_zones" {
   for_each = { for cidr in local.route53-reverse-zones : "${replace(cidr, "/", "-")}" => cidr 
                if var.enable_route53_reverse_zones }
-  name = "${element(split(".",element(split("/",each.value ),0)),2)}.${element(split(".",element(split("/",each.value ),0)),1)}.${element(split(".",element(split("/",each.value ),0)),0)}.in-addr.arpa"
-  vpc {
-    vpc_id = aws_vpc.main_vpc.id
-  }
+    name = "${element(split(".",element(split("/",each.value ),0)),2)}.${element(split(".",element(split("/",each.value ),0)),1)}.${element(split(".",element(split("/",each.value ),0)),0)}.in-addr.arpa"
+    vpc {
+      vpc_id = aws_vpc.main_vpc.id
+    }
 }
 
-/*
-
 data "aws_route53_resolver_rules" "shared_resolver_rule_with_me"{
-  count        = var.shared_resolver_rule ? 1 : 0
   share_status = "SHARED_WITH_ME"
 }
 
 data "aws_route53_resolver_rules" "shared_resolver_rule_by_me"{
-  count        = var.shared_resolver_rule ? 1 : 0
   share_status = "SHARED_BY_ME"
 }
 
+
+/*
+
+
 resource "aws_route53_resolver_rule_association" "r53_resolver_rule_association"{
-  for_each = var.shared_resolver_rule ? toset(
+  for_each = var.enable_shared_resolver_rules ? toset(
       concat(
         flatten(
           data.aws_route53_resolver_rules.shared_resolver_rule_with_me.*.resolver_rule_ids),
@@ -125,7 +125,7 @@ resource "aws_route53_resolver_rule" "resolver_rule" {
 }
 
 resource "aws_route53_resolver_rule_association" "r53_outbound_rule_association"{
-  for_each         = var.shared_resolver_rule ? aws_route53_resolver_rule.resolver_rule : {}
+  for_each         = var.enable_shared_resolver_rules ? aws_route53_resolver_rule.resolver_rule : {}
   resolver_rule_id = each.value.id
   vpc_id           = aws_vpc.main_vpc.id
 }

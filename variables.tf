@@ -29,6 +29,10 @@ variable "enable_route53_reverse_zones" {
   default     = false
 }
 
+variable "enable_shared_resolver_rules" {
+  description = "Optional : Enable Route53 resolver rules. Defaults to false"
+  default     = false
+}
 
 variable "enable_dns_support" {
   description = "Optional : A boolean flag to enable/disable DNS support in the VPC. Defaults true."
