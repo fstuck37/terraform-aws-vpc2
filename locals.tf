@@ -113,6 +113,15 @@ locals {
     ]
   ])
 
+  vpn_connection_routes = flatten([
+    for vpn in keys(var.vpn_connections) : [
+      for cidr in merge(var.default_vpn_connections, var.vpn_connections[vpn]).destination_cidr_blocks : {
+        name = vpn
+        cidr = cidr
+      }
+    ]
+  ])
+
 
 
 
@@ -192,15 +201,6 @@ peerlink_accepter_routes = flatten([
         index = "${rt.tags["Name"]}-${r}"
      }
     if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
-  ])
-
-   vpn_connection_routes = flatten([
-    for vpn in keys(var.vpn_connections) : [
-      for cidr in split("|",merge(var.default_vpn_connections, var.vpn_connections[vpn]).destination_cidr_blocks) : {
-        name = vpn
-        cidr = cidr
-      }
-    if merge(var.default_vpn_connections, var.vpn_connections[vpn]).destination_cidr_blocks != ""]
   ])
 
 

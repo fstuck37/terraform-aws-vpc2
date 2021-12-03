@@ -282,6 +282,65 @@ variable "peer_accepter" {
   default = {}
 }
 
+variable "vpn_connections" {
+  description = "Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN"
+  type = map(map(string))  
+  /*
+    type = map(object({
+      static_routes_only      = bool
+      destination_cidr_blocks = string
+      tunnel1_inside_cidr     = string
+      tunnel1_preshared_key   = string
+      tunnel2_inside_cidr     = string
+      tunnel2_preshared_key   = string
+      tags                    = map(string)
+    }))
+  */
+  default = { }
+}
+
+variable "default_vpn_connections" {
+  type = map(string)
+  description = "Do not use: This defines the default values for each map entry in vpn_connections. Do not override this."
+  default = { 
+      static_routes_only      = false
+      destination_cidr_blocks = []
+      tunnel1_inside_cidr     = null
+      tunnel1_preshared_key   = null
+      tunnel2_inside_cidr     = null
+      tunnel2_preshared_key   = null
+      tags                    = []
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -352,28 +411,6 @@ variable "fixed-name" {
 variable "dx_bgp_default_route" {
   description = "Optional : A boolean flag that indicates that the default gateway will be advertised via bgp over Direct Connect and causes the script to not deploy NAT Gateways."
   default     = false
-}
-
-
-
-variable "vpn_connections" {
-  type = map(map(string))
-  description = "Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN"
-  default = { }
-}
-
-
-variable "default_vpn_connections" {
-  type = map(string)
-  description = "Do not use: This defines the default values for each map entry in vpn_connections. Do not override this."
-  default = { 
-      static_routes_only = false
-      destination_cidr_blocks = ""
-      tunnel1_inside_cidr = null
-      tunnel1_preshared_key = null
-      tunnel2_inside_cidr = null
-      tunnel2_preshared_key = null
-  }
 }
 
 variable "egress_only_internet_gateway" {
