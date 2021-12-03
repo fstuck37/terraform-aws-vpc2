@@ -7,29 +7,18 @@ resource "aws_route53_zone" "reverse_zones" {
     }
 }
 
-data "aws_route53_resolver_rules" "shared_resolver_rule_with_me"{
-  share_status = "SHARED_WITH_ME"
-}
 
-data "aws_route53_resolver_rules" "shared_resolver_rule_by_me"{
-  share_status = "SHARED_BY_ME"
+resource "aws_route53_resolver_rule_association" "r53_resolver_rule_association"{
+  for_each = { for key, value in toset( concat(flatten(data.aws_route53_resolver_rules.shared_resolver_rule_with_me.*.resolver_rule_ids),flatten(data.aws_route53_resolver_rules.shared_resolver_rule_by_me.*.resolver_rule_ids))) 
+               if var.enable_shared_resolver_rules }
+    resolver_rule_id = each.value
+    vpc_id           = aws_vpc.main_vpc.id
 }
-
 
 /*
 
 
-resource "aws_route53_resolver_rule_association" "r53_resolver_rule_association"{
-  for_each = var.enable_shared_resolver_rules ? toset(
-      concat(
-        flatten(
-          data.aws_route53_resolver_rules.shared_resolver_rule_with_me.*.resolver_rule_ids),
-        flatten(
-          data.aws_route53_resolver_rules.shared_resolver_rule_by_me.*.resolver_rule_ids))) : []
-  
-  resolver_rule_id = each.value
-  vpc_id           = aws_vpc.main_vpc.id
-}
+
 
 resource "aws_security_group" "sg-r53ept-inbound" {
   count       = var.route53_resolver_endpoint || var.route53_outbound_endpoint ? 1 : 0
