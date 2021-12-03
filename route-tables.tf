@@ -12,7 +12,7 @@ resource "aws_route_table" "pubrt" {
 
 resource "aws_vpn_gateway_route_propagation" "pubrt" {
   for_each   = {for az in var.zones[var.region] : az => az
-    if contains(keys(var.subnets), var.pub_layer) && var.enable_pub_route_propagation
+    if contains(keys(var.subnets), var.pub_layer) && var.enable_pub_route_propagation && var.enable_vpn_gateway
   }
   vpn_gateway_id = aws_vpn_gateway.vgw[var.region].id
   route_table_id = aws_route_table.pubrt[each.value].id
@@ -30,7 +30,7 @@ resource "aws_route_table" "privrt" {
 
 resource "aws_vpn_gateway_route_propagation" "privrt" {
   for_each   = {for az in var.zones[var.region] : az => az
-    if var.enable_pub_route_propagation
+    if var.var.enable_vpn_gateway
   }
   vpn_gateway_id = aws_vpn_gateway.vgw[var.region].id
   route_table_id = aws_route_table.pubrt[each.value].id
