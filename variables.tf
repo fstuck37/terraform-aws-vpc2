@@ -305,10 +305,10 @@ variable "default_vpn_connections" {
       static_routes_only      = false
       bgp_asn                 = 65000
       destination_cidr_blocks = []
-      tunnel1_inside_cidr     = null
-      tunnel1_preshared_key   = null
-      tunnel2_inside_cidr     = null
-      tunnel2_preshared_key   = null
+      tunnel1_inside_cidr     = ""
+      tunnel1_preshared_key   = ""
+      tunnel2_inside_cidr     = ""
+      tunnel2_preshared_key   = ""
       tags                    = {}
   }
 }
