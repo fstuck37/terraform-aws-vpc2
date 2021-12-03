@@ -23,11 +23,13 @@ resource "aws_vpn_connection" "aws_vpn_connections" {
 
     static_routes_only                   = merge(var.default_vpn_connections, each.value).static_routes_only
     local_ipv4_network_cidr              = merge(var.default_vpn_connections, each.value).local_ipv4_network_cidr
+#    local_ipv6_network_cidr              = merge(var.default_vpn_connections, each.value).local_ipv6_network_cidr
     remote_ipv4_network_cidr             = merge(var.default_vpn_connections, each.value).remote_ipv4_network_cidr
+#    remote_ipv6_network_cidr             = merge(var.default_vpn_connections, each.value).remote_ipv6_network_cidr
     tunnel_inside_ip_version             = merge(var.default_vpn_connections, each.value).tunnel_inside_ip_version
 
     tunnel1_inside_cidr                  = merge(var.default_vpn_connections, each.value).tunnel1_inside_cidr
-    tunnel1_inside_ipv6_cidr             = merge(var.default_vpn_connections, each.value).tunnel1_inside_ipv6_cidr
+#    tunnel1_inside_ipv6_cidr             = merge(var.default_vpn_connections, each.value).tunnel1_inside_ipv6_cidr
     tunnel1_preshared_key                = merge(var.default_vpn_connections, each.value).tunnel1_preshared_key
     tunnel1_dpd_timeout_action           = merge(var.default_vpn_connections, each.value).tunnel1_dpd_timeout_action
     tunnel1_dpd_timeout_seconds          = merge(var.default_vpn_connections, each.value).tunnel1_dpd_timeout_seconds
@@ -46,7 +48,7 @@ resource "aws_vpn_connection" "aws_vpn_connections" {
     tunnel1_startup_action               = merge(var.default_vpn_connections, each.value).tunnel1_startup_action
 
     tunnel2_inside_cidr                  = merge(var.default_vpn_connections, each.value).tunnel2_inside_cidr
-    tunnel2_inside_ipv6_cidr             = merge(var.default_vpn_connections, each.value).tunnel2_inside_ipv6_cidr
+#    tunnel2_inside_ipv6_cidr             = merge(var.default_vpn_connections, each.value).tunnel2_inside_ipv6_cidr
     tunnel2_preshared_key                = merge(var.default_vpn_connections, each.value).tunnel2_preshared_key
     tunnel2_dpd_timeout_action           = merge(var.default_vpn_connections, each.value).tunnel2_dpd_timeout_action
     tunnel2_dpd_timeout_seconds          = merge(var.default_vpn_connections, each.value).tunnel2_dpd_timeout_seconds
