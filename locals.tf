@@ -1,9 +1,3 @@
-/*
-data "aws_availability_zones" "azs" {
-  state = "available"
-}
-*/
-
 locals {
   emptymaps = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
   resource_list = ["aws_vpc", "aws_vpn_gateway", "aws_subnet", "aws_network_acl", "aws_internet_gateway", "aws_cloudwatch_log_group", "aws_vpc_dhcp_options", "aws_route_table", "aws_route53_resolver_endpoint", "aws_lb", "aws_flow_log"]
@@ -125,6 +119,30 @@ locals {
       ]
     ]
   ])
+
+  route53-reverse-zones = flatten([
+    for cidr in var.vpc-cidrs : [
+      for n in range(pow(2,(24 - tonumber(element(split("/", cidr), 1))))) : [
+        cidrsubnet(cidr, (24 - tonumber(element(split("/", cidr), 1))), n)
+      ]
+    if tonumber(element(split("/", cidr), 1)) <= 24 ]
+  ])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

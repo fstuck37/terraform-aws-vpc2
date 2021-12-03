@@ -1,3 +1,7 @@
+data "aws_availability_zones" "azs" {
+  state = "available"
+}
+
 variable "zones" {
   type = map(list(string))
   description = "AWS Regions and Availability Zones"
