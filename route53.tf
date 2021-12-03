@@ -15,6 +15,15 @@ resource "aws_route53_resolver_rule_association" "r53_resolver_rule_association"
     vpc_id           = aws_vpc.main_vpc.id
 }
 
+resource "aws_route53_resolver_rule_association" "r53_outbound_rule_association"{
+  for_each = { for key, value in aws_route53_resolver_rule.resolver_rule : key => value
+               if var.enable_shared_resolver_rules }
+    resolver_rule_id = each.value.id
+    vpc_id           = aws_vpc.main_vpc.id
+}
+
+
+
 /*
 
 
@@ -113,10 +122,5 @@ resource "aws_route53_resolver_rule" "resolver_rule" {
   tags = var.tags
 }
 
-resource "aws_route53_resolver_rule_association" "r53_outbound_rule_association"{
-  for_each         = var.enable_shared_resolver_rules ? aws_route53_resolver_rule.resolver_rule : {}
-  resolver_rule_id = each.value.id
-  vpc_id           = aws_vpc.main_vpc.id
-}
 
 */
