@@ -303,7 +303,7 @@ variable "default_vpn_connections" {
   description = "Do not use: This defines the default values for each map entry in vpn_connections. Do not override this."
   default = { 
       static_routes_only      = false
-      bgp_asn                 = null
+      bgp_asn                 = 65000
       destination_cidr_blocks = []
       tunnel1_inside_cidr     = null
       tunnel1_preshared_key   = null
