@@ -317,7 +317,7 @@ variable "default_vpn_connections" {
       tunnel1_preshared_key   = null
       tunnel2_inside_cidr     = null
       tunnel2_preshared_key   = null
-      tags                    = []
+      tags                    = {}
   }
 }
 
