@@ -88,7 +88,7 @@ locals {
 
   peerlink_accepter_routes = flatten([
     for az in var.zones[var.region] : [
-      for key, value in var.peer_accepter : {
+      for key, value in var.peer_accepter : [
         for cidr in value.peer_cidr_blocks : {
           name                      = "${az}-${replace(cidr, "/", "-")}" 
           peer_link_name            = key
@@ -96,20 +96,20 @@ locals {
           vpc_peering_connection_id = value.vpc_peering_connection_id
           cidr                      = cidr
         }
-      }
+      ]
     ]
   ])
 
   peerlink_requester_routes = flatten([
     for az in var.zones[var.region] : [
-      for key, value in var.peer_requester : {
+      for key, value in var.peer_requester : [
         for cidr in value.peer_cidr_blocks : {
           name           = "${az}-${replace(cidr, "/", "-")}" 
           peer_link_name = key
           az             = az
           cidr           = cidr
         }
-      }
+      ]
     ]
   ])
 
