@@ -286,6 +286,7 @@ variable "vpn_connections" {
   description = "Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN"
   /*
     type = map(object({
+      peer_ip_address         = string
       static_routes_only      = bool
       destination_cidr_blocks = list(string)
       tunnel1_inside_cidr     = string
