@@ -23,9 +23,7 @@ resource "aws_vpn_connection" "aws_vpn_connections" {
 
     static_routes_only                   = merge(var.default_vpn_connections, each.value).static_routes_only
     local_ipv4_network_cidr              = merge(var.default_vpn_connections, each.value).local_ipv4_network_cidr
-    local_ipv6_network_cidr              = merge(var.default_vpn_connections, each.value).local_ipv6_network_cidr
     remote_ipv4_network_cidr             = merge(var.default_vpn_connections, each.value).remote_ipv4_network_cidr
-    remote_ipv6_network_cidr             = merge(var.default_vpn_connections, each.value).remote_ipv6_network_cidr
     tunnel_inside_ip_version             = merge(var.default_vpn_connections, each.value).tunnel_inside_ip_version
 
     tunnel1_inside_cidr                  = merge(var.default_vpn_connections, each.value).tunnel1_inside_cidr

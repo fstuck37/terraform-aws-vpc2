@@ -357,9 +357,7 @@ variable "default_vpn_connections" {
       # aws_vpn_connection
       static_routes_only                   = true
       local_ipv4_network_cidr              = null
-      local_ipv6_network_cidr              = null
       remote_ipv4_network_cidr             = null
-      remote_ipv6_network_cidr             = null
       tunnel_inside_ip_version             = "ipv4"
 
       tunnel1_inside_cidr                  = null
