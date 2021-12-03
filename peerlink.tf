@@ -33,19 +33,20 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
     )
 }
 
-/*
-need to finish local route list to loop through
 resource "aws_route" "accepter_routes" {
-  for_each                  = {for route in local.peerlink_accepter_routes : route.name => route}
-    route_table_id            = each.value.route_table
+  for_each = {for rt in local.peerlink_accepter_routes : rt.name = rt }
+    route_table_id            = aws_route_table.privrt[each.value.az].id
     destination_cidr_block    = each.value.cidr
-    vpc_peering_connection_id = each.value.conn_id
+    vpc_peering_connection_id = each.value.vpc_peering_connection_id
 }
 
 resource "aws_route" "requester_routes" {
-  for_each                  = {for route in local.peerlink_requester_routes : route.name => route}
-    route_table_id            = each.value.route_table
+  for_each = {for rt in local.peerlink_requester_routes : rt.name => rt}
+    route_table_id            = aws_route_table.privrt[each.value.az].id
     destination_cidr_block    = each.value.cidr
     vpc_peering_connection_id = aws_vpc_peering_connection.peer[each.value.peer_link_name].id
  }
-*/
+
+
+
+
