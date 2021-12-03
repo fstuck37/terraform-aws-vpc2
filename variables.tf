@@ -300,15 +300,6 @@ variable "vpn_connections" {
 }
 
 variable "default_vpn_connections" {
-    type = map(object({
-      static_routes_only      = bool
-      destination_cidr_blocks = list(string)
-      tunnel1_inside_cidr     = string
-      tunnel1_preshared_key   = string
-      tunnel2_inside_cidr     = string
-      tunnel2_preshared_key   = string
-      tags                    = map(string)
-    }))
   description = "Do not use: This defines the default values for each map entry in vpn_connections. Do not override this."
   default = { 
       static_routes_only      = false
