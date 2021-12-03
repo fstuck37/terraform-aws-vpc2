@@ -29,6 +29,43 @@ variable "enable_route53_reverse_zones" {
   default     = false
 }
 
+variable "enbale_route53_outbound_endpoint" {
+  type = bool
+  description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
+  default = false
+}
+
+variable "route53_resolver_rules" {
+  /* type = list{object(
+    domain_name = string
+    rule_type   = string  # FORWARD, SYSTEM and RECURSIVE
+    name        = string
+    target_ip   = list(objects(
+      ip        = string
+      port      = number
+    ))
+    tags        = map(string)
+  )) */
+  description = "Optional : List of Route53 Resolver Rules"
+  default = []
+}
+
+variable "default_route53_resolver_rules" {
+  description = "Do not use: This defines the default values for each map entry in route53_resolver_rules. Do not override this."
+  default = { 
+    # domain_name = null - Required 
+    rule_type   = "FORWARD"
+    name        = null
+    target_ip   = []
+    tags        = {}
+  }
+}
+
+
+
+
+
+
 variable "enable_shared_resolver_rules" {
   description = "Optional : Enable Route53 resolver rules. Defaults to false"
   default     = false
@@ -482,11 +519,6 @@ variable "route53_outbound_endpoint" {
   type = string
   description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
   default = false
-}
-variable "forward_rules" {
-  type = list
-  description = "List of Forward Rules"
-  default = []
 }
 
 variable "fixed-subnets" {

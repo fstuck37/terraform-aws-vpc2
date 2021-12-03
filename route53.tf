@@ -22,6 +22,67 @@ resource "aws_route53_resolver_rule_association" "r53_outbound_rule_association"
     vpc_id           = aws_vpc.main_vpc.id
 }
 
+resource "aws_route53_resolver_rule" "resolver_rule" {
+  for_each             = {for rule in var.route53_resolver_rules : rule.domain_name => rule
+                          if var.enbale_route53_outbound_endpoint }
+    domain_name          = merge(var.default_route53_resolver_rules, each.value).domain_name
+    rule_type            = merge(var.default_route53_resolver_rules, each.value).rule_type
+    name                 = merge(var.default_route53_resolver_rules, each.value).name
+    resolver_endpoint_id = aws_route53_resolver_endpoint.outbound_endpoint[var.region].id
+
+    dynamic "target_ip" {
+      for_each = { for v in merge(var.default_route53_resolver_rules, each.value).target_ip : v.ip => v}
+        content {
+          ip = target_ip.value.ip
+          port = target_ip.value.port
+        }
+    }
+
+    tags = merge(
+      var.tags,
+      merge(var.default_route53_resolver_rules, each.value).tags
+    )
+}
+
+/* NEED TO FINISH UP THIS */
+resource "aws_route53_resolver_endpoint" "resolver_endpoint" {
+  for_each = {for resolver in {var.region] : resolver => resolver
+              if var.route53_resolver_endpoint }
+  name      = "r53ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
+  direction = "INBOUND"
+  security_group_ids = aws_security_group.sg-r53ept-inbound.*.id
+
+  dynamic "ip_address" {
+    for_each = local.map_subnet_id_list[var.route53_resolver_endpoint_subnet]
+    content {
+      subnet_id = ip_address.value
+    }
+  }
+
+  tags = merge(
+    var.tags,
+    tomap({ "Name" = format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )}),
+    local.resource-tags["aws_route53_resolver_endpoint"]
+  )
+}
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
@@ -102,24 +163,6 @@ resource "aws_route53_resolver_endpoint" "outbound_endpoint" {
     tomap({ "Name" = format("%s", "sg-r53ept-outbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )}),
     local.resource-tags["aws_route53_resolver_endpoint"]
   )
-}
-
-resource "aws_route53_resolver_rule" "resolver_rule" {
-  for_each             = var.route53_outbound_endpoint ? {for rule in var.forward_rules : rule.domain_name => rule} : {}
-  domain_name          = each.value.domain_name
-  name                 = replace(each.value.domain_name,".","_")
-  rule_type            = each.value.rule_type
-  resolver_endpoint_id = aws_route53_resolver_endpoint.outbound_endpoint.0.id
-
-  target_ip {
-    ip = element(split(",", lookup(each.value.ips, var.region, each.value.ips["us-east-1"])),0)
-
-  }
-  target_ip {
-    ip = element(split(",", lookup(each.value.ips, var.region, each.value.ips["us-east-1"])),1)
-  }
-
-  tags = var.tags
 }
 
 
