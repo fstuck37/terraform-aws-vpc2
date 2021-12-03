@@ -14,19 +14,26 @@ resource "aws_vpn_gateway_route_propagation" "pubrt" {
   for_each   = {for az in var.zones[var.region] : az => az
     if contains(keys(var.subnets), var.pub_layer) && var.enable_pub_route_propagation
   }
-  vpn_gateway_id = aws_vpn_gateway.vgw.id
+  vpn_gateway_id = aws_vpn_gateway.vgw[var.region].id
   route_table_id = aws_route_table.pubrt[each.value].id
 }
 
 resource "aws_route_table" "privrt" {
   for_each = {for az in var.zones[var.region] : az => az}
   vpc_id           = aws_vpc.main_vpc.id
-  propagating_vgws = [aws_vpn_gateway.vgw.id]
   tags             = merge(
     var.tags,
     tomap({ "Name" = format("%s","${var.name-vars["account"]}-${var.name-vars["name"]}-prod-az-${element(split("-", each.value), length(split("-", each.value)) - 1)}")}),
     local.resource-tags["aws_route_table"]
   )
+}
+
+resource "aws_vpn_gateway_route_propagation" "privrt" {
+  for_each   = {for az in var.zones[var.region] : az => az
+    if var.enable_pub_route_propagation
+  }
+  vpn_gateway_id = aws_vpn_gateway.vgw[var.region].id
+  route_table_id = aws_route_table.pubrt[each.value].id
 }
 
 resource "aws_route_table_association" "associations" {
