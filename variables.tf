@@ -286,14 +286,62 @@ variable "vpn_connections" {
   description = "Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN"
   /*
     type = map(object({
-      peer_ip_address         = string
-      static_routes_only      = bool
-      destination_cidr_blocks = list(string)
-      tunnel1_inside_cidr     = string
-      tunnel1_preshared_key   = string
-      tunnel2_inside_cidr     = string
-      tunnel2_preshared_key   = string
+      # aws_customer_gateway
+      peer_ip_address         = string		# Required so not in default_vpn_connections
+      device_name             = string
+      bgp_asn                 = number
+      
+      # aws_vpn_connection
+      static_routes_only                   = bool
+      local_ipv4_network_cidr              = string
+      local_ipv6_network_cidr              = string
+      remote_ipv4_network_cidr             = string
+      remote_ipv6_network_cidr             = string
+      tunnel_inside_ip_version             = string		# ipv4* | ipv6
+
+      tunnel1_inside_cidr                  = string
+      tunnel1_inside_ipv6_cidr             = string
+      tunnel1_preshared_key                = string
+      tunnel1_dpd_timeout_action           = string		# clear* | none | restart
+      tunnel1_dpd_timeout_seconds          = number		# >30 =30*
+      tunnel1_ike_versions                 = list(string)	# ikev1 | ikev2
+      tunnel1_phase1_dh_group_numbers      = list(number)	# 2 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24
+      tunnel1_phase1_encryption_algorithms = list(string)	# AES128 | AES256 | AES128-GCM-16 | AES256-GCM-16
+      tunnel1_phase1_integrity_algorithms  = list(string)	# SHA1 | SHA2-256 | SHA2-384 | SHA2-512
+      tunnel1_phase1_lifetime_seconds      = number		# 900 and 28800*
+      tunnel1_phase2_dh_group_numbers      = list(number)	# 2 | 5 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24
+      tunnel1_phase2_encryption_algorithms = list(string)	# AES128 | AES256 | AES128-GCM-16 | AES256-GCM-16
+      tunnel1_phase2_integrity_algorithms  = list(string)	# SHA1 | SHA2-256 | SHA2-384 | SHA2-512
+      tunnel1_phase2_lifetime_seconds      = number		# 900 and 3600*
+      tunnel1_rekey_fuzz_percentage        = number		# between 0 and 100*
+      tunnel1_rekey_margin_time_seconds    = number		# 60 and half of tunnel1_phase2_lifetime_seconds 540*
+      tunnel1_replay_window_size           = number		# between 64 and 2048.
+      tunnel1_startup_action               = string		# add* | start
+
+      tunnel2_inside_cidr                  = string
+      tunnel2_inside_ipv6_cidr             = string
+      tunnel2_preshared_key                = string
+      tunnel2_dpd_timeout_action           = string
+      tunnel2_dpd_timeout_seconds          = string
+      tunnel2_ike_versions                 = string
+      tunnel2_phase1_dh_group_numbers      = string
+      tunnel2_phase1_encryption_algorithms = string 
+      tunnel2_phase1_integrity_algorithms  = string
+      tunnel2_phase1_lifetime_seconds      = string
+      tunnel2_phase2_dh_group_numbers      = string
+      tunnel2_phase2_encryption_algorithms = string 
+      tunnel2_phase2_integrity_algorithms  = string
+      tunnel2_phase2_lifetime_seconds      = string
+      tunnel2_rekey_fuzz_percentage        = string
+      tunnel2_rekey_margin_time_seconds    = string
+      tunnel2_replay_window_size           = string
+      tunnel2_startup_action               = string
+
       tags                    = map(string)
+
+      # Static Routes
+      destination_cidr_blocks = list(string)
+
     }))
   */
   default = { }
@@ -302,17 +350,63 @@ variable "vpn_connections" {
 variable "default_vpn_connections" {
   description = "Do not use: This defines the default values for each map entry in vpn_connections. Do not override this."
   default = { 
-      static_routes_only      = false
-      bgp_asn                 = 65000
-      destination_cidr_blocks = []
-      tunnel1_inside_cidr     = ""
-      tunnel1_preshared_key   = ""
-      tunnel2_inside_cidr     = ""
-      tunnel2_preshared_key   = ""
-      tags                    = {}
+      # aws_customer_gateway
+      device_name                          = null
+      bgp_asn                              = 6500
+      
+      # aws_vpn_connection
+      static_routes_only                   = true
+      local_ipv4_network_cidr              = null
+      local_ipv6_network_cidr              = null
+      remote_ipv4_network_cidr             = null
+      remote_ipv6_network_cidr             = null
+      tunnel_inside_ip_version             = "ipv4"
+
+      tunnel1_inside_cidr                  = null
+      tunnel1_inside_ipv6_cidr             = null
+      tunnel1_preshared_key                = null
+      tunnel1_dpd_timeout_action           = "clear"
+      tunnel1_dpd_timeout_seconds          = 30
+      tunnel1_ike_versions                 = ["ikev1", "ikev2"]
+      tunnel1_phase1_dh_group_numbers      = [2,14,15,16,17,18,19,20,21,22,23,24]
+      tunnel1_phase1_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+      tunnel1_phase1_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
+      tunnel1_phase1_lifetime_seconds      = 28800
+      tunnel1_phase2_dh_group_numbers      = [2,5,14,15,16,17,18,19,20,21,22,23,24]
+      tunnel1_phase2_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+      tunnel1_phase2_integrity_algorithms  = [SHA1", "SHA2-256", "SHA2-384", "SHA2-512]
+      tunnel1_phase2_lifetime_seconds      = 3600
+      tunnel1_rekey_fuzz_percentage        = 100
+      tunnel1_rekey_margin_time_seconds    = 540
+      tunnel1_replay_window_size           = 1024
+      tunnel1_startup_action               = "add"
+
+      tunnel2_inside_cidr                  = null
+      tunnel2_inside_ipv6_cidr             = null
+      tunnel2_preshared_key                = null
+      tunnel2_dpd_timeout_action           = "clear"
+      tunnel2_dpd_timeout_seconds          = 30
+      tunnel2_ike_versions                 = ["ikev1", "ikev2"]
+      tunnel2_phase1_dh_group_numbers      = [2,14,15,16,17,18,19,20,21,22,23,24]
+      tunnel2_phase1_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+      tunnel2_phase1_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
+      tunnel2_phase1_lifetime_seconds      = 28800
+      tunnel2_phase2_dh_group_numbers      = [2,5,14,15,16,17,18,19,20,21,22,23,24]
+      tunnel2_phase2_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+      tunnel2_phase2_integrity_algorithms  = [SHA1", "SHA2-256", "SHA2-384", "SHA2-512]
+      tunnel2_phase2_lifetime_seconds      = 3600
+      tunnel2_rekey_fuzz_percentage        = 100
+      tunnel2_rekey_margin_time_seconds    = 540
+      tunnel2_replay_window_size           = 1024
+      tunnel2_startup_action               = "add"
+
+      # Both
+      tags                                 = {}
+
+      # Static Routes
+      destination_cidr_blocks              = []
   }
 }
-
 
 
 
