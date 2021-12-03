@@ -86,15 +86,46 @@ locals {
     if var.transit_gateway_id != "null"]
   ])
 
+  peerlink_accepter_routes = flatten([
+    for az in var.zones[var.region] : [
+      for key, value in var.peer_accepter : {
+        for cidr in value.peer_cidr_blocks : {
+          name                      = "${az}-${replace(cidr, "/", "-")}" 
+          peer_link_name            = key
+          az                        = az
+          vpc_peering_connection_id = value.vpc_peering_connection_id
+          cidr                      = cidr
+        }
+      }
+    ]
+  ])
+
+  peerlink_requester_routes = flatten([
+    for az in var.zones[var.region] : [
+      for key, value in var.peer_requester : {
+        for cidr in value.peer_cidr_blocks : {
+          name           = "${az}-${replace(cidr, "/", "-")}" 
+          peer_link_name = key
+          az             = az
+          cidr           = cidr
+        }
+      }
+    ]
+  ])
+
+
+
+
+
+
+/* ------------------------------------------------------------------ */
 
 /*
-need to add loop for list of cidr blocks 
-
 peerlink_accepter_routes = flatten([
-  for az in var.zones[var.region] : [
+  for rt in aws_route_table.privrt : [
     for key, value in var.peer_accepter : {
-      name        = "${az}-${replace(replace(element(split("|", value),1), "." , "-"), "/", "-")}" 
-      az          = az
+      name        = "${rt.id}-${replace(replace(element(split("|", value),1), "." , "-"), "/", "-")}" 
+      route_table = rt.id
       conn_id     = element(split("|", value),0)
       cidr        = element(split("|", value),1)
       }
@@ -114,21 +145,6 @@ peerlink_accepter_routes = flatten([
 
 
 
-
-var.peer_requester
-    peer_cidr_blocks                = list(string)
-    allow_remote_vpc_dns_resolution = bool
-
-
-var.peer_accepter
-    each.value.vpc_peering_connection_id
-    each.value.peer_cidr_blocks
-*/
-
-
-/* ------------------------------------------------------------------ */
-
-/*
 
   aws_availability_zones = data.aws_availability_zones.azs.names
 
