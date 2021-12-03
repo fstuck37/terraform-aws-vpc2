@@ -115,10 +115,10 @@ locals {
 
   vpn_connection_routes = flatten([
     for az in var.zones[var.region] : [
-      for key, value in var.vpn_connections : [
+      for vpn, value in var.vpn_connections : [
         for cidr in merge(var.default_vpn_connections, var.vpn_connections[vpn]).destination_cidr_blocks : {
           name           = "${az}-${replace(cidr, "/", "-")}" 
-          vpn_name       = key
+          vpn_name       = vpn
           az             = az
           cidr           = cidr
         }
