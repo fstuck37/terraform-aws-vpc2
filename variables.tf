@@ -261,7 +261,27 @@ variable "enable_vpn_gateway" {
   default     = true
 }
 
- 
+variable "peer_requester" {
+  description = "Optional : Map of maps of Peer Link requestors. The key is the name and the elements of the individual maps are peer_owner_id, peer_vpc_id, peer_cidr_blocks (list), and allow_remote_vpc_dns_resolution."
+  type = map(object({
+    peer_owner_id                   = string
+    peer_vpc_id                     = string
+    peer_cidr_blocks                = list(string)
+    allow_remote_vpc_dns_resolution = bool
+  }))
+  default = {}
+}
+
+variable "peer_accepter" {
+  description = "Optional : Map of maps of Peer Link accepters. The key is the name and the elements of the individual maps are vpc_peering_connection_id, peer_cidr_blocks (list), allow_remote_vpc_dns_resolution."
+  type = map(object({
+    vpc_peering_connection_id = string
+    peer_cidr_blocks          = list(string)
+    allow_remote_vpc_dns_resolution = bool
+  }))
+  default = {}
+}
+
 
 
 
@@ -334,20 +354,6 @@ variable "dx_bgp_default_route" {
   default     = false
 }
 
-
-
-
-variable "peer_requester" {
-  description = "Optional : Map of Peer Link Name with a value of [Peer AWS Account Number]|[Peer VPC_ID]|[Peer VPC CIDR]|[allow_remote_vpc_dns_resolution]. This only creates the requester half of the connection. Since maps our lexically prepend the VPC name with a alpha character so they flow alphabetically, for example a-peerlink1, b-peerlink2, etc."
-  type = map(string)
-  default = {}
-}
-
-variable "peer_accepter" {
-  description = "Optional : Map of Peer Link Name with a value of [vpc_peering_connection_id]|[Peer VPC CIDR]. This only creates the accepter half of the connection. Since maps our lexically prepend the VPC name with a alpha character so they flow alphabetically, for example a-peerlink1, b-peerlink2, etc."
-  type = map(string)
-  default = {}
-}
 
 
 variable "vpn_connections" {

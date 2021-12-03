@@ -86,16 +86,44 @@ locals {
     if var.transit_gateway_id != "null"]
   ])
 
-  
 
-  
-  
+/*
+need to add loop for list of cidr blocks 
+
+peerlink_accepter_routes = flatten([
+  for az in var.zones[var.region] : [
+    for key, value in var.peer_accepter : {
+      name        = "${az}-${replace(replace(element(split("|", value),1), "." , "-"), "/", "-")}" 
+      az          = az
+      conn_id     = element(split("|", value),0)
+      cidr        = element(split("|", value),1)
+      }
+    ]
+  ])
+
+  peerlink_requester_routes = flatten([
+  for rt in aws_route_table.privrt : [
+    for key, value in var.peer_requester : {
+      name            = "${rt.id}-${replace(replace(element(split("|", value),2), "." , "-"), "/", "-")}" 
+      peer_link_name  = key
+      route_table     = rt.id
+      cidr            = element(split("|", value),2)
+      }
+    ]
+  ])
 
 
 
 
+var.peer_requester
+    peer_cidr_blocks                = list(string)
+    allow_remote_vpc_dns_resolution = bool
 
 
+var.peer_accepter
+    each.value.vpc_peering_connection_id
+    each.value.peer_cidr_blocks
+*/
 
 
 /* ------------------------------------------------------------------ */
@@ -150,29 +178,7 @@ locals {
     if replace(rt.tags["Name"], "tgw", "") != rt.tags["Name"]  ]
   ])
 
- peerlink_accepter_routes = flatten([
-  for rt in aws_route_table.privrt : [
-    for key, value in var.peer_accepter : {
-      name        = "${rt.id}-${replace(replace(element(split("|", value),1), "." , "-"), "/", "-")}" 
-      route_table = rt.id
-      conn_id     = element(split("|", value),0)
-      cidr        = element(split("|", value),1)
-      }
-    ]
-  ])
-
-  peerlink_requester_routes = flatten([
-  for rt in aws_route_table.privrt : [
-    for key, value in var.peer_requester : {
-      name            = "${rt.id}-${replace(replace(element(split("|", value),2), "." , "-"), "/", "-")}" 
-      peer_link_name  = key
-      route_table     = rt.id
-      cidr            = element(split("|", value),2)
-      }
-    ]
-  ])
-
-  vpn_connection_routes = flatten([
+   vpn_connection_routes = flatten([
     for vpn in keys(var.vpn_connections) : [
       for cidr in split("|",merge(var.default_vpn_connections, var.vpn_connections[vpn]).destination_cidr_blocks) : {
         name = vpn
