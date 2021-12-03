@@ -1,7 +1,7 @@
 resource "aws_route53_zone" "reverse_zones" {
   for_each = { for cidr in local.route53-reverse-zones : "${replace(cidr, "/", "-")}" => cidr 
                if var.enable_route53_reverse_zones }
-  name = "${element(split(".",element(split("/",each.value ),0)),3)}.${element(split(".",element(split("/",each.value ),0)),2)}.${element(split(".",element(split("/",each.value ),0)),1)}.${element(split(".",element(split("/",each.value ),0)),0)}.in-addr.arpa"
+  name = "${element(split(".",element(split("/",each.value ),0)),2)}.${element(split(".",element(split("/",each.value ),0)),1)}.${element(split(".",element(split("/",each.value ),0)),0)}.in-addr.arpa"
   vpc {
     vpc_id = aws_vpc.main_vpc.id
   }
