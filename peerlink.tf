@@ -34,7 +34,7 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
 }
 
 resource "aws_route" "accepter_routes" {
-  for_each = {for rt in local.peerlink_accepter_routes : rt.name = rt }
+  for_each = {for rt in local.peerlink_accepter_routes : rt.name => rt }
     route_table_id            = aws_route_table.privrt[each.value.az].id
     destination_cidr_block    = each.value.cidr
     vpc_peering_connection_id = each.value.vpc_peering_connection_id
