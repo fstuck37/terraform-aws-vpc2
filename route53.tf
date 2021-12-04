@@ -75,9 +75,6 @@ resource "aws_route53_resolver_endpoint" "outbound_endpoint" {
 /* Route 53 Resolver Inbound Endpoint */
 resource "aws_route53_resolver_endpoint" "inbound_endpoint" {
 
-  for_each = {for r in {var.region] : r => r
-              if var.enable_route53_inbound_endpoint }
-
   name               = "r53ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
   direction          = "INBOUND"
   security_group_ids = aws_security_group.sg-r53ept-inbound.*.id
