@@ -1,7 +1,6 @@
 resource "aws_flow_log" "vpc_flowlog" {
   for_each = {for fl in [var.region] : fl => fl
-              if var.enable_flowlog
-  }
+              if var.enable_flowlog }
     vpc_id = aws_vpc.main_vpc.id
     log_destination = aws_cloudwatch_log_group.flowlog_group[var.region].arn
     iam_role_arn = aws_iam_role.flowlog_role["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"].arn
@@ -16,8 +15,7 @@ resource "aws_flow_log" "vpc_flowlog" {
 
 resource "aws_cloudwatch_log_group" "flowlog_group" {
   for_each = {for fl in [var.region] : fl => fl
-              if var.enable_flowlog
-  }
+              if var.enable_flowlog }
     name = aws_vpc.main_vpc.id
     retention_in_days = var.cloudwatch_retention_in_days
     tags = merge(
@@ -29,10 +27,9 @@ resource "aws_cloudwatch_log_group" "flowlog_group" {
 
 resource "aws_iam_role" "flowlog_role" {
   for_each = {for fl in ["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"] : fl => fl
-    if var.enable_flowlog
-  }
-  name = "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"
-  assume_role_policy = <<EOF
+              if var.enable_flowlog }
+    name = "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"
+    assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -51,8 +48,7 @@ EOF
 
 resource "aws_iam_role_policy" "flowlog_write" {
   for_each = {for fl in ["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"] : fl => fl
-    if var.enable_flowlog
-  }
+              if var.enable_flowlog }
   name = "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-write-to-cloudwatch"
   role = aws_iam_role.flowlog_role["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"].id
   policy = <<EOF
@@ -77,10 +73,9 @@ EOF
 
 resource "aws_iam_role" "flowlog_subscription_role" {
   for_each = {for fl in ["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-subscription-role"] : fl => fl
-    if var.enable_flowlog
-  }
-  name = "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-subscription-role"
-  assume_role_policy = <<EOF
+              if var.enable_flowlog }
+    name = "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-subscription-role"
+    assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -99,8 +94,7 @@ EOF
 
 resource "aws_cloudwatch_log_subscription_filter" "flow_logs_lambda" {
   for_each = {for fl in ["${var.aws_lambda_function_name}-logfilter"] : fl => fl
-    if var.enable_flowlog && !(var.aws_lambda_function_name == "null" )
-  }
+              if var.enable_flowlog && !(var.aws_lambda_function_name == "null" ) }
     name = "${var.aws_lambda_function_name}-logfilter"
     log_group_name = aws_cloudwatch_log_group.flowlog_group[var.region].name
     filter_pattern = var.flow_log_filter
@@ -109,8 +103,7 @@ resource "aws_cloudwatch_log_subscription_filter" "flow_logs_lambda" {
 
 resource "aws_lambda_permission" "allow_cloudwatch" {
   for_each = {for fl in ["${var.aws_lambda_function_name}-logfilter"] : fl => fl
-    if var.enable_flowlog && !(var.aws_lambda_function_name == "null" )
-  }
+              if var.enable_flowlog && !(var.aws_lambda_function_name == "null" ) }
     statement_id   = "AllowExecutionFromCloudWatch_${aws_vpc.main_vpc.id}"
     action         = "lambda:InvokeFunction"
     function_name  = var.aws_lambda_function_name
