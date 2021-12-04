@@ -58,7 +58,8 @@ resource "aws_route53_resolver_endpoint" "outbound_endpoint" {
     security_group_ids = aws_security_group.sg-r53ept-inbound.*.id
 
     dynamic "ip_address" {
-      for_each = local.map_subnet_id_list[var.route53_resolver_endpoint_subnet]
+      for_each = [for i in local.subnet_data : aws_subnet.subnets[i.name].id
+                  if i.layer == var.route53_resolver_endpoint_subnet ]
       content {
         subnet_id = ip_address.value
       }
