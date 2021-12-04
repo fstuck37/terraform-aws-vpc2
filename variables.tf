@@ -47,6 +47,12 @@ variable "route53_resolver_endpoint_cidr_blocks" {
   default = ["0.0.0.0/0"]
 }
 
+variable "route53_resolver_endpoint_subnet" {
+  type = string
+  description = "Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets."
+  default = "mgt"
+}
+
 variable "route53_resolver_rules" {
   /* type = list{object(
     domain_name = string
@@ -510,11 +516,6 @@ variable "shared_resolver_rule" {
   default     = false
 }
 
-variable "route53_resolver_endpoint_subnet" {
-  type = string
-  description = "Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets."
-  default = "mgt"
-}
 variable "route53_outbound_endpoint" {
   type = string
   description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
