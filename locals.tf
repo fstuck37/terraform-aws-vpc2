@@ -157,3 +157,4 @@ locals {
           aws_route_table.routers[sd.name].id
       if sd.layer == layer ]
   }
+}
