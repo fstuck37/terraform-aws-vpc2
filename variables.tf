@@ -73,6 +73,15 @@ variable "route53_resolver_rules" {
   default = []
 }
 
+
+variable "default_route53_resolver_rules_target_ip" {
+  description = "Do not use: This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this."
+  default = { 
+      port      = null
+  }
+}
+
+
 variable "default_route53_resolver_rules" {
   description = "Do not use: This defines the default values for each map entry in route53_resolver_rules. Do not override this."
   default = { 
