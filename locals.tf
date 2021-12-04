@@ -152,10 +152,10 @@ locals {
 
   routetable_ids = {
     for layer in keys(var.subnets) :
-      layer => [
+      layer => flatter([
         for sd in local.subnet_data:
-          sd.layer == var.pub_layer ? aws_route_table.pubrt[sd.name].id : aws_route_table.privrt[sd.name].id
-      if sd.layer == layer ]
+          sd.layer == var.pub_layer ? aws_route_table.pubrt[var.region].id : aws_route_table.privrt[sd.az].id
+      if sd.layer == layer ])
   }
 }
 
