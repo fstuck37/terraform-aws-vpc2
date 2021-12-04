@@ -23,7 +23,7 @@ resource "aws_route53_resolver_rule_association" "r53_resolver_rule_association"
 /* Route 53 Outbound Resolver Rules and Endpoint */
 resource "aws_route53_resolver_rule" "resolver_rule" {
   for_each = {for rule in var.route53_resolver_rules : rule.domain_name => rule
-              if var.enable_route53_outbound_endpoint }
+              if var.enable_route53_outbound_endpoint && contains(keys(var.subnets), var.route53_resolver_endpoint_subnet) }
     domain_name          = merge(var.default_route53_resolver_rules, each.value).domain_name
     rule_type            = merge(var.default_route53_resolver_rules, each.value).rule_type
     name                 = merge(var.default_route53_resolver_rules, each.value).name
@@ -52,7 +52,7 @@ resource "aws_route53_resolver_rule_association" "r53_outbound_rule_association"
 
 resource "aws_route53_resolver_endpoint" "outbound_endpoint" {
   for_each = {for ep in [var.region] : ep => ep
-              if var.enable_route53_outbound_endpoint }
+              if var.enable_route53_outbound_endpoint && contains(keys(var.subnets), var.route53_resolver_endpoint_subnet) }
     name      = "r53ept-outbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
     direction = "OUTBOUND"
     security_group_ids = [aws_security_group.sg-r53ept-inbound[var.region].id]
