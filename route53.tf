@@ -74,10 +74,12 @@ resource "aws_route53_resolver_endpoint" "outbound_endpoint" {
 
 /* Route 53 Resolver Inbound Endpoint */
 resource "aws_route53_resolver_endpoint" "inbound_endpoint" {
+
   for_each = {for resolver in {var.region] : resolver => resolver
               if var.enable_route53_inbound_endpoint }
-  name      = "r53ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
-  direction = "INBOUND"
+
+  name               = "r53ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
+  direction          = "INBOUND"
   security_group_ids = aws_security_group.sg-r53ept-inbound.*.id
 
   dynamic "ip_address" {
