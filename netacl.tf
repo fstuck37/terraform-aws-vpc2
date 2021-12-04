@@ -27,7 +27,7 @@ resource "aws_network_acl_rule" "nacle" {
 /* allow everything else ingress  */
 resource "aws_network_acl_rule" "acle-permit-ingress" {
   for_each = { for i in [var.region] : i=>i
-               if contains( keys(var.subnets), var.pub_layer) }  network_acl_id = join("",aws_network_acl.net_acl.*.id)
+               if contains( keys(var.subnets), var.pub_layer) }
     network_acl_id = aws_network_acl.net_acl[var.region].id
     rule_number    = "32750"
     egress         = false
