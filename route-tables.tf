@@ -46,7 +46,7 @@ resource "aws_route" "pub-default" {
   for_each = aws_route_table.pubrt
     route_table_id         = each.value.id
     destination_cidr_block = "0.0.0.0/0"
-    gateway_id             = aws_internet_gateway.inet-gw[format("%s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${replace(var.region,"-", "")}-igw" )].id
+    gateway_id             = aws_internet_gateway.inet-gw[var.region].id
 }
 
 resource "aws_route" "privrt-gateway" {
