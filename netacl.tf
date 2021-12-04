@@ -1,14 +1,14 @@
 resource "aws_network_acl" "net_acl" {
   for_each = { for i in [var.region] : i=>i
                if contains( keys(var.subnets), var.pub_layer) }
-  vpc_id     = aws_vpc.main_vpc.id
-  subnet_ids = [for i in local.subnet_data : aws_subnet.subnets[i.name].id
-                if i.layer == var.pub_layer ]
-  tags       = merge(
-    var.tags,
-    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-nacl")}),
-    local.resource-tags["aws_network_acl"]
-  )
+    vpc_id     = aws_vpc.main_vpc.id
+    subnet_ids = [for i in local.subnet_data : aws_subnet.subnets[i.name].id
+                  if i.layer == var.pub_layer ]
+    tags       = merge(
+      var.tags,
+      tomap({ "Name" = format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-nacl")}),
+      local.resource-tags["aws_network_acl"]
+    )
 }
 
 resource "aws_network_acl_rule" "nacle" {

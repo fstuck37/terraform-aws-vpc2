@@ -1,9 +1,9 @@
 resource "aws_flow_log" "vpc_flowlog" {
-  for_each = {for fl in [format("%s", var.vpc-name == "null" ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)] : fl => fl
-    if var.enable_flowlog
+  for_each = {for fl in [var.region] : fl => fl
+              if var.enable_flowlog
   }
     vpc_id = aws_vpc.main_vpc.id
-    log_destination = aws_cloudwatch_log_group.flowlog_group[format("%s", var.vpc-name == "null" ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)].arn
+    log_destination = aws_cloudwatch_log_group.flowlog_group[var.region].arn
     iam_role_arn = aws_iam_role.flowlog_role["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"].arn
     traffic_type = "ALL"
     log_format = var.flow_log_format
@@ -15,8 +15,8 @@ resource "aws_flow_log" "vpc_flowlog" {
 }
 
 resource "aws_cloudwatch_log_group" "flowlog_group" {
-  for_each = {for fl in [format("%s", var.vpc-name == "null" ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)] : fl => fl
-    if var.enable_flowlog
+  for_each = {for fl in [var.region] : fl => fl
+              if var.enable_flowlog
   }
     name = aws_vpc.main_vpc.id
     retention_in_days = var.cloudwatch_retention_in_days
@@ -102,7 +102,7 @@ resource "aws_cloudwatch_log_subscription_filter" "flow_logs_lambda" {
     if var.enable_flowlog && !(var.aws_lambda_function_name == "null" )
   }
     name = "${var.aws_lambda_function_name}-logfilter"
-    log_group_name = aws_cloudwatch_log_group.flowlog_group[format("%s", var.vpc-name == "null" ? "${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" : var.vpc-name)].name
+    log_group_name = aws_cloudwatch_log_group.flowlog_group[var.region].name
     filter_pattern = var.flow_log_filter
     destination_arn = "arn:aws:lambda:${var.region}:${var.acctnum}:function:${var.aws_lambda_function_name}"
 }
