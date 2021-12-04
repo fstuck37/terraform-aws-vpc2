@@ -29,6 +29,11 @@ variable "enable_route53_reverse_zones" {
   default     = false
 }
 
+variable "enable_route53_shared_resolver_rules" {
+  description = "Optional : Enable Route53 resolver rules. Defaults to false"
+  default     = false
+}
+
 variable "enable_route53_outbound_endpoint" {
   type = bool
   description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
@@ -77,16 +82,6 @@ variable "default_route53_resolver_rules" {
     target_ip   = []
     tags        = {}
   }
-}
-
-
-
-
-
-
-variable "enable_shared_resolver_rules" {
-  description = "Optional : Enable Route53 resolver rules. Defaults to false"
-  default     = false
 }
 
 variable "enable_dns_support" {
