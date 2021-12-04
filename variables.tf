@@ -472,22 +472,10 @@ variable "default_vpn_connections" {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+variable "dx_bgp_default_route" {
+  description = "Optional : A boolean flag that indicates that the default gateway will be advertised via bgp over Direct Connect and causes the script to not default routes to the NAT Gateways."
+  default     = false
+}
 
 
 
@@ -507,15 +495,6 @@ variable "default_vpn_connections" {
 
 
 /*
-
-
-variable "subnets_ignore_changes" {
-  default = ["tags"]
-}
-
-
-
-
 variable "fixed-subnets" {
   type = map(list(string))
   description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
@@ -528,29 +507,20 @@ variable "fixed-name" {
   default = { }
 }
 
-variable "dx_bgp_default_route" {
-  description = "Optional : A boolean flag that indicates that the default gateway will be advertised via bgp over Direct Connect and causes the script to not deploy NAT Gateways."
-  default     = false
-}
 
-variable "egress_only_internet_gateway" {
-  description = "Optional : Deploy egress_only_internet_gateway instead of aws_internet_gateway"
-  default     = false
-}
+	variable "deploy_gwep" {
+	  description = "Optional : Setup Gateway Load Balancer Endpoint components"
+	  default = false
+	}
 
-variable "deploy_gwep" {
-  description = "Optional : Setup Gateway Load Balancer Endpoint components"
-  default = false
-}
+	variable "gwep_subnet" {
+	  description = "Optional : CIDR Blocked used for the Gateway Endpoints"
+	  default = ""
+	}
 
-variable "gwep_subnet" {
-  description = "Optional : CIDR Blocked used for the Gateway Endpoints"
-  default = ""
-}
-
-variable "gwep_service_name" {
-  description = "Optional : Service Name for Gateway Endpoint"
-  default = ""
-}
+	variable "gwep_service_name" {
+	  description = "Optional : Service Name for Gateway Endpoint"
+	  default = ""
+	}
 
 */
