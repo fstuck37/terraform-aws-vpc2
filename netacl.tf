@@ -6,7 +6,7 @@ resource "aws_network_acl" "net_acl" {
                 if i.layer == var.pub_layer ]
   tags       = merge(
     var.tags,
-    tomap({ "Name" = each.value}),
+    tomap({ "Name" = format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-nacl")}),
     local.resource-tags["aws_network_acl"]
   )
 }
