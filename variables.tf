@@ -29,7 +29,7 @@ variable "enable_route53_reverse_zones" {
   default     = false
 }
 
-variable "enbale_route53_outbound_endpoint" {
+variable "enable_route53_outbound_endpoint" {
   type = bool
   description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
   default = false
@@ -498,7 +498,7 @@ variable "shared_resolver_rule" {
   default     = false
 }
 
-variable "route53_resolver_endpoint" {
+variable "enable_route53_inbound_endpoint" {
   type = string
   description = "Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false."
   default = false
