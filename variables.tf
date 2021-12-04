@@ -501,22 +501,6 @@ variable "subnets_ignore_changes" {
 
 
 
-variable "default_reverse_zones" {
-  description = "Optional : Deploy Route53 Reverse Lookup Zones as /24s. Defaults to false"
-  default     = false
-}
-
-variable "shared_resolver_rule" {
-  description = "Optional : Deploy Route53 resolver rules. Defaults to false"
-  default     = false
-}
-
-variable "route53_outbound_endpoint" {
-  type = string
-  description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
-  default = false
-}
-
 variable "fixed-subnets" {
   type = map(list(string))
   description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
