@@ -35,6 +35,18 @@ variable "enable_route53_outbound_endpoint" {
   default = false
 }
 
+variable "enable_route53_inbound_endpoint" {
+  type = bool
+  description = "Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false."
+  default = false
+}
+
+variable "route53_resolver_endpoint_cidr_blocks" {
+  type = list(string)
+  description = "Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0."
+  default = ["0.0.0.0/0"]
+}
+
 variable "route53_resolver_rules" {
   /* type = list{object(
     domain_name = string
@@ -496,18 +508,6 @@ variable "default_reverse_zones" {
 variable "shared_resolver_rule" {
   description = "Optional : Deploy Route53 resolver rules. Defaults to false"
   default     = false
-}
-
-variable "enable_route53_inbound_endpoint" {
-  type = bool
-  description = "Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false."
-  default = false
-}
-
-variable "route53_resolver_endpoint_cidr_blocks" {
-  type = list(string)
-  description = "Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0."
-  default = ["0.0.0.0/0"]
 }
 
 variable "route53_resolver_endpoint_subnet" {
