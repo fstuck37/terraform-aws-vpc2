@@ -499,7 +499,7 @@ variable "shared_resolver_rule" {
 }
 
 variable "enable_route53_inbound_endpoint" {
-  type = string
+  type = bool
   description = "Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false."
   default = false
 }
