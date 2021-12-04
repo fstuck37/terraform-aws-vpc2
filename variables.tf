@@ -17,6 +17,12 @@ variable "vpc-cidrs" {
   }
 }
 
+variable "disable_default_security_group_override" {
+  type = bool
+  description = "Optional : Takes over the rule set of the VPC's default Security Group and removes all rules. Defaults false."
+  default = false
+}
+
 variable "enable_dns_hostnames" {
   description = "Optional : A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false."
   type        = bool
