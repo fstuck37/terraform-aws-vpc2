@@ -3,9 +3,10 @@ resource "aws_nat_gateway" "natgw" {
            if sd.layer == var.pub_layer && var.deploy_natgateways}
     allocation_id  = aws_eip.eip[each.value.az].id
     subnet_id      = aws_subnet.subnets[each.value.name].id
-    tags       = merge(
+    
+    tags = merge(
       var.tags,
-      tomap({ "Name" = Name = each.value.name}),
+      tomap({ "Name" = each.value.name}),
       local.resource-tags["aws_nat_gateway"]
     )
 }
