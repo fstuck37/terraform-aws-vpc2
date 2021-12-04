@@ -1,5 +1,5 @@
 resource "aws_network_acl" "net_acl" {
-  for_each = { for i in [format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-nacl")] : i=>i
+  for_each = { for i in [var.region] : i=>i
                if contains( keys(var.subnets), var.pub_layer) }
   vpc_id     = aws_vpc.main_vpc.id
   subnet_ids = [for i in local.subnet_data : aws_subnet.subnets[i.name].id
@@ -14,7 +14,7 @@ resource "aws_network_acl" "net_acl" {
 resource "aws_network_acl_rule" "nacle" {
   for_each = { for k,v in local.nacl_rules : k => v
                 if contains( keys(var.subnets), var.pub_layer) }
-    network_acl_id = aws_network_acl.net_acl[format("%s","${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-nacl")].id
+    network_acl_id = aws_network_acl.net_acl[var.region].id
     rule_number    = each.value.rule_number
     egress         = each.value.egress
     protocol       = each.value.protocol
@@ -22,4 +22,32 @@ resource "aws_network_acl_rule" "nacle" {
     cidr_block     = each.value.cidr_block
     from_port      = each.value.from_port
     to_port        = each.value.to_port
+}
+
+/* allow everything else ingress  */
+resource "aws_network_acl_rule" "acle-permit-ingress" {
+  for_each = { for i in [var.region] : i=>i
+               if contains( keys(var.subnets), var.pub_layer) }  network_acl_id = join("",aws_network_acl.net_acl.*.id)
+    network_acl_id = aws_network_acl.net_acl[var.region].id
+    rule_number    = "32750"
+    egress         = false
+    protocol       = "-1"
+    rule_action    = "allow"
+    cidr_block     = "0.0.0.0/0"
+    from_port      = 0
+    to_port        = 0
+}
+
+/* allow everything else egress */
+resource "aws_network_acl_rule" "acle-permit-egress" {
+  for_each = { for i in [var.region] : i=>i
+               if contains( keys(var.subnets), var.pub_layer) }
+    network_acl_id = aws_network_acl.net_acl[var.region].id
+    rule_number    = "32750"
+    egress         = true
+    protocol       = "-1"
+    rule_action    = "allow"
+    cidr_block     = "0.0.0.0/0"
+    from_port      = 0
+    to_port        = 0
 }
