@@ -74,24 +74,25 @@ resource "aws_route53_resolver_endpoint" "outbound_endpoint" {
 
 /* Route 53 Resolver Inbound Endpoint */
 resource "aws_route53_resolver_endpoint" "inbound_endpoint" {
+  for_each = {for ep in [var.region] : ep => ep
+              if var.enable_route53_inbound_endpoint }
+    name               = "r53ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
+    direction          = "INBOUND"
+    security_group_ids = aws_security_group.sg-r53ept-inbound.*.id
 
-  name               = "r53ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
-  direction          = "INBOUND"
-  security_group_ids = aws_security_group.sg-r53ept-inbound.*.id
-
-  dynamic "ip_address" {
-    for_each = [for i in local.subnet_data : aws_subnet.subnets[i.name].id
-                if i.layer == var.route53_resolver_endpoint_subnet ]
-    content {
-      subnet_id = ip_address.value
+    dynamic "ip_address" {
+      for_each = [for i in local.subnet_data : aws_subnet.subnets[i.name].id
+                  if i.layer == var.route53_resolver_endpoint_subnet ]
+      content {
+        subnet_id = ip_address.value
+      }
     }
-  }
 
-  tags = merge(
-    var.tags,
-    tomap({ "Name" = format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )}),
-    local.resource-tags["aws_route53_resolver_endpoint"]
-  )
+    tags = merge(
+      var.tags,
+      tomap({ "Name" = format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" )}),
+      local.resource-tags["aws_route53_resolver_endpoint"]
+    )
 }
 
 
