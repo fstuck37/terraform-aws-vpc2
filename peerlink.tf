@@ -46,7 +46,3 @@ resource "aws_route" "requester_routes" {
     destination_cidr_block    = each.value.cidr
     vpc_peering_connection_id = aws_vpc_peering_connection.peer[each.value.peer_link_name].id
  }
-
-
-
-

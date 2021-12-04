@@ -1,7 +1,6 @@
 resource "aws_vpc_endpoint" "private-s3" {
   for_each = {for s3 in ["com.amazonaws.${var.region}.s3"] : s3 => s3
-    if var.enable-s3-endpoint
-  }
+              if var.enable-s3-endpoint }
     vpc_id          = aws_vpc.main_vpc.id
     service_name    = "com.amazonaws.${var.region}.s3"
     route_table_ids = [for rt in aws_route_table.privrt : rt.id]
@@ -9,8 +8,7 @@ resource "aws_vpc_endpoint" "private-s3" {
 
 resource "aws_vpc_endpoint" "private-dynamodb" {
   for_each = {for db in ["com.amazonaws.${var.region}.dynamodb"] : db => db
-    if var.enable-dynamodb-endpoint
-  }
+              if var.enable-dynamodb-endpoint }
     vpc_id          = aws_vpc.main_vpc.id
     service_name    = "com.amazonaws.${var.region}.dynamodb"
     route_table_ids = [for rt in aws_route_table.privrt : rt.id]

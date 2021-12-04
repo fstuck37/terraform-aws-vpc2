@@ -72,10 +72,6 @@ resource "aws_vpn_connection" "aws_vpn_connections" {
 resource "aws_vpn_connection_route" "aws_vpn_connection_routes" {
   for_each = {for rt in local.vpn_connection_routes : rt.name => rt 
               if var.enable_vpn_gateway }
-  vpn_connection_id      = aws_vpn_connection.aws_vpn_connections[each.value.vpn_name].id
-  destination_cidr_block = each.value.cidr
+    vpn_connection_id      = aws_vpn_connection.aws_vpn_connections[each.value.vpn_name].id
+    destination_cidr_block = each.value.cidr
 }
-
-
-
-

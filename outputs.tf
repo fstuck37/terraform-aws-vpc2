@@ -9,15 +9,9 @@ output "vpc_name" {
 }
 
 output "subnet_ids" {
-  description = "Map with keys based on the subnet names and values of subnet IDs"
-  value = {}
+  description = "Map with keys the same as subnets and value list of subnet IDs"
+  value = local.subnet_ids
 }
-
-output "map_subnet_id_list" {
-  description = "Map with keys the same as subnet-order and values a list of subnet IDs"
-  value = local.subnet_data
-}
-
 
 output "peerlink_accepter_routes" {
   value = local.peerlink_accepter_routes
@@ -27,3 +21,6 @@ output "peerlink_requester_routes" {
   value = local.peerlink_requester_routes
 }
 
+output "routetable_ids" {
+  value = local.routetable_ids
+}
