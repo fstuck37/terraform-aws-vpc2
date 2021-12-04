@@ -154,7 +154,9 @@ locals {
     for layer in keys(var.subnets) :
       layer => [
         for sd in local.subnet_data:
-          aws_route_table.routers[sd.name].id
+          sd.layer == var.pub_layer ? aws_route_table.pubrt[sd.name].id : aws_route_table.privrt[sd.name].id
       if sd.layer == layer ]
   }
 }
+
+
