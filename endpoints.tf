@@ -15,7 +15,7 @@ resource "aws_vpc_endpoint" "private-dynamodb" {
 }
 
 resource "aws_vpc_endpoint" "private-interface-endpoints" {
-  for_each                  = {for endpoint in var.private_endpoints : endpoint.name => endpoint}
+  for_each                  = {for endpoint in var.private_endpoints : replace(endpoint.name, "<REGION>", var.region) => endpoint}
     vpc_id                    = aws_vpc.main_vpc.id
     service_name              = replace(each.value.service, "<REGION>", var.region)
     private_dns_enabled       = each.value.private_dns_enabled
@@ -28,7 +28,11 @@ resource "aws_vpc_endpoint" "private-interface-endpoints" {
     security_group_ids        = each.value.security_groups
     tags                      = merge(
       var.tags,
-      tomap({ "Name" = each.value.name }),
+      tomap({ "Name" = replace(each.value.name, "<REGION>", var.region) }),
       local.resource-tags[each.value.name]
     )
 }
+
+
+
+
