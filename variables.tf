@@ -79,14 +79,12 @@ variable "route53_resolver_rules" {
   default = []
 }
 
-
 variable "default_route53_resolver_rules_target_ip" {
   description = "Do not use: This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this."
   default = { 
       port      = null
   }
 }
-
 
 variable "default_route53_resolver_rules" {
   description = "Do not use: This defines the default values for each map entry in route53_resolver_rules. Do not override this."
@@ -149,13 +147,11 @@ variable "resource-tags" {
   default     = { }
 }
 
-
 variable "domain_name" {
   description = "Optional : the suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file."
   type        = string
   default     = "ec2.internal"
 }
-
 
 variable "domain_name_servers" {
   description = "Optional : List of name servers to configure in /etc/resolv.conf. The default is the AWS nameservers AmazonProvidedDNS."
