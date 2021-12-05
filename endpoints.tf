@@ -20,8 +20,11 @@ resource "aws_vpc_endpoint" "private-interface-endpoints" {
     service_name              = replace(each.value.service, "<REGION>", var.region)
     private_dns_enabled       = each.value.private_dns_enabled
     vpc_endpoint_type         = "Interface"
-    subnet_ids                = [for i in local.subnet_data : aws_subnet.subnets[i.name].id
-                                 if contains(each.value.subnets, i.layer) ]
+    subnet_ids                = concat( [for i in local.subnet_data : aws_subnet.subnets[i.name].id
+                                         if contains(each.value.subnets, i.layer) ],
+                                        [for i in aws_subnet.subnets : i.id
+                                         if contains(each.value.subnets, i.id) ]
+                                )
     security_group_ids        = each.value.security_groups
     tags                      = merge(
       var.tags,
