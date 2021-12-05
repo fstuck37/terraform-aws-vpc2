@@ -30,7 +30,7 @@ resource "aws_vpn_gateway_route_propagation" "privrt" {
   for_each   = {for az in var.zones[var.region] : az => az
                 if var.enable_vpn_gateway }
     vpn_gateway_id = aws_vpn_gateway.vgw[var.region].id
-    route_table_id = aws_route_table.pubrt[each.value].id
+    route_table_id = aws_route_table.privrt[each.value].id
 }
 
 resource "aws_route_table_association" "associations" {
