@@ -305,11 +305,6 @@ variable "amazonaws-com" {
   default = "amazonaws.com"
 }
 
-variable "acctnum" {
-  description = "Required : AWS Account Number"
-  default = ""
-}
-
 variable "enable-s3-endpoint" {
   description = "Optional : Enable the S3 Endpoint"
   default     = false

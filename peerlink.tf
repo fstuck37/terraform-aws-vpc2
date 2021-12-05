@@ -3,7 +3,7 @@ resource "aws_vpc_peering_connection" "peer" {
     vpc_id        = aws_vpc.main_vpc.id
     peer_vpc_id   = each.value.peer_vpc_id
     peer_owner_id = each.value.peer_owner_id
-    auto_accept   = var.acctnum == each.value.peer_owner_id ? true : false
+    auto_accept   = data.aws_caller_identity.current.account_id == each.value.peer_owner_id ? true : false
 
     requester {
       allow_classic_link_to_remote_vpc = false

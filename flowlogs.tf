@@ -98,7 +98,7 @@ resource "aws_cloudwatch_log_subscription_filter" "flow_logs_lambda" {
     name = "${var.aws_lambda_function_name}-logfilter"
     log_group_name = aws_cloudwatch_log_group.flowlog_group[var.region].name
     filter_pattern = var.flow_log_filter
-    destination_arn = "arn:aws:lambda:${var.region}:${var.acctnum}:function:${var.aws_lambda_function_name}"
+    destination_arn = "arn:aws:lambda:${var.region}:${data.aws_caller_identity.current.account_id}:function:${var.aws_lambda_function_name}"
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch" {
@@ -108,6 +108,6 @@ resource "aws_lambda_permission" "allow_cloudwatch" {
     action         = "lambda:InvokeFunction"
     function_name  = var.aws_lambda_function_name
     principal      = "logs.${var.region}.${var.amazonaws-com}"
-    source_account = var.acctnum
-    source_arn     = length(regexall(".*cn-.*", var.region)) > 0 ? "arn:aws-cn:logs:${var.region}:${var.acctnum}:log-group:${aws_vpc.main_vpc.id}:*" : "arn:aws:logs:${var.region}:${var.acctnum}:log-group:${aws_vpc.main_vpc.id}:*"
+    source_account = data.aws_caller_identity.current.account_id
+    source_arn     = length(regexall(".*cn-.*", var.region)) > 0 ? "arn:aws-cn:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_vpc.main_vpc.id}:*" : "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_vpc.main_vpc.id}:*"
 }
