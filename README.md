@@ -272,3 +272,4 @@ Output Reference
 * **txgw_routes** - list(map(string)) : Data used to create routes that point to the Transit Gateway.
 * **vpn_connection_routes** - list(map(string)) : Data used to create static routes that point VPN connections.
 * **route53-reverse-zones** - list(string) : Data used to create Route53 reverse DNS zones.
+
