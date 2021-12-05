@@ -32,3 +32,60 @@ output "account_id" {
 output "available_availability_zone" {
   value = data.aws_availability_zones.azs.names
 }
+
+output "aws_internet_gateway" {
+  value = aws_internet_gateway.inet-gw
+}
+
+output "aws_s3_endpoint" {
+  value = aws_vpc_endpoint.private-s3
+}
+
+output "aws_dynamodb_endpoint" {
+  value = aws_vpc_endpoint.private-dynamodb
+}
+
+output "aws_eip" {
+  value = aws_eip.eip
+}
+
+output "aws_nat_gateway" {
+  value = aws_nat_gateway.natgw
+}
+
+output "aws_vpc_dhcp_options" {
+  value = aws_vpc_dhcp_options.dhcp-opt
+}
+
+output "aws_customer_gateway" {
+  value = aws_customer_gateway.aws_customer_gateways
+}
+
+output "aws_vpn_connection" {
+  value = aws_vpn_connection.aws_vpn_connections
+}
+
+output "aws_vpn_gateway" {
+  value = aws_vpn_gateway.vgw
+}
+
+output "aws_network_acl" {
+  value = aws_network_acl.net_acl
+}
+
+output "aws_vpc_endpoint.private-interface-endpoints" {
+  value = aws_vpc_endpoint.private-interface-endpoints
+}
+
+output "aws_vpc_peering_connection" {
+  value = aws_vpc_peering_connection.peer
+}
+
+output "aws_vpc_peering_connection_accepter" {
+  value = aws_vpc_peering_connection_accepter.peer
+}
+
+
+
+
+
