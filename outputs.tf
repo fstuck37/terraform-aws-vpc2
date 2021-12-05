@@ -13,14 +13,6 @@ output "subnet_ids" {
   value = local.subnet_ids
 }
 
-output "peerlink_accepter_routes" {
-  value = local.peerlink_accepter_routes
-}
-
-output "peerlink_requester_routes" {
-  value = local.peerlink_requester_routes
-}
-
 output "routetable_ids" {
   value = local.routetable_ids
 }
@@ -85,7 +77,10 @@ output "aws_vpc_peering_connection_accepter" {
   value = aws_vpc_peering_connection_accepter.peer
 }
 
+output "peerlink_accepter_routes" {
+  value = local.peerlink_accepter_routes
+}
 
-
-
-
+output "peerlink_requester_routes" {
+  value = local.peerlink_requester_routes
+}
