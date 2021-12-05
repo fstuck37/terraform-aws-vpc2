@@ -149,11 +149,6 @@ variable "resource-tags" {
   default     = { }
 }
 
-variable "subnet-tags" {
-  type = map(map(string))
-  description = "Optional : A map of maps of tags to assign to specifc subnet resource.  The key but be the same as the key in variable subnets."
-  default = { }
-}
 
 variable "domain_name" {
   description = "Optional : the suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file."
@@ -230,6 +225,24 @@ variable "subnets" {
 variable "subnet-order" {
   description = "Required : Order in which subnets are created. Changes can cause recreation issues when subnets are added when something precedes other subnets. Must include all key names in subnets"
   type = list(string)
+}
+
+variable "fixed-subnets" {
+  type = map(list(string))
+  description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
+  default = { }
+}
+
+variable "fixed-name" {
+  type = map(list(string))
+  description = "Optional : Keys must match subnet-order and values are the name of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
+  default = { }
+}
+
+variable "subnet-tags" {
+  type = map(map(string))
+  description = "Optional : A map of maps of tags to assign to specifc subnet resource.  The key but be the same as the key in variable subnets."
+  default = { }
 }
 
 variable "block_tcp_ports" {
@@ -485,22 +498,10 @@ variable "dx_bgp_default_route" {
 
 
 
-
 /* --------------------------------------------------------------------------- */
 
 
 /*
-variable "fixed-subnets" {
-  type = map(list(string))
-  description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
-  default = { }
-}
-
-variable "fixed-name" {
-  type = map(list(string))
-  description = "Optional : Keys must match subnet-order and values are the name of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
-  default = { }
-}
 
 
 	variable "deploy_gwep" {
