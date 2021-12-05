@@ -90,12 +90,12 @@ variable "default_route53_resolver_rules_target_ip" {
 
 variable "default_route53_resolver_rules" {
   description = "Do not use : This defines the default values for each map entry in route53_resolver_rules. Do not override this."
-  type        = map(object({
+ /*type        = map(object({
     rule_type = string
     name      = string
     target_ip = list(string)
     tags      = map(string)
-  }))
+  })) */
   default     = { 
 #   domain_name = null - Required not set
     rule_type   = "FORWARD"
