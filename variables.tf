@@ -192,8 +192,8 @@ variable "transit_gateway_routes" {
 }
 
 variable "txgw_layer" {
-  type        = string
   description = "Optional : Specifies the name of the layer to connect the TXGW to. Defaults to mgt."
+  type        = string
   default     = "mgt"
 }
 
