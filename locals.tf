@@ -26,7 +26,7 @@ locals {
       }]
     ])
 
-  subnet-order = coalescelist( var.subnet-order, keys(var.subnets))
+  subnet-order = coalescelist(keys(var.subnets))
   empty-subnet-tags = zipmap(local.subnet-order, slice(local.emptymaps, 0 ,length(local.subnet-order)))
   subnet-tags = merge(local.empty-subnet-tags,var.subnet-tags)
   

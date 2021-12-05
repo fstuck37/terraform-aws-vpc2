@@ -227,19 +227,14 @@ variable "subnets" {
   }
 }
 
-variable "subnet-order" {
-  description = "Required : Order in which subnets are created. Changes can cause recreation issues when subnets are added when something precedes other subnets. Must include all key names in subnets"
-  type        = list(string)
-}
-
 variable "fixed-subnets" {
-  description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
+  description = "Optional : Keys must match keys in subnets and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
   type        = map(list(string))
   default     = { }
 }
 
 variable "fixed-name" {
-  description = "Optional : Keys must match subnet-order and values are the name of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
+  description = "Optional : Keys must match keys in subnets and values are the name of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
   type        = map(list(string))
   default     = { }
 }
