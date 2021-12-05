@@ -24,7 +24,7 @@ resource "aws_network_acl_rule" "nacle" {
     to_port        = each.value.to_port
 }
 
-/* allow everything else ingress  */
+/* Allow everything else ingress  */
 resource "aws_network_acl_rule" "acle-permit-ingress" {
   for_each = { for i in [var.region] : i=>i
                if contains( keys(var.subnets), var.pub_layer) }
@@ -38,7 +38,7 @@ resource "aws_network_acl_rule" "acle-permit-ingress" {
     to_port        = 0
 }
 
-/* allow everything else egress */
+/* Allow everything else egress */
 resource "aws_network_acl_rule" "acle-permit-egress" {
   for_each = { for i in [var.region] : i=>i
                if contains( keys(var.subnets), var.pub_layer) }

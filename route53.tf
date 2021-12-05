@@ -18,8 +18,6 @@ resource "aws_route53_resolver_rule_association" "r53_resolver_rule_association"
 }
 
 
-
-
 /* Route 53 Outbound Resolver Rules and Endpoint */
 resource "aws_route53_resolver_rule" "resolver_rule" {
   for_each = {for rule in var.route53_resolver_rules : rule.domain_name => rule
