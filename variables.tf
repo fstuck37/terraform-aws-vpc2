@@ -1,6 +1,6 @@
 variable "region" {
+  description = "Optional : The AWS Region to deploy the VPC to. Defaults to us-east-1"
   type        = string
-  description = "Required : The AWS Region to deploy the VPC to. Defaults to us-"
   default     = "us-east-1"
 }
 
@@ -18,9 +18,9 @@ variable "vpc-cidrs" {
 }
 
 variable "override_default_security_group" {
-  type = bool
   description = "Optional : Takes over the rule set of the VPC's default Security Group and removes all rules. Defaults false."
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "enable_dns_hostnames" {
@@ -37,35 +37,37 @@ variable "enable_route53_reverse_zones" {
 
 variable "enable_route53_shared_resolver_rules" {
   description = "Optional : Enable Route53 resolver rules. Defaults to false"
+  type        = bool
   default     = false
 }
 
 variable "enable_route53_outbound_endpoint" {
-  type = bool
   description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "enable_route53_inbound_endpoint" {
-  type = bool
   description = "Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false."
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "route53_resolver_endpoint_cidr_blocks" {
-  type = list(string)
   description = "Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0."
-  default = ["0.0.0.0/0"]
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }
 
 variable "route53_resolver_endpoint_subnet" {
-  type = string
   description = "Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets."
-  default = "mgt"
+  type        = string
+  default     = "mgt"
 }
 
 variable "route53_resolver_rules" {
-  /* type = list{object(
+  description = "Optional : List of Route53 Resolver Rules"
+/*type        = list{object(
     domain_name = string
     rule_type   = string  # FORWARD, SYSTEM and RECURSIVE
     name        = string
@@ -75,21 +77,27 @@ variable "route53_resolver_rules" {
     ))
     tags        = map(string)
   )) */
-  description = "Optional : List of Route53 Resolver Rules"
-  default = []
+  default     = []
 }
 
 variable "default_route53_resolver_rules_target_ip" {
-  description = "Do not use: This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this."
-  default = { 
-      port      = null
+  description = "Do not use : This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this."
+  type        = map(string)
+  default     = { 
+    port      = null
   }
 }
 
 variable "default_route53_resolver_rules" {
-  description = "Do not use: This defines the default values for each map entry in route53_resolver_rules. Do not override this."
-  default = { 
-    # domain_name = null - Required 
+  description = "Do not use : This defines the default values for each map entry in route53_resolver_rules. Do not override this."
+  type        = map(object({
+    rule_type = string
+    name      = string
+    target_ip = list(string)
+    tags      = map(string)
+  }))
+  default     = { 
+#   domain_name = null - Required not set
     rule_type   = "FORWARD"
     name        = null
     target_ip   = []
@@ -117,8 +125,8 @@ variable "instance_tenancy" {
 }
 
 variable "tags" {
-  type        = map(string)
   description = "Optional : A map of tags to assign to the resource."
+  type        = map(string)
   default     = {}
 }
 
@@ -173,13 +181,13 @@ variable "dx_gateway_id" {
 
 variable "transit_gateway_id" {
   description = "Optional : specify the Transit Gateway ID within the same account to associate the VPC with."
-  type = string
+  type        = string
   default     = "null"
 }
 
 variable "transit_gateway_routes" {
   description = "Optional : specify the list of CIDR blocks to route to the Transit Gateway."
-  type = list(string)
+  type        = list(string)
   default     = []
 }
 
@@ -190,26 +198,27 @@ variable "txgw_layer" {
 }
 
 variable "appliance_mode_support" {
-  description = "(Optional) Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
+  description = "(Optional) : Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable."
+  type        = string
   default     = "disable"
 }
 
 variable "pub_layer" {
-  type        = string
   description = "Optional : Specifies the name of the public layer. Defaults to pub."
+  type        = string
   default     = "pub"
 }
 
 variable "reserve_azs" {
-   description = "Optional : The number of subnets to compute the IP allocations for. If greater than the existing numnber of availbility zones in the zones list it will reserve space for additional subnets if less then it will only allocate for the existing AZs. The default is 0."
-   type        = number
-   default     = 0
+  description = "Optional : The number of subnets to compute the IP allocations for. If greater than the existing numnber of availbility zones in the zones list it will reserve space for additional subnets if less then it will only allocate for the existing AZs. The default is 0."
+  type        = number
+  default     = 0
 }
 
 variable "subnets" {
   description = "Optional : Keys are used for subnet names and values are the subnets for the various layers. These will be divided by the number of AZs based on ceil(log(length(var.zones[var.region]),2)). 'pub' is the only special name used for the public subnet and must be specified first."
-  type = map(string)
-  default = {
+  type        = map(string)
+  default     = {
     pub = "10.0.0.0/24"
     web = "10.0.1.0/24"
     app = "10.0.2.0/24"
@@ -220,52 +229,52 @@ variable "subnets" {
 
 variable "subnet-order" {
   description = "Required : Order in which subnets are created. Changes can cause recreation issues when subnets are added when something precedes other subnets. Must include all key names in subnets"
-  type = list(string)
+  type        = list(string)
 }
 
 variable "fixed-subnets" {
-  type = map(list(string))
   description = "Optional : Keys must match subnet-order and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
-  default = { }
+  type        = map(list(string))
+  default     = { }
 }
 
 variable "fixed-name" {
-  type = map(list(string))
   description = "Optional : Keys must match subnet-order and values are the name of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
-  default = { }
+  type        = map(list(string))
+  default     = { }
 }
 
 variable "subnet-tags" {
-  type = map(map(string))
   description = "Optional : A map of maps of tags to assign to specifc subnet resource.  The key but be the same as the key in variable subnets."
-  default = { }
+  type        = map(map(string))
+  default     = { }
 }
 
 variable "block_tcp_ports" {
   description = "Optional : Ports to block both inbound and outbound in the Public Subnet NACL."
-  type = list(string)
-  default = ["20-21", "22", "23", "53", "137-139", "445", "1433", "1521", "3306", "3389", "5439", "5432"]
+  type        = list(string)
+  default     = ["20-21", "22", "23", "53", "137-139", "445", "1433", "1521", "3306", "3389", "5439", "5432"]
 }
 
 variable "block_udp_ports" {
   description = "Optional : Ports to block both inbound and outbound in the Public Subnet NACL."
-  type = list(string)
-  default = ["53"]
+  type        = list(string)
+  default     = ["53"]
 }
 
 variable "network_acl_rules" {
-  type = map(object({
-    rule_number         = number
-    egress              = bool
-    protocol            = string
-    rule_action         = string
-    cidr_block          = string
-    from_port           = number
-    to_port             = number
-    icmp_type           = number
+  description = "Optional : Map of Map of ingress or egress rules to add to Public Subnet's NACL."
+  type        = map(object({
+    rule_number = number
+    egress      = bool
+    protocol    = string
+    rule_action = string
+    cidr_block  = string
+    from_port   = number
+    to_port     = number
+    icmp_type   = number
   }))
-  description = "Optional: Map of Map of ingress or egress rules to add to Public Subnet's NACL."
-  default = {}
+  default     = {}
 }
 
 variable "deploy_natgateways" {
@@ -294,13 +303,14 @@ variable "aws_lambda_function_name" {
 
 variable "flow_log_filter" {
   description = "Optional : CloudWatch subscription filter to match flow logs."
+  type        = string
   default     = ""
 }
 
 variable "flow_log_format" {
   description = "Optional : VPC flow log format."
   type        = string
-  default = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
+  default     = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
 }
 
 variable "cloudwatch_retention_in_days" {
@@ -311,61 +321,64 @@ variable "cloudwatch_retention_in_days" {
 
 variable "amazonaws-com" {
   description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
-  default = "amazonaws.com"
+  type        = string
+  default     = "amazonaws.com"
 }
 
 variable "enable-s3-endpoint" {
   description = "Optional : Enable the S3 Endpoint"
+  type        = bool
   default     = false
 }
 
 variable "enable-dynamodb-endpoint" {
   description = "Optional : Enable the DynamoDB Endpoint"
+  type        = bool
   default     = false
 }
 
 variable "private_endpoints" {
-  description = "List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], List of security_group IDs, List of subnet layers or Subnet IDs to deploy interfaces to. When layer is used all subnets in each layer will be used. This can cause errors if the endpoint is not available in the AZ. Use subnet IDs if this happens."
-  type = list(object({
+  description = "Optional : List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], List of security_group IDs, List of subnet layers or Subnet IDs to deploy interfaces to. When layer is used all subnets in each layer will be used. This can cause errors if the endpoint is not available in the AZ. Use subnet IDs if this happens."
+  type        = list(object({
     name                = string
     subnets             = list(string)
     service             = string
     security_groups     = list(string)
     private_dns_enabled = bool
   }))
-  default = []
+  default     = []
 }
 
 variable "enable_vpn_gateway" {
   description = "Optional : Create a new VPN Gateway. Defaults to true."
+  type        = bool
   default     = true
 }
 
 variable "peer_requester" {
   description = "Optional : Map of maps of Peer Link requestors. The key is the name and the elements of the individual maps are peer_owner_id, peer_vpc_id, peer_cidr_blocks (list), and allow_remote_vpc_dns_resolution."
-  type = map(object({
+  type        = map(object({
     peer_owner_id                   = string
     peer_vpc_id                     = string
     peer_cidr_blocks                = list(string)
     allow_remote_vpc_dns_resolution = bool
   }))
-  default = {}
+  default     = {}
 }
 
 variable "peer_accepter" {
   description = "Optional : Map of maps of Peer Link accepters. The key is the name and the elements of the individual maps are vpc_peering_connection_id, peer_cidr_blocks (list), allow_remote_vpc_dns_resolution."
-  type = map(object({
-    vpc_peering_connection_id = string
-    peer_cidr_blocks          = list(string)
+  type        = map(object({
+    vpc_peering_connection_id       = string
+    peer_cidr_blocks                = list(string)
     allow_remote_vpc_dns_resolution = bool
   }))
-  default = {}
+  default     = {}
 }
 
 variable "vpn_connections" {
   description = "Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN"
-  /*
-    type = map(object({
+/*type        = map(object({
       peer_ip_address                      = string		# Required so not in default_vpn_connections
       device_name                          = string
       bgp_asn                              = number
@@ -415,14 +428,14 @@ variable "vpn_connections" {
 
       destination_cidr_blocks = list(string)
 
-    }))
-  */
-  default = { }
+    })) */
+  default     = { }
 }
 
 variable "default_vpn_connections" {
-  description = "Do not use: This defines the default values for each map entry in vpn_connections. Do not override this."
-  default = { 
+  description = "Optional : This defines the default values for each map entry in vpn_connections. Only overide this if you want to change the defaults for all VPNs."
+/*type        = map(object(...)) */
+  default     = { 
       # aws_customer_gateway
       device_name                          = null
       bgp_asn                              = 6500
@@ -478,13 +491,14 @@ variable "default_vpn_connections" {
 
 variable "dx_bgp_default_route" {
   description = "Optional : A boolean flag that indicates that the default gateway will be advertised via bgp over Direct Connect and causes the script to not default routes to the NAT Gateways."
+  type        = bool
   default     = false
 }
 
 variable "zones" {
-  type = map(list(string))
-  description = "AWS Regions and Availability Zones"
-  default = {
+  description = "Optional : AWS Regions and Availability Zones"
+  type        = map(list(string))
+  default     = {
     us-east-1 = [
       "us-east-1a",
       "us-east-1b",
