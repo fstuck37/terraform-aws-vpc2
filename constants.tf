@@ -21,7 +21,7 @@ variable "zones" {
       "us-east-1a",
       "us-east-1b",
       "us-east-1c"
-    ] #NOTE: us-east-1 has 5 AZs. 1a-1e
+    ]
     us-east-2 = [
       "us-east-2a",
       "us-east-2b",
@@ -39,6 +39,7 @@ variable "zones" {
     ]
     ca-central-1 = [
       "ca-central-1a",
+      "ca-central-1b",
       "ca-central-1c"
     ]
     eu-west-1 = [
@@ -48,11 +49,13 @@ variable "zones" {
     ]
     eu-west-2 = [
       "eu-west-2a",
-      "eu-west-2b"
+      "eu-west-2b",
+      "eu-west-2c"
     ]
     eu-central-1 = [
       "eu-central-1a",
-      "eu-central-1b"
+      "eu-central-1b",
+      "eu-central-1c"
     ]
     ap-northeast-1 = [
       "ap-northeast-1a",
@@ -61,11 +64,13 @@ variable "zones" {
     ]
     ap-northeast-2 = [
       "ap-northeast-2a",
+      "ap-northeast-2b",
       "ap-northeast-2c"
     ]
     ap-southeast-1 = [
       "ap-southeast-1a",
-      "ap-southeast-1b"
+      "ap-southeast-1b",
+      "ap-southeast-1c"
     ]
     ap-southeast-2 = [
       "ap-southeast-2a",
@@ -74,7 +79,8 @@ variable "zones" {
     ]
     ap-south-1 = [
       "ap-south-1a",
-      "ap-south-1b"
+      "ap-south-1b",
+      "ap-south-1c"
     ]
     sa-east-1 = [
       "sa-east-1a",
