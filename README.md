@@ -211,7 +211,7 @@ Argument Reference
         }
       ]
     }
-    ```
+   ```
    * **peer_requester** - Optional : Map of maps of Peer Link requestors. The key is the name and the elements of the individual maps are peer_owner_id, peer_vpc_id, peer_cidr_blocks (list), and allow_remote_vpc_dns_resolution.	map(object({...}))
    ```
    variable "peer_requester" {
