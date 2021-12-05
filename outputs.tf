@@ -84,3 +84,24 @@ output "peerlink_accepter_routes" {
 output "peerlink_requester_routes" {
   value = local.peerlink_requester_routes
 }
+
+output "subnet_data" {
+  value = local.subnet_data
+}
+
+output "nacl_rules" {
+  value = local.nacl_rules
+}
+
+output "txgw_routes" {
+  value = local.txgw_routes
+}
+
+output "vpn_connection_routes" {
+  value = local.vpn_connection_routes
+}
+
+output "route53-reverse-zones" {
+  value = local.route53-reverse-zones
+}
+
