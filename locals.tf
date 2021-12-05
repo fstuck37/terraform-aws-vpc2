@@ -17,7 +17,7 @@ locals {
         layer_cidr      = var.subnets[sn]
         layer_cidr_size = element(split("/", var.subnets[sn]),1)
         azs_allocated   = pow(2,ceil(log(max(var.reserve_azs, length(var.zones[var.region])),2)))
-        subnet_cidr     = cidr_block        = contains(keys(var.fixed-subnets), sn) ? var.fixed-subnets[sn][ii] : cidrsubnet(   var.subnets[sn] , ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )) , ii )
+        subnet_cidr     = contains(keys(var.fixed-subnets), sn) ? var.fixed-subnets[sn][ii] : cidrsubnet(   var.subnets[sn] , ceil(log( max(var.reserve_azs, length(var.zones[var.region])) ,2 )) , ii )
         subnet-tags     = merge(
                                  var.tags ,
                                  tomap({"Name" = contains(keys(var.fixed-name), sn) ? var.fixed-name[sn][ii] : format("%02s", "${var.name-vars["account"]}-${var.name-vars["name"]}-${sn}-${element(split("-", az), length(split("-", az )) - 1)}")  }) , 
