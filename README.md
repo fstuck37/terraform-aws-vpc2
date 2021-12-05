@@ -72,7 +72,7 @@ Argument Reference
    * **zones** - Optional : AWS Regions and Availability Zones	map(list(string))
    * **vpc-cidrs** - Required : List of CIDRs to apply to the VPC.	list(string)
    * **name-vars** - Required : Map with two keys account and name. Names of elements are created based on these values.	map(string)
-      ```
+   ```
       variable "name-vars" {
         type = map(string)
         default = {
