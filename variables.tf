@@ -484,39 +484,3 @@ variable "dx_bgp_default_route" {
   description = "Optional : A boolean flag that indicates that the default gateway will be advertised via bgp over Direct Connect and causes the script to not default routes to the NAT Gateways."
   default     = false
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* --------------------------------------------------------------------------- */
-
-
-/*
-
-
-	variable "deploy_gwep" {
-	  description = "Optional : Setup Gateway Load Balancer Endpoint components"
-	  default = false
-	}
-
-	variable "gwep_subnet" {
-	  description = "Optional : CIDR Blocked used for the Gateway Endpoints"
-	  default = ""
-	}
-
-	variable "gwep_service_name" {
-	  description = "Optional : Service Name for Gateway Endpoint"
-	  default = ""
-	}
-
-*/

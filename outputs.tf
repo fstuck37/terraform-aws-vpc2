@@ -28,3 +28,7 @@ output "routetable_ids" {
 output "account_id" {
   value = data.aws_caller_identity.current.account_id
 }
+
+output "available_availability_zone" {
+  value = data.aws_availability_zones.available.names
+}
