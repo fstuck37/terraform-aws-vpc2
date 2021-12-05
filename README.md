@@ -85,7 +85,7 @@ Argument Reference
    * **subnets** - Optional : Keys are used for subnet names and values are the subnets for the various layers. These will be divided by the number of AZs based on ceil(log(length(var.zones[var.region]),2)). 'pub' is the only special name used for the public subnet and must be specified first.	map(string)
    ```
    variable "subnets" {
-     type = "map"
+     type = map(string)
      default = {
        pub = "10.0.0.0/24"
        web = "10.0.1.0/24"
@@ -121,17 +121,39 @@ Argument Reference
    * **route53_resolver_endpoint_cidr_blocks** - Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0.	list(string)
    * **route53_resolver_endpoint_subnet** - Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets.	string
    * **route53_resolver_rules** - Optional : List of Route53 Resolver Rules	list{object({...})
-    ```
-    [
-      {
-            domain_name = "geek37.com"
-            rule_type   = "FORWARD"
-            ips         = {
-                us-east-1 = "10.0.0.1,10.0.0.2"
-            } 
-        }
-    ]
-    ```
+   ```
+   variable "route53_resolver_rules" {
+     type        = list{object(
+       domain_name = string
+       rule_type   = string  # FORWARD, SYSTEM and RECURSIVE
+       name        = string
+       target_ip   = list(objects(
+         ip        = string
+         port      = number
+       ))
+       tags        = map(string)
+     )) 
+     default = [
+       {
+          domain_name = "geek37.com"
+          rule_type   = "FORWARD"
+          name        = "geek37.com"
+          target_ip   = [
+            {
+              ip        = 10.0.0.1
+            },
+            {
+              ip        = 10.0.0.2
+              port      = 53
+            }
+          ]
+          tags        = {
+            example   = "Geek37.com DNS Forwarder"
+          }
+       }
+     ]
+   }
+   ```
    * **default_route53_resolver_rules_target_ip** - Do not use : This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this.	map(string)
    * **default_route53_resolver_rules** - Do not use : This defines the default values for each map entry in route53_resolver_rules. Do not override this.	map(object({...})
 
@@ -163,20 +185,29 @@ Argument Reference
    * **enable-s3-endpoint** - Optional : Enable the S3 Endpoint	bool
    * **enable-dynamodb-endpoint** - Optional : Enable the DynamoDB Endpoint	bool
    * **private_endpoints** - Optional : List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], List of security_group IDs, List of subnet layers or Subnet IDs to deploy interfaces to. When layer is used all subnets in each layer will be used. This can cause errors if the endpoint is not available in the AZ. Use subnet IDs if this happens.	list(object({...}))
-    ```
-    variable "private_endpoints" {
+   ```
+   variable "private_endpoints" {
+     type        = list(object({
+       name                = string
+       subnets             = list(string)
+       service             = string
+       security_groups     = list(string)
+       private_dns_enabled = bool
+     }))
      default = [
         {
-            name = "storage-gateway-endpoint"
-            subnet = "mgt" 
-            service = "com.amazonaws.<REGION>.storagegateway"
-            security_group = "sg-123456789"
+            name                = "storage-gateway-endpoint"
+            subnets             = ["mgt"]
+            service             = "com.amazonaws.<REGION>.storagegateway"
+            security_group      = "sg-123456789"
+            private_dns_enabled = true
         },
         {
-            name = "execute-api-endpoint"
-            subnet = "app"
-            service = "com.amazonaws.<REGION>.execute-api"
-            security_group = "sg-123456789|sg-987654321"
+            name                = "execute-api-endpoint"
+            subnet              = ["subnet-1234567890abcdef12"]
+            service             = "com.amazonaws.<REGION>.execute-api"
+            security_group      = "sg-123456789|sg-987654321"
+            private_dns_enabled = true
         }
       ]
     }
@@ -184,9 +215,18 @@ Argument Reference
    * **peer_requester** - Optional : Map of maps of Peer Link requestors. The key is the name and the elements of the individual maps are peer_owner_id, peer_vpc_id, peer_cidr_blocks (list), and allow_remote_vpc_dns_resolution.	map(object({...}))
    ```
    variable "peer_requester" {
-     type = "map"
+     type        = map(object({
+       peer_owner_id                   = string
+       peer_vpc_id                     = string
+       peer_cidr_blocks                = list(string)
+       allow_remote_vpc_dns_resolution = bool
+     }))
+
      default = {
-       a_dev2 = "1234567890123|vpc-0c23f7846a96a4723|10.1.0.0/21|true"
+       peer_owner_id                   = "1234567890123"
+       peer_vpc_id                     = "vpc-0c23f7846a96a4723"
+       peer_cidr_blocks                = ["10.1.0.0/21"]
+       allow_remote_vpc_dns_resolution = true
      }
    }
    ```
