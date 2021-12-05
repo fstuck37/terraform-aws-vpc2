@@ -73,7 +73,7 @@ output "aws_network_acl" {
   value = aws_network_acl.net_acl
 }
 
-output "aws_vpc_endpoint.private-interface-endpoints" {
+output "aws_vpc_endpoint" {
   value = aws_vpc_endpoint.private-interface-endpoints
 }
 
