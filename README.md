@@ -7,24 +7,19 @@ This module deploys an AWS VPC and all necessary components to prepare an enviro
 
 The goal of this project is to provide a streamlined, simple Terraform script to deploy and start running a network in AWS.
 
+Testing comnpleted with Terraform v1.0.11
 
 Example
 ------------
 ```
 module "vpc" {
-  source = "git::https://github.com/fstuck37/terraform-aws-vpc.git"
-  acctnum="${var.acct-num}"
-  region = "${var.region}"
-  vpc-cidrs = ["${var.vpc-cidrs}"]
-  name-vars = "${var.name-vars}"
-  subnets = "${var.subnets}"
-  subnet-order = "${var.subnet-order}"
-  deploy_natgateways = true
-  tags = "${var.tags}"
-}
-
-variable "acct-num" { 
-  default = "1234567890123"
+  source    = "git::https://github.com/fstuck37/terraform-aws-vpc2.git"
+  region             = var.region
+  vpc-cidrs          = var.vpc-cidrs
+  name-vars          = var.name-vars
+  subnets            = var.subnets
+  zones              = var.zones
+  tags               = var.tags
 }
 
 variable "region" {
@@ -36,15 +31,13 @@ variable "vpc-cidrs" {
 }
 
 variable "name-vars" {
-  type = "map"
   default = {
     account = "geek37"
-    name = "dev"
+    name    = "dev"
   }
 }
 
 variable "subnets" {
-  type = "map"
   default = {
     pub = "10.0.0.0/24"
     web = "10.0.1.0/24"
@@ -54,19 +47,20 @@ variable "subnets" {
   }
 }
 
-variable "subnet-order" {
-  type = "list"
-  default = ["pub", "web", "app", "db", "mgt"]
+variable "zones" {
+  default = {
+    us-east-1 = ["us-east-1a","us-east-1b"]
+  }
 }
 
 variable "tags" {
   type = "map"
   default = {
-    dept = "Development"
-    Billing = "12345"
-    Contact = "F. Stuck"
+    dept        = "Development"
+    Billing     = "12345"
+    Contact     = "F. Stuck"
     Environment = "POC"
-    Notes  = "This is a test environment"
+    Notes       = "This is a test environment"
   }
 }
 
@@ -215,19 +209,32 @@ Argument Reference
    * **gwep_subnet** - Optional : CIDR Blocked used for the Gateway Endpoints. If this CIDR block is not included in the VPC CIDR then add to vpc-cidrs as well.
    * **gwep_service_name** - Optional : Service Name for Gateway Endpoint. This will be divided by the number of AZs based on ceil(log(length(var.zones[var.region]),2))
 
-Notes and Workarounds
-------------
-A workaround to deleting subnets or peer links.
-terraform state mv <resource-name>.<resource-id>[<i>] <resource-name>.<resource-id>[<j>] 
-Move elements one at a time in the list, upwards or downwards depending on the v5alues you set for i & j.
-
 Output Reference
 ------------
-   * **vpc_id** - VPC ID Number
-   * **vpc_name** - VPC Name
-   * **subnet_ids** - Map where the keys are the subnet names and the values are the subnet IDs
-   * **map_subnet_id_list** - Map where the keys come from subnet-order and the values are a list of the subnet IDs in each availability zone.
-   * **pubrt_id** - The public subnet router IDs
-   * **privrt_id** - List of the private router subnet IDs
-   * **vgw_id** - The ID of the VGW
-   * **peerlink_ids** - Map where the keys are the peerlink names and the values are the peerlink IDs
+   * **vpc_id** - string : The ID of the VPC
+   * **vpc_name** - string : The name of the VPC
+   * **subnet_ids** - map(list(string)) : Map with keys the same as subnets and value list of subnet IDs
+   * **routetable_ids** - map(list(string)) : 
+   * **account_id** - string : Account Number the VPC was deployed to.
+   * **available_availability_zone** - list(string) : List of teh available availability zones in the region.
+   * **aws_vpc** - Resource aws_vpc - [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc)
+   * **aws_internet_gateway** - Resource aws_internet_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/internet_gateway)
+   * **aws_s3_endpoint** - Resource aws_vpc_endpoint for S3 [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
+   * **aws_dynamodb_endpoint** - Resource aws_vpc_endpoint for DynamoDB [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
+   * **aws_vpc_endpoint** - Resource aws_vpc_endpoint for Interface Endpoints [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
+   * **aws_eip** - Resource aws_eip [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)
+   * **aws_nat_gateway** - Resource aws_nat_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway)
+   * **aws_vpc_dhcp_options** - Resource aws_vpc_dhcp_options [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_dhcp_options)
+   * **aws_customer_gateway** - Resource aws_customer_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_customer_gateway)
+   * **aws_vpn_connection** - Resource aws_vpn_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpn_connection)
+   * **aws_vpn_gateway** - Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpn_gateway)
+   * **aws_network_acl** - Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_network_acl)
+   * **aws_vpc_peering_connection** - Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection)
+   * **aws_vpc_peering_connection_accepter** - Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection_accepter
+   * **peerlink_accepter_routes** - list(map(string)) : Data used to create routes for accepted peer links.
+   * **peerlink_requester_routes** - list(map(string)) : Data used to create routes for requested peer links.
+   * **subnet_data** - list(object(...)) : Data used to create the subnets and other related items like routing tables.
+   * **nacl_rules** - map(object(...)) : Data used to create the Public Subnet Network Access Control List.
+   * **txgw_routes** - list(map(string)) : Data used to create routes that point to the Transit Gateway.
+   * **vpn_connection_routes** - list(map(string)) : Data used to create static routes that point VPN connections.
+   * **route53-reverse-zones** - list(string) : Data used to create Route53 reverse DNS zones.
