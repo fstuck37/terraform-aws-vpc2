@@ -24,3 +24,7 @@ output "peerlink_requester_routes" {
 output "routetable_ids" {
   value = local.routetable_ids
 }
+
+output "account_id" {
+  value = data.aws_caller_identity.current.account_id
+}
