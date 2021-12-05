@@ -67,37 +67,37 @@ output "aws_nat_gateway" {
 }
 
 output "aws_vpc_dhcp_options" {
-  description = "Resource aws_vpc_dhcp_options [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_dhcp_options)"
+  description = "Resource aws_vpc_dhcp_options [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options)"
   value = aws_vpc_dhcp_options.dhcp-opt
 }
 
 output "aws_customer_gateway" {
-  description = "Resource aws_customer_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_customer_gateway)"
+  description = "Resource aws_customer_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/customer_gateway)"
   value = aws_customer_gateway.aws_customer_gateways
 }
 
 output "aws_vpn_connection" {
-  description = "Resource aws_vpn_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpn_connection)"
+  description = "Resource aws_vpn_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_connection)"
   value = aws_vpn_connection.aws_vpn_connections
 }
 
 output "aws_vpn_gateway" {
-  description = "Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpn_gateway)"
+  description = "Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_gateway)"
   value = aws_vpn_gateway.vgw
 }
 
 output "aws_network_acl" {
-  description = "Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_network_acl)"
+  description = "Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl)"
   value = aws_network_acl.net_acl
 }
 
 output "aws_vpc_peering_connection" {
-  description = "Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection)"
+  description = "Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection)"
   value = aws_vpc_peering_connection.peer
 }
 
 output "aws_vpc_peering_connection_accepter" {
-  description = "Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection_accepter)"
+  description = "Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_accepter)"
   value = aws_vpc_peering_connection_accepter.peer
 }
 

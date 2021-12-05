@@ -224,13 +224,13 @@ Output Reference
    * **aws_vpc_endpoint** - Resource aws_vpc_endpoint for Interface Endpoints [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
    * **aws_eip** - Resource aws_eip [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)
    * **aws_nat_gateway** - Resource aws_nat_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway)
-   * **aws_vpc_dhcp_options** - Resource aws_vpc_dhcp_options [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_dhcp_options)
-   * **aws_customer_gateway** - Resource aws_customer_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_customer_gateway)
-   * **aws_vpn_connection** - Resource aws_vpn_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpn_connection)
-   * **aws_vpn_gateway** - Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpn_gateway)
-   * **aws_network_acl** - Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_network_acl)
-   * **aws_vpc_peering_connection** - Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection)
-   * **aws_vpc_peering_connection_accepter** - Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection_accepter)
+   * **aws_vpc_dhcp_options** - Resource aws_vpc_dhcp_options [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options)
+   * **aws_customer_gateway** - Resource aws_customer_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/customer_gateway)
+   * **aws_vpn_connection** - Resource aws_vpn_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_connection)
+   * **aws_vpn_gateway** - Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_gateway)
+   * **aws_network_acl** - Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl)
+   * **aws_vpc_peering_connection** - Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection)
+   * **aws_vpc_peering_connection_accepter** - Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_accepter)
    * **peerlink_accepter_routes** - list(map(string)) : Data used to create routes for accepted peer links.
    * **peerlink_requester_routes** - list(map(string)) : Data used to create routes for requested peer links.
    * **subnet_data** - list(object(...)) : Data used to create the subnets and other related items like routing tables.
