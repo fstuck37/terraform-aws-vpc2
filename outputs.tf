@@ -1,3 +1,4 @@
+/* Module Specific */
 output "vpc_id" {
   description = "The ID of the VPC"
   value = aws_vpc.main_vpc.id
@@ -17,12 +18,19 @@ output "routetable_ids" {
   value = local.routetable_ids
 }
 
+/* AWS Data Calls */
 output "account_id" {
   value = data.aws_caller_identity.current.account_id
 }
 
 output "available_availability_zone" {
   value = data.aws_availability_zones.azs.names
+}
+
+/* Resource Direct */
+output "aws_vpc" {
+  description = "The ID of the VPC"
+  value = aws_vpc.main_vpc
 }
 
 output "aws_internet_gateway" {
@@ -77,6 +85,7 @@ output "aws_vpc_peering_connection_accepter" {
   value = aws_vpc_peering_connection_accepter.peer
 }
 
+/* Local Data */
 output "peerlink_accepter_routes" {
   value = local.peerlink_accepter_routes
 }
