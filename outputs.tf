@@ -97,7 +97,7 @@ output "aws_vpc_peering_connection" {
 }
 
 output "aws_vpc_peering_connection_accepter" {
-  description = "Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection_accepter"
+  description = "Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection_accepter)"
   value = aws_vpc_peering_connection_accepter.peer
 }
 

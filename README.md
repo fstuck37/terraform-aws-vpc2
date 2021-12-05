@@ -230,7 +230,7 @@ Output Reference
    * **aws_vpn_gateway** - Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpn_gateway)
    * **aws_network_acl** - Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_network_acl)
    * **aws_vpc_peering_connection** - Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection)
-   * **aws_vpc_peering_connection_accepter** - Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection_accepter
+   * **aws_vpc_peering_connection_accepter** - Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/aws_vpc_peering_connection_accepter)
    * **peerlink_accepter_routes** - list(map(string)) : Data used to create routes for accepted peer links.
    * **peerlink_requester_routes** - list(map(string)) : Data used to create routes for requested peer links.
    * **subnet_data** - list(object(...)) : Data used to create the subnets and other related items like routing tables.
