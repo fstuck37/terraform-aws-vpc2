@@ -30,5 +30,5 @@ output "account_id" {
 }
 
 output "available_availability_zone" {
-  value = data.aws_availability_zones.available.names
+  value = data.aws_availability_zones.azs.names
 }
