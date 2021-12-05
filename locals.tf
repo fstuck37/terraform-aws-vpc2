@@ -132,8 +132,6 @@ locals {
     if tonumber(element(split("/", cidr), 1)) <= 24 ]
   ])
 
-
-
   subnet_ids = {
     for layer in keys(var.subnets) :
       layer => [
@@ -158,5 +156,3 @@ locals {
       if sd.layer == layer ])
   }
 }
-
-
