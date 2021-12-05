@@ -68,8 +68,65 @@ variable "tags" {
 
 Argument Reference
 ------------
+region	Optional : The AWS Region to deploy the VPC to. Defaults to us-east-1	string
+zones	Optional : AWS Regions and Availability Zones	map(list(string))
+vpc-cidrs	Required : List of CIDRs to apply to the VPC.	list(string)
+override_default_security_group	Optional : Takes over the rule set of the VPC's default Security Group and removes all rules. Defaults false.	bool
+enable_dns_hostnames	Optional : A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false.	bool
+enable_route53_reverse_zones	Optional : A boolean flag to enable/disable creation of reverse DNS zones for all /24 networks in the VPC. Anything smaller than a /24 will be ignored. Default is false	bool
+enable_route53_shared_resolver_rules	Optional : Enable Route53 resolver rules. Defaults to false	bool
+enable_route53_outbound_endpoint	Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false.	bool
+enable_route53_inbound_endpoint	Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false.	bool
+route53_resolver_endpoint_cidr_blocks	Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0.	list(string)
+route53_resolver_endpoint_subnet	Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets.	string
+route53_resolver_rules	Optional : List of Route53 Resolver Rules	list{object({...})
+default_route53_resolver_rules_target_ip	Do not use : This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this.	map(string)
+default_route53_resolver_rules	Do not use : This defines the default values for each map entry in route53_resolver_rules. Do not override this.	map(object({...})
+enable_dns_support	Optional : A boolean flag to enable/disable DNS support in the VPC. Defaults true.	bool
+instance_tenancy	Optional : A tenancy option for instances launched into the VPC. Default is default, which makes your instances shared on the host. Using either of the other options (dedicated or host) costs at least $2/hr.	string
+tags	Optional : A map of tags to assign to the resource.	map(string)
+vpc-name	Optional : Override the calculated VPC name	string
+name-vars	Required : Map with two keys account and name. Names of elements are created based on these values.	map(string)
+resource-tags	Optional : A map of maps of tags to assign to specifc resources. This can be used to override globally specified or calculated tags such as the name. The key must be one of the following: aws_vpc, aws_vpn_gateway, aws_subnet, aws_network_acl, aws_internet_gateway, aws_cloudwatch_log_group, aws_vpc_dhcp_options, aws_route_table, aws_route53_resolver_endpoint, aws_lb.	map(map(string))
+domain_name	Optional : the suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file.	string
+domain_name_servers	Optional : List of name servers to configure in /etc/resolv.conf. The default is the AWS nameservers AmazonProvidedDNS.	list(string)
+ntp_servers	Optional : List of NTP servers to configure. The default is an emppty list.	list(string)
+dx_gateway_id	Optional : specify the Direct Connect Gateway ID to associate the VGW with.	string
+transit_gateway_id	Optional : specify the Transit Gateway ID within the same account to associate the VPC with.	string
+transit_gateway_routes	Optional : specify the list of CIDR blocks to route to the Transit Gateway.	list(string)
+txgw_layer	Optional : Specifies the name of the layer to connect the TXGW to. Defaults to mgt.	string
+appliance_mode_support	(Optional) : Whether Appliance Mode support is enabled. If enabled, a traffic flow between a source and destination uses the same Availability Zone for the VPC attachment for the lifetime of that flow. Valid values: disable, enable. Default value: disable.	string
+pub_layer	Optional : Specifies the name of the public layer. Defaults to pub.	string
+reserve_azs	Optional : The number of subnets to compute the IP allocations for. If greater than the existing numnber of availbility zones in the zones list it will reserve space for additional subnets if less then it will only allocate for the existing AZs. The default is 0.	number
+subnets	Optional : Keys are used for subnet names and values are the subnets for the various layers. These will be divided by the number of AZs based on ceil(log(length(var.zones[var.region]),2)). 'pub' is the only special name used for the public subnet and must be specified first.	map(string)
+fixed-subnets	Optional : Keys must match keys in subnets and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used.	map(list(string))
+fixed-name	Optional : Keys must match keys in subnets and values are the name of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used.	map(list(string))
+subnet-tags	Optional : A map of maps of tags to assign to specifc subnet resource.  The key but be the same as the key in variable subnets.	map(map(string))
+block_tcp_ports	Optional : Ports to block both inbound and outbound in the Public Subnet NACL.	list(string)
+block_udp_ports	Optional : Ports to block both inbound and outbound in the Public Subnet NACL.	list(string)
+network_acl_rules	Optional : Map of Map of ingress or egress rules to add to Public Subnet's NACL.	map(object({...})
+deploy_natgateways	Optional : Set to true to deploy NAT gateways if pub subnet is created. Defaults to false.	bool
+enable_pub_route_propagation	Optional : A boolean flag that indicates that the routes should be propagated to the pub routing table. Defaults to False.	bool
+enable_flowlog	Optional : A boolean flag to enable/disable VPC flowlogs.	bool
+aws_lambda_function_name	Optional : Lambda function name to call when sending to logs to an external SEIM.	string
+flow_log_filter	Optional : CloudWatch subscription filter to match flow logs.	string
+flow_log_format	Optional : VPC flow log format.	string
+cloudwatch_retention_in_days	Optional : Number of days to keep logs within the cloudwatch log_group. The default is 7 days.	number
+amazonaws-com	Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn.	string
+enable-s3-endpoint	Optional : Enable the S3 Endpoint	bool
+enable-dynamodb-endpoint	Optional : Enable the DynamoDB Endpoint	bool
+private_endpoints	Optional : List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], List of security_group IDs, List of subnet layers or Subnet IDs to deploy interfaces to. When layer is used all subnets in each layer will be used. This can cause errors if the endpoint is not available in the AZ. Use subnet IDs if this happens.	list(object({...}))
+enable_vpn_gateway	Optional : Create a new VPN Gateway. Defaults to true.	bool
+peer_requester	Optional : Map of maps of Peer Link requestors. The key is the name and the elements of the individual maps are peer_owner_id, peer_vpc_id, peer_cidr_blocks (list), and allow_remote_vpc_dns_resolution.	map(object({...}))
+peer_accepter	Optional : Map of maps of Peer Link accepters. The key is the name and the elements of the individual maps are vpc_peering_connection_id, peer_cidr_blocks (list), allow_remote_vpc_dns_resolution.	map(object({...}))
+vpn_connections	Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN	map(object({...}))
+default_vpn_connections	Optional : This defines the default values for each map entry in vpn_connections. Only overide this if you want to change the defaults for all VPNs.	map(object(...))
+dx_bgp_default_route	Optional : A boolean flag that indicates that the default gateway will be advertised via bgp over Direct Connect and causes the script to not default routes to the NAT Gateways.	bool
 
-* **Base Settings**
+
+
+
+
    * **region** - Required : The AWS Region to deploy the VPC to. For example us-east-1
    * **vpc-cidrs** - Required : List of CIDRs to apply to the VPC.
    * **acctnum** - Required : AWS Account Number  
@@ -211,30 +268,30 @@ Argument Reference
 
 Output Reference
 ------------
-   * **vpc_id** - string : The ID of the VPC
-   * **vpc_name** - string : The name of the VPC
-   * **subnet_ids** - map(list(string)) : Map with keys the same as subnets and value list of subnet IDs
-   * **routetable_ids** - map(list(string)) : 
-   * **account_id** - string : Account Number the VPC was deployed to.
-   * **available_availability_zone** - list(string) : List of teh available availability zones in the region.
-   * **aws_vpc** - Resource aws_vpc - [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc)
-   * **aws_internet_gateway** - Resource aws_internet_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/internet_gateway)
-   * **aws_s3_endpoint** - Resource aws_vpc_endpoint for S3 [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
-   * **aws_dynamodb_endpoint** - Resource aws_vpc_endpoint for DynamoDB [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
-   * **aws_vpc_endpoint** - Resource aws_vpc_endpoint for Interface Endpoints [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
-   * **aws_eip** - Resource aws_eip [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)
-   * **aws_nat_gateway** - Resource aws_nat_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway)
-   * **aws_vpc_dhcp_options** - Resource aws_vpc_dhcp_options [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options)
-   * **aws_customer_gateway** - Resource aws_customer_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/customer_gateway)
-   * **aws_vpn_connection** - Resource aws_vpn_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_connection)
-   * **aws_vpn_gateway** - Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_gateway)
-   * **aws_network_acl** - Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl)
-   * **aws_vpc_peering_connection** - Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection)
-   * **aws_vpc_peering_connection_accepter** - Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_accepter)
-   * **peerlink_accepter_routes** - list(map(string)) : Data used to create routes for accepted peer links.
-   * **peerlink_requester_routes** - list(map(string)) : Data used to create routes for requested peer links.
-   * **subnet_data** - list(object(...)) : Data used to create the subnets and other related items like routing tables.
-   * **nacl_rules** - map(object(...)) : Data used to create the Public Subnet Network Access Control List.
-   * **txgw_routes** - list(map(string)) : Data used to create routes that point to the Transit Gateway.
-   * **vpn_connection_routes** - list(map(string)) : Data used to create static routes that point VPN connections.
-   * **route53-reverse-zones** - list(string) : Data used to create Route53 reverse DNS zones.
+* **vpc_id** - string : The ID of the VPC
+* **vpc_name** - string : The name of the VPC
+* **subnet_ids** - map(list(string)) : Map with keys the same as subnets and value list of subnet IDs
+* **routetable_ids** - map(list(string)) : 
+* **account_id** - string : Account Number the VPC was deployed to.
+* **available_availability_zone** - list(string) : List of teh available availability zones in the region.
+* **aws_vpc** - Resource aws_vpc - [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc)
+* **aws_internet_gateway** - Resource aws_internet_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/internet_gateway)
+* **aws_s3_endpoint** - Resource aws_vpc_endpoint for S3 [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
+* **aws_dynamodb_endpoint** - Resource aws_vpc_endpoint for DynamoDB [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
+* **aws_vpc_endpoint** - Resource aws_vpc_endpoint for Interface Endpoints [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint)
+* **aws_eip** - Resource aws_eip [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)
+* **aws_nat_gateway** - Resource aws_nat_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway)
+* **aws_vpc_dhcp_options** - Resource aws_vpc_dhcp_options [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_dhcp_options)
+* **aws_customer_gateway** - Resource aws_customer_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/customer_gateway)
+* **aws_vpn_connection** - Resource aws_vpn_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_connection)
+* **aws_vpn_gateway** - Resource aws_vpn_gateway [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpn_gateway)
+* **aws_network_acl** - Resource aws_network_acl [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl)
+* **aws_vpc_peering_connection** - Resource aws_vpc_peering_connection [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection)
+* **aws_vpc_peering_connection_accepter** - Resource aws_vpc_peering_connection_accepter [see](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection_accepter)
+* **peerlink_accepter_routes** - list(map(string)) : Data used to create routes for accepted peer links.
+* **peerlink_requester_routes** - list(map(string)) : Data used to create routes for requested peer links.
+* **subnet_data** - list(object(...)) : Data used to create the subnets and other related items like routing tables.
+* **nacl_rules** - map(object(...)) : Data used to create the Public Subnet Network Access Control List.
+* **txgw_routes** - list(map(string)) : Data used to create routes that point to the Transit Gateway.
+* **vpn_connection_routes** - list(map(string)) : Data used to create static routes that point VPN connections.
+* **route53-reverse-zones** - list(string) : Data used to create Route53 reverse DNS zones.
