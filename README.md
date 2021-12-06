@@ -115,7 +115,8 @@ Argument Reference
 
 
    * **enable_route53_reverse_zones** - Optional : A boolean flag to enable/disable creation of reverse DNS zones for all /24 networks in the VPC. Anything smaller than a /24 will be ignored. Default is false	bool
-   * **enable_route53_shared_resolver_rules** - Optional : Enable Route53 resolver rules. Defaults to false	bool
+   * **enable_route53_shared_resolver_rules** - Optional : Enable Route53 resolver rule associations. Defaults to false	bool
+   * **exclude_resolver_rule_ids** - Optional : A list of resolve rule IDs to exclude from the resolve rule associations.	list(string)
    * **enable_route53_outbound_endpoint** - Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false.	bool
    * **enable_route53_inbound_endpoint** - Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false.	bool
    * **route53_resolver_endpoint_cidr_blocks** - Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0.	list(string)

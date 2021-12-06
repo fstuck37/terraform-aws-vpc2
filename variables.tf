@@ -36,9 +36,15 @@ variable "enable_route53_reverse_zones" {
 }
 
 variable "enable_route53_shared_resolver_rules" {
-  description = "Optional : Enable Route53 resolver rules. Defaults to false"
+  description = "Optional : Enable Route53 resolver rule associations. Defaults to false"
   type        = bool
   default     = false
+}
+
+variable "exclude_resolver_rule_ids" {
+  description = "Optional : A list of resolve rule IDs to exclude from the resolve rule associations."
+  type        = list(string)
+  default     = []
 }
 
 variable "enable_route53_outbound_endpoint" {

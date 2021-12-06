@@ -12,7 +12,7 @@ resource "aws_route53_zone" "reverse_zones" {
 /* Route 53 Resolver Rule Associations */
 resource "aws_route53_resolver_rule_association" "r53_resolver_rule_association"{
   for_each = { for key, value in toset( concat(flatten(data.aws_route53_resolver_rules.shared_resolver_rule_with_me.*.resolver_rule_ids),flatten(data.aws_route53_resolver_rules.shared_resolver_rule_by_me.*.resolver_rule_ids))) : key => value
-               if var.enable_route53_shared_resolver_rules }
+               if var.enable_route53_shared_resolver_rules && !contains(var.exclude_resolver_rule_ids,value) }
     resolver_rule_id = each.value
     vpc_id           = aws_vpc.main_vpc.id
 }
