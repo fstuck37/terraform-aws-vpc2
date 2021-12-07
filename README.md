@@ -124,29 +124,19 @@ Argument Reference
    * **route53_resolver_rules** - Optional : List of Route53 Resolver Rules	map{object({...})
    ```
    variable "route53_resolver_rules" {
-     type        = list{object(
-       domain_name = string
-       rule_type   = string  # FORWARD, SYSTEM and RECURSIVE
-       name        = string
-       target_ip   = map(list(objects(
-         ip        = string
-         port      = number
-       )))
-       tags        = map(string)
-     )) 
-     default = [
+     default =[
        {
           domain_name = "geek37.com"
           rule_type   = "FORWARD"
-          name        = "geek37.com"
+          name        = "geek37_com"
           target_ip   = {
             us-east-1 = [
               {
-                ip        = 10.0.0.1
+                ip = "10.0.0.1"
+                port =53
               },
               {
-                ip        = 10.0.0.2
-                port      = 53
+                ip = "10.0.0.2"
               }
             ]
           }
@@ -156,6 +146,7 @@ Argument Reference
        }
      ]
    }
+
    ```
    * **default_route53_resolver_rules_target_ip** - Do not use : This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this.	map(string)
    * **default_route53_resolver_rules** - Do not use : This defines the default values for each map entry in route53_resolver_rules. Do not override this.	map(object({...})
