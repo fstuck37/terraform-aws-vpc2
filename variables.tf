@@ -24,7 +24,7 @@ variable "override_default_security_group" {
 }
 
 variable "enable_dns_hostnames" {
-  description = "Optional : A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false."
+  description = "Optional : A boolean flag to enable/disable DNS hostnames in the VPC. Defaults true."
   type        = bool
   default     = true
 }
@@ -77,21 +77,13 @@ variable "route53_resolver_rules" {
     domain_name = string
     rule_type   = string  # FORWARD, SYSTEM and RECURSIVE
     name        = string
-    target_ip   = list(objects(
+    target_ip   = map(list(objects(
       ip        = string
       port      = number
-    ))
+    )))
     tags        = map(string)
   )) */
   default     = []
-}
-
-variable "default_route53_resolver_rules_target_ip" {
-  description = "Do not use : This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this."
-  type        = map(string)
-  default     = { 
-    port      = null
-  }
 }
 
 variable "default_route53_resolver_rules" {

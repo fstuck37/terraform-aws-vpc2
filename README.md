@@ -121,17 +121,17 @@ Argument Reference
    * **enable_route53_inbound_endpoint** - Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false.	bool
    * **route53_resolver_endpoint_cidr_blocks** - Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0.	list(string)
    * **route53_resolver_endpoint_subnet** - Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets.	string
-   * **route53_resolver_rules** - Optional : List of Route53 Resolver Rules	list{object({...})
+   * **route53_resolver_rules** - Optional : List of Route53 Resolver Rules	map{object({...})
    ```
    variable "route53_resolver_rules" {
      type        = list{object(
        domain_name = string
        rule_type   = string  # FORWARD, SYSTEM and RECURSIVE
        name        = string
-       target_ip   = list(objects(
+       target_ip   = map(list(objects(
          ip        = string
          port      = number
-       ))
+       )))
        tags        = map(string)
      )) 
      default = [
@@ -139,15 +139,17 @@ Argument Reference
           domain_name = "geek37.com"
           rule_type   = "FORWARD"
           name        = "geek37.com"
-          target_ip   = [
-            {
-              ip        = 10.0.0.1
-            },
-            {
-              ip        = 10.0.0.2
-              port      = 53
-            }
-          ]
+          target_ip   = {
+            us-east-1 = [
+              {
+                ip        = 10.0.0.1
+              },
+              {
+                ip        = 10.0.0.2
+                port      = 53
+              }
+            ]
+          }
           tags        = {
             example   = "Geek37.com DNS Forwarder"
           }
