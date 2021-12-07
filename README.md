@@ -121,7 +121,7 @@ Argument Reference
    * **enable_route53_inbound_endpoint** - Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false.	bool
    * **route53_resolver_endpoint_cidr_blocks** - Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0.	list(string)
    * **route53_resolver_endpoint_subnet** - Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets.	string
-   * **route53_resolver_rules** - Optional : List of Route53 Resolver Rules	map{object({...})
+   * **route53_resolver_rules** - Optional : List of Route53 Resolver Rules	list{object({...})
    ```
    variable "route53_resolver_rules" {
      default =[
@@ -146,7 +146,6 @@ Argument Reference
        }
      ]
    }
-
    ```
    * **default_route53_resolver_rules_target_ip** - Do not use : This defines the default values for each map entry in route53_resolver_rules target_ip. Do not override this.	map(string)
    * **default_route53_resolver_rules** - Do not use : This defines the default values for each map entry in route53_resolver_rules. Do not override this.	map(object({...})
