@@ -47,18 +47,6 @@ variable "exclude_resolver_rule_ids" {
   default     = []
 }
 
-variable "enable_route53_outbound_endpoint" {
-  description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
-  type        = bool
-  default     = false
-}
-
-variable "enable_route53_inbound_endpoint" {
-  description = "Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false."
-  type        = bool
-  default     = false
-}
-
 variable "route53_resolver_endpoint_cidr_blocks" {
   description = "Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0."
   type        = list(string)
@@ -69,6 +57,18 @@ variable "route53_resolver_endpoint_subnet" {
   description = "Optional : The subnet to install Route53 Resolver Endpoint , the default is mgt but must exist as a key in the variable subnets."
   type        = string
   default     = "mgt"
+}
+
+variable "enable_route53_inbound_endpoint" {
+  description = "Optional : A boolean flag to enable/disable Route53 Resolver Endpoint. Defaults false."
+  type        = bool
+  default     = false
+}
+
+variable "enable_route53_outbound_endpoint" {
+  description = "Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false."
+  type        = bool
+  default     = false
 }
 
 variable "route53_resolver_rules" {
