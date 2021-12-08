@@ -127,7 +127,7 @@ resource "aws_security_group" "sg-r53ept-inbound" {
   
     tags = merge(
       var.tags,
-      tomap({ "Name" = format("%s", "sg-r52ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" ) }),
+      tomap({ "Name" = format("%s", "sg-r53ept-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}" ) }),
       local.resource-tags["aws_route53_resolver_endpoint"]
     )
 }
