@@ -264,5 +264,5 @@ Output Reference
 * **nacl_rules** - map(object(...)) : Data used to create the Public Subnet Network Access Control List.
 * **txgw_routes** - list(map(string)) : Data used to create routes that point to the Transit Gateway.
 * **vpn_connection_routes** - list(map(string)) : Data used to create static routes that point VPN connections.
-* **route53-reverse-zones** - list(string) : Data used to create Route53 reverse DNS zones.
+* **route53_reverse_zones** - list(string) : Data used to create Route53 reverse DNS zones.
 

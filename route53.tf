@@ -1,6 +1,6 @@
 /* Route 53 Reverse DNS Zones */
 resource "aws_route53_zone" "reverse_zones" {
-  for_each = { for cidr in local.route53-reverse-zones : "${replace(cidr, "/", "-")}" => cidr 
+  for_each = { for cidr in local.route53_reverse_zones : "${replace(cidr, "/", "-")}" => cidr 
                if var.enable_route53_reverse_zones }
     name = "${element(split(".",element(split("/",each.value ),0)),2)}.${element(split(".",element(split("/",each.value ),0)),1)}.${element(split(".",element(split("/",each.value ),0)),0)}.in-addr.arpa"
     vpc {

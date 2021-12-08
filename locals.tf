@@ -124,7 +124,7 @@ locals {
     ]
   ])
 
-  route53-reverse-zones = flatten([
+  route53_reverse_zones = flatten([
     for cidr in var.vpc-cidrs : [
       for n in range(pow(2,(24 - tonumber(element(split("/", cidr), 1))))) : [
         cidrsubnet(cidr, (24 - tonumber(element(split("/", cidr), 1))), n)

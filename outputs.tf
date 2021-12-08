@@ -132,7 +132,7 @@ output "vpn_connection_routes" {
   value = local.vpn_connection_routes
 }
 
-output "route53-reverse-zones" {
+output "route53_reverse_zones" {
   description = "list(string) : Data used to create Route53 reverse DNS zones."
-  value = local.route53-reverse-zones
+  value = local.route53_reverse_zones
 }
