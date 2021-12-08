@@ -99,7 +99,7 @@ resource "aws_route53_resolver_endpoint" "inbound_endpoint" {
 resource "aws_security_group" "sg-r53ept-inbound" {
   for_each = {for sg in [var.region] : sg => sg
               if var.enable_route53_outbound_endpoint || var.enable_route53_inbound_endpoint }
-    name        = "r53ept-inbound-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
+    name        = "r53ept-${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}"
     description = "Allows access to the Route53 Resolver Endpoint"
     vpc_id      = aws_vpc.main_vpc.id
 
