@@ -124,6 +124,13 @@ Argument Reference
    * **route53_resolver_endpoint_cidr_blocks** - Optional : A list of the source CIDR blocks to allow to commuicate with the Route53 Resolver Endpoint. Defaults 0.0.0.0/0.	list(string)
    
    * **enable_route53_outbound_endpoint** - Optional : A boolean flag to enable/disable Route53 Outbound Endpoint. Defaults false.	bool
+
+   * **default_r53_resolver_target_ip_region** - Optional : The default region to use to determine the IP addresses in the R53 Resolver Rules target_ip map. Defaults to us-east-1.	string
+   ```   
+   variable "default_r53_resolver_target_ip_region" {
+     default     = "us-west-1"
+   }
+   ```  
    * **route53_resolver_rules** - Optional : List of Route53 Resolver Rules	list{object({...})
    ```
    variable "enable_route53_outbound_endpoint" {
