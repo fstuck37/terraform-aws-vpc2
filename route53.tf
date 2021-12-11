@@ -28,7 +28,7 @@ resource "aws_route53_resolver_rule" "resolver_rule" {
     resolver_endpoint_id = aws_route53_resolver_endpoint.outbound_endpoint[var.region].id
 
     dynamic "target_ip" {
-      for_each = { for v in each.value.target_ip[var.region] : v.ip => v}
+      for_each = { for v in lookup(each.value.target_ip, var.region, lookup(each.value.target_ip, var.default_r53_resolver_target_ip_region, [])) : v.ip => v}
         content {
           ip = lookup(target_ip.value, "ip", null)
           port = lookup(target_ip.value, "port", null)

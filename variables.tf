@@ -71,6 +71,12 @@ variable "enable_route53_outbound_endpoint" {
   default     = false
 }
 
+variable "default_r53_resolver_target_ip_region" {
+  description = "Optional : The default region to use to determine the IP addresses in the R53 Resolver Rules target_ip map."
+  type        = string
+  default     = "us-east-1"
+}
+
 variable "route53_resolver_rules" {
   description = "Optional : List of Route53 Resolver Rules"
 /*type        = list{object(
