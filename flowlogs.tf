@@ -3,7 +3,7 @@ resource "aws_flow_log" "vpc_flowlog" {
               if var.enable_flowlog }
     vpc_id                   = aws_vpc.main_vpc.id
     log_destination          = local.flow_log_destination_arn
-    iam_role_arn             = aws_iam_role.flowlog_role["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"].arn
+    iam_role_arn             = var.flow_log_traffic_type == "s3" ? null : aws_iam_role.flowlog_role["${var.name-vars["account"]}-${replace(var.region,"-", "")}-${var.name-vars["name"]}-flow-log-role"].arn
     traffic_type             = var.flow_log_traffic_type
     max_aggregation_interval = var.flow_log_max_aggregation_interval
     log_format               = var.flow_log_format
