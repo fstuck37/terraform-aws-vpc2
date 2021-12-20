@@ -288,9 +288,6 @@ variable "enable_pub_route_propagation" {
   default     = false
 }
 
-
-
-
 variable "enable_flowlog" {
   description = "Optional : A boolean flag to enable/disable VPC flowlogs."
   type        = bool
@@ -344,15 +341,6 @@ variable "aws_lambda_function_name" {
   type        = string
   default     = "null"
 }
-
-
-
-
-
-
-
-
-
 
 variable "amazonaws-com" {
   description = "Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn."
