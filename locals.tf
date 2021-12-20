@@ -5,6 +5,8 @@ locals {
   empty-resource-tags = zipmap( distinct(concat(local.private_endpoints_names,local.resource_list)), slice(local.emptymaps, 0 ,length(distinct(concat(local.private_endpoints_names,local.resource_list)))) )
   resource-tags = merge(local.empty-resource-tags, var.resource-tags)
 
+  flow_log_destination_arn = (var.enable_flowlog && var.flow_log_destination_arn != "") ? var.flow_log_destination_arn : (var.flow_log_destination_type != "s3") ? aws_cloudwatch_log_group.flowlog_group[var.region].arn : "------ Must Specify S3 ARN ------"
+
   subnet_data = flatten([
     for i, sn in keys(var.subnets) : [
       for ii, az in var.zones[var.region] : {
