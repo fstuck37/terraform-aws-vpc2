@@ -7,6 +7,8 @@ resource "aws_flow_log" "vpc_flowlog" {
     traffic_type             = var.flow_log_traffic_type
     max_aggregation_interval = var.flow_log_max_aggregation_interval
     log_format               = var.flow_log_format
+    log_destination_type     = var.flow_log_destination_type
+
 
     dynamic "destination_options" {
       for_each = var.flow_log_destination_type == "s3" ? [var.region] : []
