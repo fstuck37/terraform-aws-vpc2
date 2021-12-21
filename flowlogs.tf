@@ -9,7 +9,6 @@ resource "aws_flow_log" "vpc_flowlog" {
     log_format               = var.flow_log_format
     log_destination_type     = var.flow_log_destination_type
 
-
     dynamic "destination_options" {
       for_each = var.flow_log_destination_type == "s3" ? [var.region] : []
       content {
