@@ -186,10 +186,17 @@ Argument Reference
    * **enable_pub_route_propagation** - Optional : A boolean flag that indicates that the routes should be propagated to the pub routing table. Defaults to False.	bool
 
    * **enable_flowlog** - Optional : A boolean flag to enable/disable VPC flowlogs.	bool
-   * **aws_lambda_function_name** - Optional : Lambda function name to call when sending to logs to an external SEIM.	string
-   * **flow_log_filter** - Optional : CloudWatch subscription filter to match flow logs.	string
-   * **flow_log_format** - Optional : VPC flow log format.	string
+   * **flow_log_destination_type** - Optional : Type of flow log destination. Can be s3 or cloud-watch-logs. Defaults to s3.	string
+   * **flow_log_traffic_type** - Optional : The type of traffic to capture. Valid values: ACCEPT, REJECT, ALL.	string
+   * **flow_log_max_aggregation_interval** - Optional : The maximum interval of time during which a flow of packets is captured and aggregated into a flow log record. Valid Values: `60` seconds or `600` seconds. Defaults to 600.	number
    * **cloudwatch_retention_in_days** - Optional : Number of days to keep logs within the cloudwatch log_group. The default is 7 days.	number
+   * **flow_log_format** - Optional : VPC flow log format.	string
+   * **flow_log_filter** - Optional : CloudWatch subscription filter to match flow logs.	string
+   * **flow_log_destination_arn** - Optional : Required if enable_flowlog = true and destination type s3. The ARN of the CloudWatch log group or S3 bucket where VPC Flow Logs will be pushed. If this ARN is a S3 bucket the appropriate permissions need to be set on that bucket's policy. When create_flow_log_cloudwatch_log_group is set to false this argument must be provided.	string
+   * **aws_lambda_function_name** - Optional : Lambda function name to call when sending logs to an external SEIM from CloudWatch. This is ignored if sending logs to S3.	string
+   * **flow_log_file_format** - (Optional) : The format for the flow log. Valid values: `plain-text`, `parquet`.	string
+   * **flow_log_hive_compatible_partitions** - (Optional) : Indicates whether to use Hive-compatible prefixes for flow logs stored in Amazon S3.	bool
+   * **flow_log_per_hour_partition** - (Optional) : Indicates whether to partition the flow log per hour. This reduces the cost and response time for queries.	bool
 
    * **amazonaws-com** - Optional : Ability to change principal for flowlogs from amazonaws.com to amazonaws.com.cn.	string
 
