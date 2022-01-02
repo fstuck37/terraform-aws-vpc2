@@ -11,7 +11,7 @@ variable "vpc-cidrs" {
 
   validation {
     condition = (
-      length(var.vpc-cidrs)>=1
+      length(var.vpc-cidrs) >= 1
     )
     error_message = "The instance_tenancy is not valid."
   }
@@ -79,7 +79,7 @@ variable "default_r53_resolver_target_ip_region" {
 
 variable "route53_resolver_rules" {
   description = "Optional : List of Route53 Resolver Rules"
-/*type        = list{object(
+  /*type        = list{object(
     domain_name = string
     rule_type   = string  # FORWARD, SYSTEM and RECURSIVE
     name        = string
@@ -89,23 +89,23 @@ variable "route53_resolver_rules" {
     )))
     tags        = map(string)
   )) */
-  default     = []
+  default = []
 }
 
 variable "default_route53_resolver_rules" {
   description = "Do not use : This defines the default values for each map entry in route53_resolver_rules. Do not override this."
- /*type       = map(object({
+  /*type       = map(object({
     rule_type = string
     name      = string
     target_ip = list(string)
     tags      = map(string)
   })) */
-  default     = { 
-#   domain_name = null - Required not set
-    rule_type   = "FORWARD"
-    name        = null
-    target_ip   = []
-    tags        = {}
+  default = {
+    #   domain_name = null - Required not set
+    rule_type = "FORWARD"
+    name      = null
+    target_ip = []
+    tags      = {}
   }
 }
 
@@ -122,7 +122,7 @@ variable "instance_tenancy" {
 
   validation {
     condition = (
-      contains(["default", "dedicated", "host",], var.instance_tenancy)
+      contains(["default", "dedicated", "host", ], var.instance_tenancy)
     )
     error_message = "The instance_tenancy is not valid."
   }
@@ -146,7 +146,7 @@ variable "name-vars" {
 
   validation {
     condition = (
-      contains(keys(var.name-vars), "account") && 
+      contains(keys(var.name-vars), "account") &&
       contains(keys(var.name-vars), "name")
     )
     error_message = "The input name-vars must contain two elements account and name."
@@ -156,7 +156,7 @@ variable "name-vars" {
 variable "resource-tags" {
   description = "Optional : A map of maps of tags to assign to specifc resources. This can be used to override globally specified or calculated tags such as the name. The key must be one of the following: aws_vpc, aws_vpn_gateway, aws_subnet, aws_network_acl, aws_internet_gateway, aws_cloudwatch_log_group, aws_vpc_dhcp_options, aws_route_table, aws_route53_resolver_endpoint, aws_lb."
   type        = map(map(string))
-  default     = { }
+  default     = {}
 }
 
 variable "domain_name" {
@@ -222,7 +222,7 @@ variable "reserve_azs" {
 variable "subnets" {
   description = "Optional : Keys are used for subnet names and values are the subnets for the various layers. These will be divided by the number of AZs based on ceil(log(length(var.zones[var.region]),2)). 'pub' is the only special name used for the public subnet and must be specified first."
   type        = map(string)
-  default     = {
+  default = {
     pub = "10.0.0.0/24"
     web = "10.0.1.0/24"
     app = "10.0.2.0/24"
@@ -234,19 +234,19 @@ variable "subnets" {
 variable "fixed-subnets" {
   description = "Optional : Keys must match keys in subnets and values are the list of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
   type        = map(list(string))
-  default     = { }
+  default     = {}
 }
 
 variable "fixed-name" {
   description = "Optional : Keys must match keys in subnets and values are the name of subnets for each AZ. The number of subnets specified in each list needs to match the number of AZs. 'pub' is the only special name used."
   type        = map(list(string))
-  default     = { }
+  default     = {}
 }
 
 variable "subnet-tags" {
   description = "Optional : A map of maps of tags to assign to specifc subnet resource.  The key but be the same as the key in variable subnets."
   type        = map(map(string))
-  default     = { }
+  default     = {}
 }
 
 variable "block_tcp_ports" {
@@ -263,7 +263,7 @@ variable "block_udp_ports" {
 
 variable "network_acl_rules" {
   description = "Optional : Map of Map of ingress or egress rules to add to Public Subnet's NACL."
-  type        = map(object({
+  type = map(object({
     rule_number = number
     egress      = bool
     protocol    = string
@@ -273,7 +273,7 @@ variable "network_acl_rules" {
     to_port     = number
     icmp_type   = number
   }))
-  default     = {}
+  default = {}
 }
 
 variable "deploy_natgateways" {
@@ -387,14 +387,14 @@ variable "enable-dynamodb-endpoint" {
 
 variable "private_endpoints" {
   description = "Optional : List of Maps for private AWS Endpoints Keys: name[Name of Resource IE: s3-endpoint], service[The Service IE: com.amazonaws.<REGION>.execute-api, <REGION> will be replaced with VPC Region], List of security_group IDs, List of subnet layers or Subnet IDs to deploy interfaces to. When layer is used all subnets in each layer will be used. This can cause errors if the endpoint is not available in the AZ. Use subnet IDs if this happens."
-  type        = list(object({
+  type = list(object({
     name                = string
     subnets             = list(string)
     service             = string
     security_groups     = list(string)
     private_dns_enabled = bool
   }))
-  default     = []
+  default = []
 }
 
 variable "enable_vpn_gateway" {
@@ -405,28 +405,28 @@ variable "enable_vpn_gateway" {
 
 variable "peer_requester" {
   description = "Optional : Map of maps of Peer Link requestors. The key is the name and the elements of the individual maps are peer_owner_id, peer_vpc_id, peer_cidr_blocks (list), and allow_remote_vpc_dns_resolution."
-  type        = map(object({
+  type = map(object({
     peer_owner_id                   = string
     peer_vpc_id                     = string
     peer_cidr_blocks                = list(string)
     allow_remote_vpc_dns_resolution = bool
   }))
-  default     = {}
+  default = {}
 }
 
 variable "peer_accepter" {
   description = "Optional : Map of maps of Peer Link accepters. The key is the name and the elements of the individual maps are vpc_peering_connection_id, peer_cidr_blocks (list), allow_remote_vpc_dns_resolution."
-  type        = map(object({
+  type = map(object({
     vpc_peering_connection_id       = string
     peer_cidr_blocks                = list(string)
     allow_remote_vpc_dns_resolution = bool
   }))
-  default     = {}
+  default = {}
 }
 
 variable "vpn_connections" {
   description = "Optional : A map of a map with the settings for each VPN.  The key will be the name of the VPN"
-/*type        = map(object({
+  /*type        = map(object({
       peer_ip_address                      = string		# Required so not in default_vpn_connections
       device_name                          = string
       bgp_asn                              = number
@@ -477,63 +477,63 @@ variable "vpn_connections" {
       destination_cidr_blocks = list(string)
 
     })) */
-  default     = { }
+  default = {}
 }
 
 variable "default_vpn_connections" {
   description = "Optional : This defines the default values for each map entry in vpn_connections. Only overide this if you want to change the defaults for all VPNs."
-/*type        = map(object(...)) */
-  default     = { 
-      # aws_customer_gateway
-      device_name                          = null
-      bgp_asn                              = 6500
-      
-      # aws_vpn_connection
-      static_routes_only                   = true
-      local_ipv4_network_cidr              = null
-      remote_ipv4_network_cidr             = null
-      tunnel_inside_ip_version             = "ipv4"
+  /*type        = map(object(...)) */
+  default = {
+    # aws_customer_gateway
+    device_name = null
+    bgp_asn     = 6500
 
-      tunnel1_inside_cidr                  = null
-      tunnel1_preshared_key                = null
-      tunnel1_dpd_timeout_action           = "clear"
-      tunnel1_dpd_timeout_seconds          = 30
-      tunnel1_ike_versions                 = ["ikev1", "ikev2"]
-      tunnel1_phase1_dh_group_numbers      = [2,14,15,16,17,18,19,20,21,22,23,24]
-      tunnel1_phase1_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
-      tunnel1_phase1_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
-      tunnel1_phase1_lifetime_seconds      = 28800
-      tunnel1_phase2_dh_group_numbers      = [2,5,14,15,16,17,18,19,20,21,22,23,24]
-      tunnel1_phase2_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
-      tunnel1_phase2_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
-      tunnel1_phase2_lifetime_seconds      = 3600
-      tunnel1_rekey_fuzz_percentage        = 100
-      tunnel1_rekey_margin_time_seconds    = 540
-      tunnel1_replay_window_size           = 1024
-      tunnel1_startup_action               = "add"
+    # aws_vpn_connection
+    static_routes_only       = true
+    local_ipv4_network_cidr  = null
+    remote_ipv4_network_cidr = null
+    tunnel_inside_ip_version = "ipv4"
 
-      tunnel2_inside_cidr                  = null
-      tunnel2_preshared_key                = null
-      tunnel2_dpd_timeout_action           = "clear"
-      tunnel2_dpd_timeout_seconds          = 30
-      tunnel2_ike_versions                 = ["ikev1", "ikev2"]
-      tunnel2_phase1_dh_group_numbers      = [2,14,15,16,17,18,19,20,21,22,23,24]
-      tunnel2_phase1_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
-      tunnel2_phase1_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
-      tunnel2_phase1_lifetime_seconds      = 28800
-      tunnel2_phase2_dh_group_numbers      = [2,5,14,15,16,17,18,19,20,21,22,23,24]
-      tunnel2_phase2_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
-      tunnel2_phase2_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
-      tunnel2_phase2_lifetime_seconds      = 3600
-      tunnel2_rekey_fuzz_percentage        = 100
-      tunnel2_rekey_margin_time_seconds    = 540
-      tunnel2_replay_window_size           = 1024
-      tunnel2_startup_action               = "add"
+    tunnel1_inside_cidr                  = null
+    tunnel1_preshared_key                = null
+    tunnel1_dpd_timeout_action           = "clear"
+    tunnel1_dpd_timeout_seconds          = 30
+    tunnel1_ike_versions                 = ["ikev1", "ikev2"]
+    tunnel1_phase1_dh_group_numbers      = [2, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    tunnel1_phase1_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+    tunnel1_phase1_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
+    tunnel1_phase1_lifetime_seconds      = 28800
+    tunnel1_phase2_dh_group_numbers      = [2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    tunnel1_phase2_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+    tunnel1_phase2_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
+    tunnel1_phase2_lifetime_seconds      = 3600
+    tunnel1_rekey_fuzz_percentage        = 100
+    tunnel1_rekey_margin_time_seconds    = 540
+    tunnel1_replay_window_size           = 1024
+    tunnel1_startup_action               = "add"
 
-      tags                                 = {}
+    tunnel2_inside_cidr                  = null
+    tunnel2_preshared_key                = null
+    tunnel2_dpd_timeout_action           = "clear"
+    tunnel2_dpd_timeout_seconds          = 30
+    tunnel2_ike_versions                 = ["ikev1", "ikev2"]
+    tunnel2_phase1_dh_group_numbers      = [2, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    tunnel2_phase1_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+    tunnel2_phase1_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
+    tunnel2_phase1_lifetime_seconds      = 28800
+    tunnel2_phase2_dh_group_numbers      = [2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    tunnel2_phase2_encryption_algorithms = ["AES128", "AES256", "AES128-GCM-16", "AES256-GCM-16"]
+    tunnel2_phase2_integrity_algorithms  = ["SHA1", "SHA2-256", "SHA2-384", "SHA2-512"]
+    tunnel2_phase2_lifetime_seconds      = 3600
+    tunnel2_rekey_fuzz_percentage        = 100
+    tunnel2_rekey_margin_time_seconds    = 540
+    tunnel2_replay_window_size           = 1024
+    tunnel2_startup_action               = "add"
 
-      # Static Routes
-      destination_cidr_blocks              = []
+    tags = {}
+
+    # Static Routes
+    destination_cidr_blocks = []
   }
 }
 
@@ -546,7 +546,7 @@ variable "dx_bgp_default_route" {
 variable "zones" {
   description = "Optional : AWS Regions and Availability Zones"
   type        = map(list(string))
-  default     = {
+  default = {
     us-east-1 = [
       "us-east-1a",
       "us-east-1b",
@@ -616,7 +616,7 @@ variable "zones" {
       "sa-east-1a",
       "sa-east-1b",
       "sa-east-1c"
-    ]    
+    ]
     us-gov-west-1 = [
       "us-gov-west-1a",
       "us-gov-west-1c",
